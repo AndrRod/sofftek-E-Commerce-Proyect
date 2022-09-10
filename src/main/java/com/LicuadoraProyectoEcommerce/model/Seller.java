@@ -10,6 +10,6 @@ import javax.persistence.*;
 public class Seller extends User{
     public Seller() {
         super();
-        this.setRole(Role.USER);
+        this.setRole(Role.SELLER);
     }
 }

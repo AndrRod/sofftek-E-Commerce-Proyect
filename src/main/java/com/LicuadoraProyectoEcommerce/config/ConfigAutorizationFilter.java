@@ -1,5 +1,6 @@
 package com.LicuadoraProyectoEcommerce.config;
 
+import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -10,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.security.auth.message.MessageInfo;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class ConfigAutorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        List listPaths = List.of("/auth/login", "/auth/refresh", "/auth/register", "/companies");
+        List listPaths = List.of("/auth/login", "/auth/refresh", "/auth/register");
         if(listPaths.contains(request.getServletPath())){
             filterChain.doFilter(request, response);
         }else{
