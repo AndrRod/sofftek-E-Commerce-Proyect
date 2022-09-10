@@ -44,6 +44,8 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService{
     private AuthenticationManager authenticationManager;
     @Autowired
     private MessageHandler messageHandler;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public List<Manager> findAll() {
         return managerRepository.findAll();
@@ -51,6 +53,7 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService{
 
     @Override
     public Manager createManager(Manager manager) {
+        manager.setPassword(passwordEncoder.encode(manager.getPassword()));
         return managerRepository.save(manager);
     }
 

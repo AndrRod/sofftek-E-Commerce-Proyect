@@ -20,8 +20,5 @@ public class SellerController {
     public ResponseEntity<List<Seller>> findAllSeller(){
         return ResponseEntity.ok(sellerService.findAll());
     }
-    @PostMapping
-    private ResponseEntity<Seller> createSeller(@RequestBody Seller seller){
-        return ResponseEntity.status(201).body(sellerService.createSeller(seller));
-    }
+
 }

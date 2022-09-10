@@ -9,6 +9,6 @@ import javax.persistence.Entity;
 public class Manager extends User{
     public Manager() {
         super();
-         this.setRole(Role.SELLER);
+         this.setRole(Role.MANAGER);
     }
 }

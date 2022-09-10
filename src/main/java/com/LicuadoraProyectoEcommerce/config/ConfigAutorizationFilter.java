@@ -30,7 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class ConfigAutorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        List listPaths = List.of("/auth/login", "/auth/refresh", "/auth/register");
+        List listPaths = List.of("/auth/manager/register", "/auth/manager/login", "/seller");
         if(listPaths.contains(request.getServletPath())){
             filterChain.doFilter(request, response);
         }else{
