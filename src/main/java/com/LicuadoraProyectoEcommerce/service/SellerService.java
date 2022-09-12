@@ -1,5 +1,7 @@
 package com.LicuadoraProyectoEcommerce.service;
 
+import com.LicuadoraProyectoEcommerce.dto.SellerCompleteDto;
+import com.LicuadoraProyectoEcommerce.dto.SellerDto;
 import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
 import com.LicuadoraProyectoEcommerce.model.Seller;
@@ -10,8 +12,10 @@ import java.io.IOException;
 import java.util.List;
 
 public interface SellerService {
-    List<Seller> findAll();
-    Seller createSeller(Seller seller);
+    List<SellerDto> findAll(Integer page);
+    SellerDto createSeller(SellerCompleteDto seller);
+    String deleteSeller(Long id);
+    SellerDto findById(Long id);
 
     //    LOGIN AND REFRESH TOKEN
     UserLoginResponse userLogin(String email, String password, HttpServletRequest request);

@@ -26,12 +26,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.cors();
-        http.authorizeRequests().antMatchers("/manager/**", "/auth/manager/**").hasAnyAuthority("ROLE_MANAGER");
+//        http.authorizeRequests().antMatchers("/manager/**", "/auth/manager/**").hasAnyAuthority("ROLE_MANAGER");
         http.authorizeRequests().antMatchers("/auth/**").permitAll().
-                anyRequest().authenticated();
+                anyRequest().permitAll();
         http.headers().frameOptions().sameOrigin();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.addFilterBefore(new ConfigAutorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(new ConfigAutorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     @Bean

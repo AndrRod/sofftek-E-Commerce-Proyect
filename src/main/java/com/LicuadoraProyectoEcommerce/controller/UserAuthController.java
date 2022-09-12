@@ -1,5 +1,7 @@
 package com.LicuadoraProyectoEcommerce.controller;
 
+import com.LicuadoraProyectoEcommerce.dto.SellerCompleteDto;
+import com.LicuadoraProyectoEcommerce.dto.SellerDto;
 import com.LicuadoraProyectoEcommerce.form.UserLoginForm;
 import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
@@ -40,7 +42,7 @@ public class UserAuthController {
         return ResponseEntity.status(201).body(managerService.createManager(manager));
     }
     @PostMapping("/seller/register")
-    private ResponseEntity<Seller> createSeller(@RequestBody Seller seller){
+    private ResponseEntity<SellerDto> createSeller(@RequestBody SellerCompleteDto seller){
         return ResponseEntity.status(201).body(sellerService.createSeller(seller));
     }
 

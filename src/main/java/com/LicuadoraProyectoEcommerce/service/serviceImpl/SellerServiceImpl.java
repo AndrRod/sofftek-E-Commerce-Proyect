@@ -1,6 +1,9 @@
 package com.LicuadoraProyectoEcommerce.service.serviceImpl;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
+import com.LicuadoraProyectoEcommerce.dto.SellerCompleteDto;
+import com.LicuadoraProyectoEcommerce.dto.SellerDto;
+import com.LicuadoraProyectoEcommerce.dto.mapper.SellerMapper;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
@@ -17,6 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -42,16 +47,27 @@ public class SellerServiceImpl implements SellerService, UserDetailsService {
     private MessageHandler messageHandler;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private SellerMapper sellerMapper;
+    private final int SIZE_TEN = 10;
     @Override
-    public List<Seller> findAll() {
-        return sellerRepository.findAll();
+    public List<SellerDto> findAll(Integer page) {
+        return sellerMapper.getListDtoFromListEntity(sellerRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent());
+    }
+    @Override
+    public SellerDto createSeller(SellerCompleteDto seller) {
+        return sellerMapper.getDtoFromEntity(sellerRepository.save(sellerMapper.getEntityCreateFromDto(seller)));
     }
 
     @Override
-    public Seller createSeller(Seller seller) {
-        seller.setPassword(passwordEncoder.encode(seller.getPassword()));
-        return sellerRepository.save(seller);
+    public String deleteSeller(Long id) {
+        sellerRepository.delete(sellerRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id)))));
+        return messageHandler.message("delete.success", String.valueOf(id));
+    }
+
+    @Override
+    public SellerDto findById(Long id) {
+        return sellerMapper.getDtoFromEntity(sellerRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf((id))))));
     }
 
 
