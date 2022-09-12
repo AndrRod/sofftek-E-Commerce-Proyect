@@ -61,16 +61,24 @@ public class SellerServiceImpl implements SellerService, UserDetailsService {
 
     @Override
     public String deleteSeller(Long id) {
-        sellerRepository.delete(sellerRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id)))));
+        sellerRepository.delete(findEntityById(id));
         return messageHandler.message("delete.success", String.valueOf(id));
     }
 
     @Override
     public SellerDto findById(Long id) {
-        return sellerMapper.getDtoFromEntity(sellerRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf((id))))));
+        return sellerMapper.getDtoFromEntity(findEntityById(id));
     }
 
 
+    @Override
+    public SellerDto updateSeller(Long id, SellerCompleteDto sellerCompleteDto) {
+        return sellerMapper.getDtoFromEntity(sellerRepository.save(sellerMapper.getEntityUpdateFromDto(findEntityById(id), sellerCompleteDto)));
+    }
+
+    public Seller findEntityById(Long id) {
+        return sellerRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf((id)))));
+    }
     public Seller findUserByEmail(String email) {
         return Optional.ofNullable(sellerRepository.findByEmail(email)).orElseThrow(() -> new NotFoundException(messageHandler.message("not.found", email)));
     }
@@ -122,7 +130,6 @@ public class SellerServiceImpl implements SellerService, UserDetailsService {
             new ObjectMapper().writeValue(response.getOutputStream(), new MessageInfo(exception.getMessage(), 403, request.getRequestURI()));
         }
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

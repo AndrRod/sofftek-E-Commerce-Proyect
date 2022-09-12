@@ -1,5 +1,6 @@
 package com.LicuadoraProyectoEcommerce.controller;
 
+import com.LicuadoraProyectoEcommerce.dto.SellerCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.SellerDto;
 import com.LicuadoraProyectoEcommerce.model.Manager;
 import com.LicuadoraProyectoEcommerce.model.Seller;
@@ -18,15 +19,19 @@ public class SellerController {
     @Autowired
     private SellerService sellerService;
     @GetMapping
-    public ResponseEntity<List<SellerDto>> findPaginationListSeller(@RequestParam Integer page){
-        return ResponseEntity.ok(sellerService.findAll(page));
+    public ResponseEntity<List<SellerDto>> findPaginationListSeller(@RequestParam String page){
+        return ResponseEntity.ok(sellerService.findAll(Integer.valueOf(page)));
     }
     @GetMapping("/{id}")
-    public ResponseEntity<SellerDto> findById(@PathVariable Long id){
-        return ResponseEntity.status(200).body(sellerService.findById(id));
+    public ResponseEntity<SellerDto> findById(@PathVariable String id){
+        return ResponseEntity.status(200).body(sellerService.findById(Long.valueOf(id)));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Long id){
-        return ResponseEntity.status(200).body(sellerService.deleteSeller(id));
+    public ResponseEntity<String> deleteById(@PathVariable String id){
+        return ResponseEntity.status(200).body(sellerService.deleteSeller(Long.valueOf(id)));
+    }
+    @PutMapping("{id}")
+    public ResponseEntity<SellerDto> udpateDto(@PathVariable String id, @RequestBody SellerCompleteDto sellerCompleteDto){
+        return ResponseEntity.status(200).body(sellerService.updateSeller(Long.valueOf(id), sellerCompleteDto));
     }
 }

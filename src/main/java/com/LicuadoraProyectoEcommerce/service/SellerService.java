@@ -20,4 +20,6 @@ public interface SellerService {
     //    LOGIN AND REFRESH TOKEN
     UserLoginResponse userLogin(String email, String password, HttpServletRequest request);
     void refreshToken(RefreshTokenForm form, HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    SellerDto updateSeller(Long id, SellerCompleteDto sellerCompleteDto);
 }

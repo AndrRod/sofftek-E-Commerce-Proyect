@@ -22,10 +22,10 @@ public class SellerMapper {
         return new Seller(null, sellerCompleteDto.getName(), sellerCompleteDto.getEmail(), passwordEncoder.encode(sellerCompleteDto.getPassword()));
     }
     public Seller getEntityUpdateFromDto(Seller seller, SellerCompleteDto sellerDto){
-        Stream.of(seller).forEach((s)-> {
-            if (sellerDto.getEmail() != null) s.setEmail(sellerDto.getEmail());
-            if (sellerDto.getName() != null) s.setName(sellerDto.getName());
-            if (sellerDto.getPassword() != null) s.setPassword(passwordEncoder.encode(sellerDto.getPassword()));
+        Stream.of(sellerDto).forEach((dto)-> {
+            if (dto.getEmail() != null) seller.setEmail(sellerDto.getEmail());
+            if (dto.getName() != null) seller.setName(sellerDto.getName());
+            if (dto.getPassword() != null) seller.setPassword(passwordEncoder.encode(sellerDto.getPassword()));
         });
         return seller;
     }
