@@ -37,4 +37,4 @@ Factura Electrónica a partir de un Servicio Externo.
 
 ### MODELADO PROVISORIO
 
-![](../../DESCARGAS/modeloproyecto.png)
+![](modeloproyecto.png) 
