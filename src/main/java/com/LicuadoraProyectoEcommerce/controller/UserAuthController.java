@@ -1,7 +1,7 @@
 package com.LicuadoraProyectoEcommerce.controller;
 
 import com.LicuadoraProyectoEcommerce.form.UserLoginForm;
-import com.LicuadoraProyectoEcommerce.message.RefreshTokenForm;
+import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
 import com.LicuadoraProyectoEcommerce.model.Manager;
 import com.LicuadoraProyectoEcommerce.model.Seller;
@@ -42,5 +42,16 @@ public class UserAuthController {
     @PostMapping("/seller/register")
     private ResponseEntity<Seller> createSeller(@RequestBody Seller seller){
         return ResponseEntity.status(201).body(sellerService.createSeller(seller));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/seller/login")
+    public UserLoginResponse loginUserSeller(@RequestBody @Valid UserLoginForm userLogin, HttpServletRequest request){
+        return sellerService.userLogin(userLogin.getEmail(), userLogin.getPassword(), request);
+    }
+    @PostMapping("/seller/refresh")
+    @ResponseStatus(HttpStatus.OK)
+    public void refreshTokenUserSeller(@RequestBody RefreshTokenForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, IOException {
+        sellerService.refreshToken(form, request, response);
     }
 }

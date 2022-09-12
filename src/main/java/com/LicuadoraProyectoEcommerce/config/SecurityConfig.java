@@ -1,5 +1,6 @@
 package com.LicuadoraProyectoEcommerce.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,9 +13,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 public class SecurityConfig {
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -23,15 +26,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.cors();
-//        http.authorizeRequests().antMatchers("/users/{id}", "/users", "/turns{page}", "/reserves", "/reserves/**", "/reserves{idTurn}").hasAnyAuthority("ROLE_CLIENT", "ROLE_COMPANY", "ROLE_ADMIN");
-//        http.authorizeRequests().antMatchers("/turns", "/turns/{id}", "/users{page}").hasAnyAuthority("ROLE_COMPANY", "ROLE_ADMIN");
-//        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/companies/{id}").hasAnyAuthority("ROLE_COMPANY", "ROLE_ADMIN");
-//        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/companies/{id}").hasAnyAuthority("ROLE_COMPANY", "ROLE_ADMIN");
-//        http.authorizeRequests().antMatchers(HttpMethod.POST, "/companies").hasAnyAuthority("ROLE_COMPANY", "ROLE_ADMIN");
-//        http.authorizeRequests().antMatchers("/users/role/{id}").hasAnyAuthority("ROLE_ADMIN");
-
-        http.authorizeRequests().antMatchers("/auth/**").permitAll();
-//                anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/manager/**", "/auth/manager/**").hasAnyAuthority("ROLE_MANAGER");
+        http.authorizeRequests().antMatchers("/auth/**").permitAll().
+                anyRequest().authenticated();
         http.headers().frameOptions().sameOrigin();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.addFilterBefore(new ConfigAutorizationFilter(), UsernamePasswordAuthenticationFilter.class);

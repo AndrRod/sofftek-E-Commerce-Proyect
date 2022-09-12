@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.message;
+package com.LicuadoraProyectoEcommerce.form;
 
 import lombok.Getter;
 import lombok.Setter;

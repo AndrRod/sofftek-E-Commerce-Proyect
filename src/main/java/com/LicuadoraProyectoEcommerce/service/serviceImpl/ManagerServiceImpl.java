@@ -4,7 +4,7 @@ import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
-import com.LicuadoraProyectoEcommerce.message.RefreshTokenForm;
+import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
 import com.LicuadoraProyectoEcommerce.model.Manager;
 import com.LicuadoraProyectoEcommerce.repository.ManagerRepository;
@@ -12,11 +12,8 @@ import com.LicuadoraProyectoEcommerce.service.ManagerService;
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,20 +29,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
-
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @Service
 public class ManagerServiceImpl implements ManagerService, UserDetailsService{
     @Autowired
     private ManagerRepository managerRepository;
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
     private MessageHandler messageHandler;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
     public List<Manager> findAll() {
         return managerRepository.findAll();
@@ -62,12 +57,6 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService{
         return Optional.ofNullable(managerRepository.findByEmail(email)).orElseThrow(() -> new NotFoundException(messageHandler.message("not.found", email)));
     }
 
-    @Override
-    public Authentication authenticationFilter(String email, String password) throws AuthenticationException {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
-        Authentication autenticacionFilter = authenticationManager.authenticate(authenticationToken);
-        return autenticacionFilter;
-    }
 
     @Override
     public UserLoginResponse userLogin(String email, String password, HttpServletRequest request) {
@@ -75,13 +64,12 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService{
         Manager user = findUserByEmail(email);
         if(password == null) throw new BadRequestException(messageHandler.message("password.error",null));
         if(!passwordEncoder.matches(password, user.getPassword())) throw new BadRequestException(messageHandler.message("password.error",null));
-        org.springframework.security.core.userdetails.User userAut = (org.springframework.security.core.userdetails.User) authenticationFilter(email, password).getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
         String access_token = JWT.create()
-                .withSubject(userAut.getUsername())
+                .withSubject(user.getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 600 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
-                .withClaim("role",userAut.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .withClaim("role", List.of(user.getRole().getAuthority()))
                 .sign(algorithm);
         String update_token = JWT.create()
                 .withSubject(user.getEmail())
@@ -101,14 +89,14 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService{
             DecodedJWT decodedJWT = verifier.verify(refresh_token);
             String email = decodedJWT.getSubject();
             Manager user = findUserByEmail(email);
-            String acceso_token = JWT.create()
+            String access_token = JWT.create()
                     .withSubject(user.getEmail())
                     .withExpiresAt(new Date(System.currentTimeMillis() + 20 * 60 * 1000))
                     .withIssuer(request.getRequestURL().toString())
                     .withClaim("role", Optional.ofNullable(user.getRole().getAuthority()).stream().collect(Collectors.toList()))
                     .sign(algorithm);
             response.setContentType(APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(),  new HashMap<>(){{put("message", "the user " + user.getEmail()+ " refresh the token succesfully"); put("access_token", acceso_token); put("update_token", refresh_token);}});
+            new ObjectMapper().writeValue(response.getOutputStream(),  new HashMap<>(){{put("message", "the user " + user.getEmail()+ " refresh the token succesfully"); put("access_token", access_token); put("update_token", refresh_token);}});
         }catch (Exception exception){
             response.setStatus(FORBIDDEN.value());
             response.setContentType(APPLICATION_JSON_VALUE);

@@ -19,8 +19,4 @@ public class ManagerController {
         return ResponseEntity.ok(managerService.findAll());
     }
 
-    @PostMapping
-    private ResponseEntity<Manager> createManager(@RequestBody Manager manager){
-        return ResponseEntity.status(201).body(managerService.createManager(manager));
-    }
 }
