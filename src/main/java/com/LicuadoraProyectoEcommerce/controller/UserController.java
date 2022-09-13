@@ -1,5 +1,6 @@
 package com.LicuadoraProyectoEcommerce.controller;
 
+import com.LicuadoraProyectoEcommerce.dto.UserCreateDto;
 import com.LicuadoraProyectoEcommerce.dto.UserDto;
 import com.LicuadoraProyectoEcommerce.dto.UserDtoComplete;
 import com.LicuadoraProyectoEcommerce.service.UserService;
@@ -21,7 +22,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getById(Long.valueOf(id)));
     }
     @PostMapping
-    ResponseEntity<UserDto> createEntity(@RequestBody UserDto userDto){
+    ResponseEntity<UserDto> createEntity(@RequestBody UserCreateDto userDto){
         return ResponseEntity.status(201).body(userService.createEntity(userDto));
     }
     @GetMapping
@@ -29,7 +30,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserListPagination(Integer.valueOf(page)));
     }
     @PutMapping("/{id}")
-    ResponseEntity<UserDto> updateEntity(@PathVariable String id, @RequestBody UserDto userDto){
+    ResponseEntity<UserDto> updateEntity(@PathVariable String id, @RequestBody UserCreateDto userDto){
         return ResponseEntity.ok(userService.updateEntity(Long.valueOf(id), userDto));
     }
     @DeleteMapping("/{id}")

@@ -1,6 +1,7 @@
 package com.LicuadoraProyectoEcommerce.config.security;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
+import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -31,7 +32,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-
+@PropertySource("classpath:application.properties")
 public class ConfigAutorizationFilter extends OncePerRequestFilter {
     @Autowired
     private MessageHandler messageHandler;

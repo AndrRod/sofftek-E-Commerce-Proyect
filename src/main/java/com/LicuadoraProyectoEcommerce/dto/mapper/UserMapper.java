@@ -1,5 +1,6 @@
 package com.LicuadoraProyectoEcommerce.dto.mapper;
 
+import com.LicuadoraProyectoEcommerce.dto.UserCreateDto;
 import com.LicuadoraProyectoEcommerce.dto.UserDto;
 import com.LicuadoraProyectoEcommerce.dto.UserDtoComplete;
 import com.LicuadoraProyectoEcommerce.model.Role;
@@ -16,14 +17,14 @@ import java.util.stream.Stream;
 public class UserMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;
-    public UserDto getDtoFromEntity(User user){return new UserDto(user.getName(), user.getEmail(), user.getPassword());}
+    public UserDto getDtoFromEntity(User user){return new UserDto(user.getName(), user.getEmail());}
     public UserDtoComplete getDtoCompleteFromEntity(User user){return new UserDtoComplete(user.getName(), user.getEmail(), user.getPassword(), user.getRole());}
     public List<UserDto> getListDtoFromListEntity(List<User> userList){return userList.stream().map(this::getDtoFromEntity).collect(Collectors.toList());}
 
-    public User getEntityCreateFromDto(UserDto userDtoComplete){
-        return new User(null, userDtoComplete.getName(), userDtoComplete.getEmail(), passwordEncoder.encode(userDtoComplete.getPassword()), Role.SELLER); //TODO
+    public User getEntityCreateFromDto(UserCreateDto userCreateDto){
+        return new User(null, userCreateDto.getName(), userCreateDto.getEmail(), passwordEncoder.encode(userCreateDto.getPassword()), Role.SELLER); //TODO
     }
-    public User getEntityUpdateFromDto(User user, UserDto userDto){
+    public User getEntityUpdateFromDto(User user, UserCreateDto userDto){
         Stream.of(userDto).forEach((dto)-> {
             if (dto.getEmail() != null) user.setEmail(dto.getEmail());
             if (dto.getName() != null) user.setName(dto.getName());

@@ -1,5 +1,7 @@
 package com.LicuadoraProyectoEcommerce.service.serviceImpl;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
+import com.LicuadoraProyectoEcommerce.config.security.SecurityConfig;
+import com.LicuadoraProyectoEcommerce.dto.UserCreateDto;
 import com.LicuadoraProyectoEcommerce.dto.UserDto;
 import com.LicuadoraProyectoEcommerce.dto.mapper.UserMapper;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
@@ -7,11 +9,11 @@ import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
+import com.LicuadoraProyectoEcommerce.model.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.Role;
 import com.LicuadoraProyectoEcommerce.model.User;
 import com.LicuadoraProyectoEcommerce.repository.UserRepository;
 import com.LicuadoraProyectoEcommerce.service.UserAuthService;
-import org.springframework.security.authentication.AuthenticationManager;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -47,13 +49,14 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     private UserMapper userMapper;
     @Autowired
     private MessageHandler messageHandler;
-
+    @Autowired
+    private SecurityConfig securityConfig;
     public User findUserEntityById(Long id) {
         return userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }
 
     @Override
-    public UserDto registerUser(UserDto userDto) {
+    public UserDto registerUser(UserCreateDto userDto) {
         User user= userRepository.save(userMapper.getEntityCreateFromDto(userDto));
         return userMapper.getDtoFromEntity(user);
     }
@@ -71,7 +74,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         if(password == null) throw new BadRequestException(messageHandler.message("password.error",null));
         if(!passwordEncoder.matches(password, user.getPassword())) throw new BadRequestException(messageHandler.message("password.error",null));
         if(user.getRole()== null) throw new BadRequestException(messageHandler.message("not.have.rol",null));
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        Algorithm algorithm = securityConfig.algorithmFromSecretWord();
         String access_token = JWT.create()
                 .withSubject(user.getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 600 * 60 * 1000))
@@ -91,7 +94,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         if(form.getRefresh_token() == null || !form.getRefresh_token().startsWith("Bearer ")) throw new BadRequestException(messageHandler.message("token.error", null));
         try {
             String refresh_token = form.getRefresh_token().substring("Bearer ".length());
-            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+            Algorithm algorithm = securityConfig.algorithmFromSecretWord();
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT decodedJWT = verifier.verify(refresh_token);
             String email = decodedJWT.getSubject();
@@ -117,7 +120,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         String autorizacionHeader = request.getHeader(AUTHORIZATION);
         if(autorizacionHeader==null || !autorizacionHeader.startsWith("Bearer ")) throw new NotFoundException(messageHandler.message("not.login", null));
         String token = autorizacionHeader.substring("Bearer ".length());
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        Algorithm algorithm = securityConfig.algorithmFromSecretWord();
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(token);
         return decodedJWT.getSubject();
@@ -136,5 +139,22 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         Try.of(() -> {user.setRole(Role.valueOf(roleName)); return userRepository.save(user);
         }).onFailure(e -> {throw new NotFoundException(messageHandler.message("not.found.rol", roleName));});
         return new MessageInfo(messageHandler.message("update.success", "to role: " + roleName), HttpStatus.OK.value(), request.getRequestURL().toString());
+    }
+
+    @Override
+    public void isTheUserCreatorOfProduct(User user, HttpServletRequest request, BaseProduct product) {
+        User u = getUserLoged(request);
+        if(!user.equals(u) && !u.getRole().equals(Role.MANAGER))throw new NotFoundException(messageHandler.message("not.authorizate", null));
+    }
+
+    @Override
+    public User getUserLoged(HttpServletRequest request) {
+        String autorizacionHeader = request.getHeader(AUTHORIZATION);
+        if(autorizacionHeader==null || !autorizacionHeader.startsWith("Bearer ")) throw new NotFoundException(messageHandler.message("not.login", null));
+        String token = autorizacionHeader.substring("Bearer ".length());
+        Algorithm algorithm = securityConfig.algorithmFromSecretWord();
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        DecodedJWT decodedJWT = verifier.verify(token);
+        return findUserByEmail(decodedJWT.getSubject());
     }
 }
