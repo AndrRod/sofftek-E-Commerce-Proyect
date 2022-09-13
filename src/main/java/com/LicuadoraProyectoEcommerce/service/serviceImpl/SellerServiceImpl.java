@@ -18,10 +18,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,6 +46,7 @@ public class SellerServiceImpl implements SellerService, UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private SellerMapper sellerMapper;
+
     private final int SIZE_TEN = 10;
     @Override
     public List<SellerDto> findAll(Integer page) {
@@ -60,16 +58,15 @@ public class SellerServiceImpl implements SellerService, UserDetailsService {
     }
 
     @Override
-    public String deleteSeller(Long id) {
+    public Map<String, String> deleteSeller(Long id) {
         sellerRepository.delete(findEntityById(id));
-        return messageHandler.message("delete.success", String.valueOf(id));
+        return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
 
     @Override
     public SellerDto findById(Long id) {
         return sellerMapper.getDtoFromEntity(findEntityById(id));
     }
-
 
     @Override
     public SellerDto updateSeller(Long id, SellerCompleteDto sellerCompleteDto) {

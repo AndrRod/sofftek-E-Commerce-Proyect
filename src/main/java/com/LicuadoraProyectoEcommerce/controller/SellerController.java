@@ -2,16 +2,13 @@ package com.LicuadoraProyectoEcommerce.controller;
 
 import com.LicuadoraProyectoEcommerce.dto.SellerCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.SellerDto;
-import com.LicuadoraProyectoEcommerce.model.Manager;
-import com.LicuadoraProyectoEcommerce.model.Seller;
-import com.LicuadoraProyectoEcommerce.service.ManagerService;
 import com.LicuadoraProyectoEcommerce.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/seller")
@@ -27,7 +24,7 @@ public class SellerController {
         return ResponseEntity.status(200).body(sellerService.findById(Long.valueOf(id)));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable String id){
+    public ResponseEntity<Map<String, String>> deleteById(@PathVariable String id){
         return ResponseEntity.status(200).body(sellerService.deleteSeller(Long.valueOf(id)));
     }
     @PutMapping("{id}")

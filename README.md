@@ -35,6 +35,11 @@ compra, para que, posteriormente, el comprador los pague por alguno de los medio
 Cada vendedor define los Medios de Pago de acepta. Una vez aceptado el pago, se debe generar una
 Factura Electrónica a partir de un Servicio Externo.
 
+#### **Pendientes**
+- Mejorar representacion de clases Gestor y Vendedor
+- Implementacion del filtro creado para que solo el Gestor que crea el producto_base pueda realizar CRUD
+- Implementacion del filtro creado para que solo el Vendedor que crea el producto_vendedor pueda realizar CRUD
+
 ### MODELADO PROVISORIO
 
 ![](modeloproyecto.png) 

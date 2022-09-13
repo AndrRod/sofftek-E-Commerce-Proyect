@@ -19,7 +19,7 @@ public class SellerMapper {
     public List<SellerDto> getListDtoFromListEntity(List<Seller> sellerList){return sellerList.stream().map(this::getDtoFromEntity).collect(Collectors.toList());}
 
     public Seller getEntityCreateFromDto(SellerCompleteDto sellerCompleteDto){
-        return new Seller(null, sellerCompleteDto.getName(), sellerCompleteDto.getEmail(), passwordEncoder.encode(sellerCompleteDto.getPassword()));
+        return new Seller(null, sellerCompleteDto.getName(), sellerCompleteDto.getEmail(), passwordEncoder.encode(sellerCompleteDto.getPassword()), null);
     }
     public Seller getEntityUpdateFromDto(Seller seller, SellerCompleteDto sellerDto){
         Stream.of(sellerDto).forEach((dto)-> {
