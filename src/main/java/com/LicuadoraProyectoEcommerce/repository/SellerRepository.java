@@ -7,6 +7,4 @@ import java.awt.print.Pageable;
 import java.util.List;
 
 @Repository
-public interface SellerRepository extends JpaRepository<Seller, Long> {
-    Seller findByEmail(String email);
-}
+public interface SellerRepository extends JpaRepository<Seller, Long> { }

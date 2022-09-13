@@ -1,5 +1,6 @@
-package com.LicuadoraProyectoEcommerce.config;
+package com.LicuadoraProyectoEcommerce.config.security;
 
+import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -37,7 +38,7 @@ public class ConfigAutorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        List listPaths = List.of("/auth/seller/login", "/auth/seller/register");
+        List listPaths = List.of("/auth/login", "/auth/register", "/auth/refresh");
         if(listPaths.contains(request.getServletPath())){
             filterChain.doFilter(request, response);
         }else{

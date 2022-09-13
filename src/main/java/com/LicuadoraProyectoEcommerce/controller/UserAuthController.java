@@ -1,16 +1,13 @@
 package com.LicuadoraProyectoEcommerce.controller;
 
-import com.LicuadoraProyectoEcommerce.dto.SellerCompleteDto;
-import com.LicuadoraProyectoEcommerce.dto.SellerDto;
-import com.LicuadoraProyectoEcommerce.form.UserLoginForm;
+import com.LicuadoraProyectoEcommerce.dto.UserDto;
 import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
+import com.LicuadoraProyectoEcommerce.form.RoleNameForm;
+import com.LicuadoraProyectoEcommerce.form.UserLoginForm;
+import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
-import com.LicuadoraProyectoEcommerce.model.Manager;
-import com.LicuadoraProyectoEcommerce.model.Seller;
-import com.LicuadoraProyectoEcommerce.service.ManagerService;
-import com.LicuadoraProyectoEcommerce.service.SellerService;
+import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,37 +20,23 @@ import java.io.IOException;
 @RequestMapping("/auth")
 public class UserAuthController {
     @Autowired
-    private ManagerService managerService;
-    @Autowired
-    private SellerService sellerService;
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/manager/login")
-    public UserLoginResponse loginUser(@RequestBody @Valid UserLoginForm userLogin, HttpServletRequest request){
-        return managerService.userLogin(userLogin.getEmail(), userLogin.getPassword(), request);
-    }
-    @PostMapping("/manager/refresh")
-    @ResponseStatus(HttpStatus.OK)
-    public void refreshToken(@RequestBody RefreshTokenForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, IOException {
-        managerService.refreshToken(form, request, response);
+    private UserAuthService userAuthService;
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerUser(@RequestBody @Valid UserDto userDto){
+        return ResponseEntity.status(201).body(userAuthService.registerUser(userDto));
     }
 
-    @PostMapping("/manager/register")
-    private ResponseEntity<Manager> createManager(@RequestBody Manager manager){
-        return ResponseEntity.status(201).body(managerService.createManager(manager));
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginResponse> loginUser(@RequestBody @Valid UserLoginForm userLogin, HttpServletRequest request){
+        return ResponseEntity.ok(userAuthService.userLogin(userLogin.getEmail(), userLogin.getPassword(), request));
     }
-    @PostMapping("/seller/register")
-    private ResponseEntity<SellerDto> createSeller(@RequestBody SellerCompleteDto seller){
-        return ResponseEntity.status(201).body(sellerService.createSeller(seller));
+    @PostMapping("/refresh")
+    public void refreshToken(@RequestBody @Valid RefreshTokenForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        userAuthService.refreshToken(form, request, response);
     }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/seller/login")
-    public UserLoginResponse loginUserSeller(@RequestBody @Valid UserLoginForm userLogin, HttpServletRequest request){
-        return sellerService.userLogin(userLogin.getEmail(), userLogin.getPassword(), request);
-    }
-    @PostMapping("/seller/refresh")
-    @ResponseStatus(HttpStatus.OK)
-    public void refreshTokenUserSeller(@RequestBody RefreshTokenForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, IOException {
-        sellerService.refreshToken(form, request, response);
+    @PostMapping("/addrole/{id}")
+    public ResponseEntity<MessageInfo> addRoleToUser(@PathVariable String id, @RequestBody @Valid RoleNameForm role, HttpServletRequest request){
+        return ResponseEntity.ok(userAuthService.updateUserRol(Long.valueOf(id), role.getRole_name(), request));
     }
 }
