@@ -3,12 +3,11 @@ package com.LicuadoraProyectoEcommerce.dto.mapper;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDto;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDtoComplete;
 import com.LicuadoraProyectoEcommerce.model.BaseProduct;
-import com.LicuadoraProyectoEcommerce.model.Manager;
 import com.LicuadoraProyectoEcommerce.service.serviceImpl.UserLoged;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,7 +20,7 @@ public class BaseProductMapper {
     public List<BaseProductDtoComplete> getListDtoFromListEntity(List<BaseProduct> baseProducts){return baseProducts.stream().map(this::getDtoFromEntity).collect(Collectors.toList());}
 
     public BaseProduct getEntityCreateFromDto(BaseProductDto baseProductDto){
-        return new BaseProduct(null, baseProductDto.getName(), baseProductDto.getPrice(), baseProductDto.getDescription(), baseProductDto.getDaysToManufacture(), userLoged.findManagerByEmail("andresrod@gmail.com")); //TODO
+        return new BaseProduct(null, baseProductDto.getName(), baseProductDto.getPrice(), baseProductDto.getDescription(), baseProductDto.getDaysToManufacture(), userLoged.findManagerByEmail("andresrod@gmail.com"), new ArrayList<>()); //TODO
     }
     public BaseProduct getEntityUpdateFromDto(BaseProduct baseProduct, BaseProductDto baseProductDto){
         Stream.of(baseProductDto).forEach((dto)-> {
