@@ -9,5 +9,6 @@ import java.util.List;
 @Data @AllArgsConstructor
 public class ManagerDto {
     private String name;
-    private List<BaseProductDtoComplete> baseProductDtos;
+    private String email;
+    private List<BaseProductDtoComplete> baseProductList;
 }

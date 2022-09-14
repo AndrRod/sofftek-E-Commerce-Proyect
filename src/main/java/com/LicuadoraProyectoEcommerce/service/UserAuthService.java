@@ -11,6 +11,7 @@ import com.LicuadoraProyectoEcommerce.model.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 public interface UserAuthService {
     UserDto registerUser(UserCreateDto userDto);
@@ -22,4 +23,6 @@ public interface UserAuthService {
     void isTheUserCreatorOfProduct(User user, HttpServletRequest request, BaseProduct product);
     User getUserLoged(HttpServletRequest request);
     User findUserByEmail(String email);
+
+    Map<String, String> deleteManagerOrSellerByIdUser(Long id);
 }

@@ -13,7 +13,7 @@ public class ManagerMapper {
     @Autowired
     private BaseProductMapper productMapper;
     public ManagerDto getDtoFromEntity(Manager manager){
-        return new ManagerDto(manager.getUser().getName(), productMapper.getListDtoFromListEntity(manager.getBaseProductList()));
+        return new ManagerDto(manager.getUser().getName(), manager.getUser().getEmail(), productMapper.getListDtoFromListEntity(manager.getBaseProductList()));
     }
     public List<ManagerDto> listDtoFromListEntities(List<Manager> managerList){
         return managerList.stream().map(this::getDtoFromEntity).collect(Collectors.toList());

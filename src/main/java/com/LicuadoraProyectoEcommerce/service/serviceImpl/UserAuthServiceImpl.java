@@ -13,6 +13,8 @@ import com.LicuadoraProyectoEcommerce.model.*;
 import com.LicuadoraProyectoEcommerce.repository.ManagerRepository;
 import com.LicuadoraProyectoEcommerce.repository.SellerRepository;
 import com.LicuadoraProyectoEcommerce.repository.UserRepository;
+import com.LicuadoraProyectoEcommerce.service.ManagerService;
+import com.LicuadoraProyectoEcommerce.service.SellerService;
 import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -21,7 +23,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -55,6 +56,10 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     private ManagerRepository managerRepository;
     @Autowired
     private SellerRepository sellerRepository;
+    @Autowired
+    private SellerService sellerService;
+    @Autowired
+    private ManagerService managerService;
     public User findUserEntityById(Long id) {
         return userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }
@@ -133,6 +138,9 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     public User findUserByEmail(String email) {
         return Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(() -> new NotFoundException(messageHandler.message("not.found", email)));
     }
+
+
+
     @Override
     public User findUserLogedByEmail(HttpServletRequest request) {
         String email = emailUserLoged(request);
@@ -160,12 +168,30 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     @Override
     public MessageInfo updateUserRol(Long idUser, String roleName, HttpServletRequest request) {
         User user = findUserEntityById(idUser);
+        if(user.getRole()!= null) {if( roleName.equals(user.getRole().name())) throw new BadRequestException(messageHandler.message("same.role", roleName));}
         Try.of(() -> {user.setRole(Role.valueOf(roleName)); return userRepository.save(user);
         }).onFailure(e -> {throw new NotFoundException(messageHandler.message("not.found.rol", roleName));});
-        if(managerRepository.findByUser(user) != null) managerRepository.delete(managerRepository.findByUser(user));
-        if(sellerRepository.findByUser(user) != null) sellerRepository.delete(sellerRepository.findByUser(user));
+        Manager manager = managerRepository.findByUser(user);
+        Seller seller = sellerRepository.findByUser(user);
+        if(manager != null) managerRepository.delete(manager);
+        if(seller != null) sellerRepository.delete(seller);
         if(user.getRole()== Role.MANAGER) managerRepository.save(new Manager(null, user, null));
         if(user.getRole()== Role.SELLER) sellerRepository.save(new Seller(null, user));
         return new MessageInfo(messageHandler.message("update.success", "to role: " + roleName), 200, request.getRequestURL().toString());
     }
+
+    @Override
+    public Map<String, String> deleteManagerOrSellerByIdUser(Long id) {
+        User user = findUserEntityById(id);
+        if(user.getRole()== null)  throw new BadRequestException(messageHandler.message("havent.role", null));
+        user.setRole(null);
+        userRepository.save(user);
+        Manager manager = managerRepository.findByUser(user);
+        Seller seller = sellerRepository.findByUser(user);
+        if(manager != null) managerRepository.delete(manager);
+        if(seller != null) sellerRepository.delete(seller);
+        return Map.of("Message", messageHandler.message("delete.success.entityasociate", String.valueOf(id)));
+    }
+
+
 }

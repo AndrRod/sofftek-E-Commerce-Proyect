@@ -5,17 +5,21 @@ import com.LicuadoraProyectoEcommerce.dto.ManagerDto;
 import com.LicuadoraProyectoEcommerce.dto.mapper.ManagerMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.Manager;
-import com.LicuadoraProyectoEcommerce.model.User;
 import com.LicuadoraProyectoEcommerce.repository.ManagerRepository;
 import com.LicuadoraProyectoEcommerce.service.ManagerService;
 import com.LicuadoraProyectoEcommerce.service.UserAuthService;
-import com.LicuadoraProyectoEcommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
+
 @Service
 public class ManagerServiceImpl implements ManagerService{
+    private static final int SIZE_TEN = 10;
     @Autowired
     private ManagerRepository managerRepository;
     @Autowired
@@ -28,11 +32,6 @@ public class ManagerServiceImpl implements ManagerService{
 
     @Autowired
     private ManagerMapper managerMapper;
-    @Override
-    public ManagerDto createEntity(String email) {
-        User user = userAuthService.findUserByEmail(email);
-        return managerMapper.getDtoFromEntity(managerRepository.save(new Manager(null, user, null)));
-    }
 
     @Override
     public ManagerDto getById(Long id) {
@@ -40,8 +39,15 @@ public class ManagerServiceImpl implements ManagerService{
     }
 
     @Override
-    public void deleteById(Long id) {
+    public Map<String, String> deleteById(Long id) {
         managerRepository.delete(findEntityById(id));
+        return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
+    }
+
+    @Override
+    public List<ManagerDto> getListEntityPage(Integer page) {
+        List<Manager> managerList = managerRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent();
+        return managerMapper.listDtoFromListEntities(managerList);
     }
     public Manager findEntityById(Long id){
         return managerRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));

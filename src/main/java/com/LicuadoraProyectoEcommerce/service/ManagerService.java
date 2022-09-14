@@ -1,12 +1,12 @@
 package com.LicuadoraProyectoEcommerce.service;
 
 import com.LicuadoraProyectoEcommerce.dto.ManagerDto;
-import com.LicuadoraProyectoEcommerce.model.Manager;
-import com.LicuadoraProyectoEcommerce.model.User;
 
+import java.util.List;
+import java.util.Map;
 
 public interface ManagerService {
-    ManagerDto createEntity(String email);
     ManagerDto  getById(Long id);
-    void deleteById(Long id);
+    Map<String, String> deleteById(Long id);
+    List<ManagerDto> getListEntityPage(Integer page);
 }

@@ -15,7 +15,10 @@ public class Store {
     private Long id;
     private String name;
     private String description;
-//    private List<String> paymentMethods;
+    @ElementCollection
+    @CollectionTable(name = "payment_methods", joinColumns = @JoinColumn(name = "store_id"))
+    @Column(name = "payment_method_name")
+    private List<String> paymentMethods;
     @OneToOne
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private Seller seller;
@@ -23,8 +26,8 @@ public class Store {
     private List<SellerProduct> sellerProducts;
     public Store(){
         this.sellerProducts = new ArrayList<>();
-//        this.paymentMethods = new ArrayList<>();
+        this.paymentMethods = new ArrayList<>();
     }
-//    private void addNewsPaymentMethods(String ... newPayMethods){
-//        Collections.addAll(this.paymentMethods, newPayMethods);}
+    private void addNewsPaymentMethods(String ... newPayMethods){
+        Collections.addAll(this.paymentMethods, newPayMethods);}
 }
