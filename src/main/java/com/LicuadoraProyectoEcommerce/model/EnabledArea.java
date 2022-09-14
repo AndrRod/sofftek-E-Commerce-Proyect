@@ -12,11 +12,12 @@ public class EnabledArea {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany
-    private List<BaseProduct> productList;
+//    @ManyToMany(mappedBy = "enabledAreaList")
+//    private List<BaseProduct> productList;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CustomizationAllowed> customizationAlloweds;
     public EnabledArea(){
-        this.productList = new ArrayList<>();
+
+//        this.productList = new ArrayList<>();
     }
 }

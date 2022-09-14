@@ -22,7 +22,7 @@ public class UserMapper {
     public List<UserDto> getListDtoFromListEntity(List<User> userList){return userList.stream().map(this::getDtoFromEntity).collect(Collectors.toList());}
 
     public User getEntityCreateFromDto(UserCreateDto userCreateDto){
-        return new User(null, userCreateDto.getName(), userCreateDto.getEmail(), passwordEncoder.encode(userCreateDto.getPassword()), Role.SELLER); //TODO
+        return new User(null, userCreateDto.getName(), userCreateDto.getEmail(), passwordEncoder.encode(userCreateDto.getPassword()), null); //TODO
     }
     public User getEntityUpdateFromDto(User user, UserCreateDto userDto){
         Stream.of(userDto).forEach((dto)-> {

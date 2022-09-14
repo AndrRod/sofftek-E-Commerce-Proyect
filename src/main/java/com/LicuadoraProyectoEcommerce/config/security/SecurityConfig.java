@@ -35,7 +35,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.cors();
-        http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority("ROLE_SELLER");
+            http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority("ROLE_SELLER");
         http.authorizeRequests().antMatchers("/auth/**").permitAll().
                 anyRequest().permitAll();
         http.headers().frameOptions().sameOrigin();

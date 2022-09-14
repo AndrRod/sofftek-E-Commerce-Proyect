@@ -9,9 +9,9 @@ import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
-import com.LicuadoraProyectoEcommerce.model.BaseProduct;
-import com.LicuadoraProyectoEcommerce.model.Role;
-import com.LicuadoraProyectoEcommerce.model.User;
+import com.LicuadoraProyectoEcommerce.model.*;
+import com.LicuadoraProyectoEcommerce.repository.ManagerRepository;
+import com.LicuadoraProyectoEcommerce.repository.SellerRepository;
 import com.LicuadoraProyectoEcommerce.repository.UserRepository;
 import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import com.auth0.jwt.JWT;
@@ -51,6 +51,10 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     private MessageHandler messageHandler;
     @Autowired
     private SecurityConfig securityConfig;
+    @Autowired
+    private ManagerRepository managerRepository;
+    @Autowired
+    private SellerRepository sellerRepository;
     public User findUserEntityById(Long id) {
         return userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }
@@ -158,8 +162,10 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         User user = findUserEntityById(idUser);
         Try.of(() -> {user.setRole(Role.valueOf(roleName)); return userRepository.save(user);
         }).onFailure(e -> {throw new NotFoundException(messageHandler.message("not.found.rol", roleName));});
-//        if(user.getRole()== Role.MANAGER)
-//        if(user.getRole()== Role.SELLER)
-        return new MessageInfo(messageHandler.message("update.success", "to role: " + roleName), HttpStatus.OK.value(), request.getRequestURL().toString());
+        if(managerRepository.findByUser(user) != null) managerRepository.delete(managerRepository.findByUser(user));
+        if(sellerRepository.findByUser(user) != null) sellerRepository.delete(sellerRepository.findByUser(user));
+        if(user.getRole()== Role.MANAGER) managerRepository.save(new Manager(null, user, null));
+        if(user.getRole()== Role.SELLER) sellerRepository.save(new Seller(null, user));
+        return new MessageInfo(messageHandler.message("update.success", "to role: " + roleName), 200, request.getRequestURL().toString());
     }
 }

@@ -15,7 +15,7 @@ public class SellerProduct {
     private Long id;
     private Double finalPrice;
     @ManyToOne
-    @JoinColumn(name = "baseProduct_id", referencedColumnName = "id")
+    @JoinColumn(name = "base_product_id", referencedColumnName = "id")
     private BaseProduct baseProduct;
     @ManyToOne
     @JoinColumn(name = "seller_id", referencedColumnName = "id")

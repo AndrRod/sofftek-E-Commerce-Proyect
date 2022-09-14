@@ -20,6 +20,7 @@ public class BaseProduct {
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Manager manager;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "enable_area_id")
     private List<EnabledArea> enabledAreaList;
     public BaseProduct(){
         this.enabledAreaList = new ArrayList<>();
