@@ -56,10 +56,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     private ManagerRepository managerRepository;
     @Autowired
     private SellerRepository sellerRepository;
-    @Autowired
-    private SellerService sellerService;
-    @Autowired
-    private ManagerService managerService;
+
     public User findUserEntityById(Long id) {
         return userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }
