@@ -21,4 +21,5 @@ public interface UserAuthService {
     MessageInfo updateUserRol(Long idUser, String roleName, HttpServletRequest request);
     void isTheUserCreatorOfProduct(User user, HttpServletRequest request, BaseProduct product);
     User getUserLoged(HttpServletRequest request);
+    User findUserByEmail(String email);
 }

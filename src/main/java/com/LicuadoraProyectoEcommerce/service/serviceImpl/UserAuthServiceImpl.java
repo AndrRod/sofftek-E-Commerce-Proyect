@@ -125,6 +125,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         DecodedJWT decodedJWT = verifier.verify(token);
         return decodedJWT.getSubject();
     }
+    @Override
     public User findUserByEmail(String email) {
         return Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(() -> new NotFoundException(messageHandler.message("not.found", email)));
     }
@@ -133,13 +134,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         String email = emailUserLoged(request);
         return findUserByEmail(email);
     }
-    @Override
-    public MessageInfo updateUserRol(Long idUser, String roleName, HttpServletRequest request) {
-        User user = findUserEntityById(idUser);
-        Try.of(() -> {user.setRole(Role.valueOf(roleName)); return userRepository.save(user);
-        }).onFailure(e -> {throw new NotFoundException(messageHandler.message("not.found.rol", roleName));});
-        return new MessageInfo(messageHandler.message("update.success", "to role: " + roleName), HttpStatus.OK.value(), request.getRequestURL().toString());
-    }
+
 
     @Override
     public void isTheUserCreatorOfProduct(User user, HttpServletRequest request, BaseProduct product) {
@@ -156,5 +151,15 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(token);
         return findUserByEmail(decodedJWT.getSubject());
+    }
+
+    @Override
+    public MessageInfo updateUserRol(Long idUser, String roleName, HttpServletRequest request) {
+        User user = findUserEntityById(idUser);
+        Try.of(() -> {user.setRole(Role.valueOf(roleName)); return userRepository.save(user);
+        }).onFailure(e -> {throw new NotFoundException(messageHandler.message("not.found.rol", roleName));});
+//        if(user.getRole()== Role.MANAGER)
+//        if(user.getRole()== Role.SELLER)
+        return new MessageInfo(messageHandler.message("update.success", "to role: " + roleName), HttpStatus.OK.value(), request.getRequestURL().toString());
     }
 }

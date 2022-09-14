@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data @Entity
-@AllArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

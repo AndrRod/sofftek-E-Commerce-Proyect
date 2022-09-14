@@ -1,6 +1,7 @@
 package com.LicuadoraProyectoEcommerce.controller;
 
 import com.LicuadoraProyectoEcommerce.dto.UserCreateDto;
+import com.LicuadoraProyectoEcommerce.dto.UserDto;
 import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.form.RoleNameForm;
 import com.LicuadoraProyectoEcommerce.form.UserLoginForm;
@@ -23,7 +24,7 @@ public class UserAuthController {
     private UserAuthService userAuthService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserCreateDto> registerUser(@RequestBody @Valid UserCreateDto userDto){
+    public ResponseEntity<UserDto> registerUser(@RequestBody @Valid UserCreateDto userDto){
         return ResponseEntity.status(201).body(userAuthService.registerUser(userDto));
     }
 
