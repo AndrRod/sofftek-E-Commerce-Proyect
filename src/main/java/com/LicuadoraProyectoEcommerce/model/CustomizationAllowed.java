@@ -15,10 +15,9 @@ public class CustomizationAllowed {
     private String type;
     private String name;
     private Double price;
-//    @ManyToMany
-//    private List<EnabledArea> enabledAreas;
+    @ManyToMany(mappedBy = "customizationsAllowed")
+    private List<EnabledArea> enabledAreas;
     public CustomizationAllowed(){
-
-//        this.enabledAreas= new ArrayList<>();
+        this.enabledAreas= new ArrayList<>();
     }
 }

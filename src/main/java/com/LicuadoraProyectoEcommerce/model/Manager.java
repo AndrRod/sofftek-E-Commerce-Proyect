@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Data @Entity
@@ -18,8 +19,8 @@ public class Manager{
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "manager")
-    private List<BaseProduct> baseProductList;
+    private List<BaseProduct> baseProducts;
     public Manager(){
-        this.baseProductList = new ArrayList<>();
+        this.baseProducts = new ArrayList<>();
     }
 }

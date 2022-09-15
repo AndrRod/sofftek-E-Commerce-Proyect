@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -20,10 +21,13 @@ public class BaseProduct {
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Manager manager;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "enable_area_id")
-    private List<EnabledArea> enabledAreaList;
+    @JoinTable(
+            name = "baseProduct_enableArea",
+            joinColumns = @JoinColumn(name = "baseProduct_id"),
+            inverseJoinColumns = @JoinColumn(name = "enableArea_id"))
+    private List<EnabledArea> enabledAreas;
     public BaseProduct(){
-        this.enabledAreaList = new ArrayList<>();
+        this.enabledAreas = new ArrayList<>();
     }
 
 }

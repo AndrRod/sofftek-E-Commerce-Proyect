@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 
 @Data @Entity
 @AllArgsConstructor @NoArgsConstructor
@@ -14,4 +16,7 @@ public class Seller {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "seller")
+    private List<SellerProduct> sellerProducts;
 }

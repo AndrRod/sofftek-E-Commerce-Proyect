@@ -23,6 +23,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -50,13 +56,13 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     private UserMapper userMapper;
     @Autowired
     private MessageHandler messageHandler;
-    @Autowired
-    private SecurityConfig securityConfig;
+
     @Autowired
     private ManagerRepository managerRepository;
     @Autowired
     private SellerRepository sellerRepository;
-
+    @Autowired
+    private SecurityConfig securityConfig;
     public User findUserEntityById(Long id) {
         return userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }
@@ -133,7 +139,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     }
     @Override
     public User findUserByEmail(String email) {
-        return Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(() -> new NotFoundException(messageHandler.message("not.found", email)));
+        return Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(() -> new NotFoundException(messageHandler.message("not.found.email", email)));
     }
 
 
@@ -173,7 +179,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         if(manager != null) managerRepository.delete(manager);
         if(seller != null) sellerRepository.delete(seller);
         if(user.getRole()== Role.MANAGER) managerRepository.save(new Manager(null, user, null));
-        if(user.getRole()== Role.SELLER) sellerRepository.save(new Seller(null, user));
+        if(user.getRole()== Role.SELLER) sellerRepository.save(new Seller(null, user, null));
         return new MessageInfo(messageHandler.message("update.success", "to role: " + roleName), 200, request.getRequestURL().toString());
     }
 
@@ -181,7 +187,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     public Map<String, String> deleteManagerOrSellerByIdUser(Long id) {
         User user = findUserEntityById(id);
         if(user.getRole()== null)  throw new BadRequestException(messageHandler.message("havent.role", null));
-        user.setRole(null);
+        user.setRole(Role.NONE);
         userRepository.save(user);
         Manager manager = managerRepository.findByUser(user);
         Seller seller = sellerRepository.findByUser(user);

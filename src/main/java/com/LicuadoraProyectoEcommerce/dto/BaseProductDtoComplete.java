@@ -2,8 +2,12 @@ package com.LicuadoraProyectoEcommerce.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data @AllArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 public class BaseProductDtoComplete {
     private String name;
     private Double price;

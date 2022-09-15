@@ -12,12 +12,17 @@ public class EnabledArea {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-//    @ManyToMany(mappedBy = "enabledAreaList")
-//    private List<BaseProduct> productList;
+    @ManyToMany(mappedBy = "enabledAreas")
+    private List<BaseProduct> baseProducts;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CustomizationAllowed> customizationAlloweds;
+    @JoinTable(
+            name = "enabledArea_customizationAllowed",
+            joinColumns = @JoinColumn(name = "enableArea_id"),
+            inverseJoinColumns = @JoinColumn(name = "customizationAllowed_id"))
+    private List<CustomizationAllowed> customizationsAllowed;
     public EnabledArea(){
 
-//        this.productList = new ArrayList<>();
+        this.baseProducts = new ArrayList<>();
     }
 }

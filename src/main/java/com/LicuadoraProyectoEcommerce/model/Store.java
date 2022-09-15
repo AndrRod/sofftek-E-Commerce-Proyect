@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Data @Entity @AllArgsConstructor
 public class Store {
@@ -18,7 +16,7 @@ public class Store {
     @ElementCollection
     @CollectionTable(name = "payment_methods", joinColumns = @JoinColumn(name = "store_id"))
     @Column(name = "payment_method_name")
-    private List<String> paymentMethods;
+    private Set<String> paymentMethods;
     @OneToOne
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private Seller seller;
@@ -26,7 +24,7 @@ public class Store {
     private List<SellerProduct> sellerProducts;
     public Store(){
         this.sellerProducts = new ArrayList<>();
-        this.paymentMethods = new ArrayList<>();
+        this.paymentMethods = new HashSet<>();
     }
     private void addNewsPaymentMethods(String ... newPayMethods){
         Collections.addAll(this.paymentMethods, newPayMethods);}

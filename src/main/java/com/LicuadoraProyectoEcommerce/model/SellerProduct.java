@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,4 +25,10 @@ public class SellerProduct {
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "sellerProduct_area",
+            joinColumns = @JoinColumn(name = "seller_id"),
+            inverseJoinColumns = @JoinColumn(name = "area_id"))
+    private List<Area> areas;
 }

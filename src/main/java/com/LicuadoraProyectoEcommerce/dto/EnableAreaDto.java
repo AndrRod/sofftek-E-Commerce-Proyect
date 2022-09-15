@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+
+@Getter @Setter
 @AllArgsConstructor
-public class SellerDto {
+public class EnableAreaDto {
     private String name;
-    private String email;
 }
