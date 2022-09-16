@@ -10,5 +10,4 @@ import lombok.Setter;
 public class CustomizationAllowedDto {
     private String type;
     private String name;
-    private Double price;
 }

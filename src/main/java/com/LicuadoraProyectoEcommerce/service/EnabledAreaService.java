@@ -7,8 +7,8 @@ import java.util.Map;
 
 public interface EnabledAreaService {
     EnableAreaDto createEntity(EnableAreaDto enableAreaDto);
-    EnableAreaDto findEntityById(Long id);
+    EnableAreaDto findById(Long id);
     Map<String, String> deleteEntityById(Long id);
-    List<EnableAreaDto> findEntityListPagination(Integer page);
+    List<EnableAreaDto> findDtoListPagination(Integer page);
     EnableAreaDto updateEntity(Long id, EnableAreaDto enableAreaDto);
 }

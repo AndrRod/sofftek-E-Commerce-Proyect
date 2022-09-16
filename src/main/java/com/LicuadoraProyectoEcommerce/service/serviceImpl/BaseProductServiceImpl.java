@@ -37,7 +37,7 @@ public class BaseProductServiceImpl implements BaseProductService {
 
     @Override
     public List<BaseProductDtoComplete> getBaseProductListPage(Integer page) {
-        return baseProductMapper.getListDtoFromListEntity(baseProductRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent());
+        return baseProductMapper.getListDtoCompleteFromListEntity(baseProductRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent());
     }
 
     @Override

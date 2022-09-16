@@ -7,8 +7,8 @@ import java.util.Map;
 
 public interface CustomizationAllowedService {
     CustomizationAllowedDto createEntity(CustomizationAllowedDto customizationAllowedDto);
-    CustomizationAllowedDto findEntityById(Long id);
+    CustomizationAllowedDto findDtoById(Long id);
     Map<String, String> deleteEntityById(Long id);
-    List<CustomizationAllowedDto> findEntityListPagination(Integer page);
+    List<CustomizationAllowedDto> findDtoListPagination(Integer page);
     CustomizationAllowedDto updateEntity(Long id, CustomizationAllowedDto customizationAllowedDto);
 }

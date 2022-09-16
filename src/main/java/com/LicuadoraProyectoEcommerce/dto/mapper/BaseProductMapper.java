@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public class BaseProductMapper {
 
     public BaseProductDtoComplete getDtoFromEntity(BaseProduct baseProduct){return new BaseProductDtoComplete(baseProduct.getName(), baseProduct.getPrice(), baseProduct.getDescription(), baseProduct.getDaysToManufacture(), baseProduct.getManager().getUser().getName());}
-    public List<BaseProductDtoComplete> getListDtoFromListEntity(List<BaseProduct> baseProducts){return baseProducts.stream().map(this::getDtoFromEntity).collect(Collectors.toList());}
+    public List<BaseProductDtoComplete> getListDtoCompleteFromListEntity(List<BaseProduct> baseProducts){return baseProducts.stream().map(this::getDtoFromEntity).collect(Collectors.toList());}
 
     public BaseProduct getEntityCreateFromDto(BaseProductDto baseProductDto){
         return new BaseProduct(null, baseProductDto.getName(), baseProductDto.getPrice(), baseProductDto.getDescription(), baseProductDto.getDaysToManufacture(), null, new ArrayList<>()); //TODO

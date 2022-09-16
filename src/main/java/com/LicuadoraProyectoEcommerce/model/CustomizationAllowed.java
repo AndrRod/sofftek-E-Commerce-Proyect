@@ -14,7 +14,6 @@ public class CustomizationAllowed {
     private Long id;
     private String type;
     private String name;
-    private Double price;
     @ManyToMany(mappedBy = "customizationsAllowed")
     private List<EnabledArea> enabledAreas;
     public CustomizationAllowed(){

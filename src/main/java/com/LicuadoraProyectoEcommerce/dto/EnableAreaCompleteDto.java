@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class EnableAreaCompleteDto {
     private String name;
-    private List<BaseProductDto> productList;
+    private List<BaseProductDtoComplete> productList;
     private List<CustomizationAllowedDto> customizationsAllowed;
 }

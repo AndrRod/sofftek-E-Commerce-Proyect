@@ -13,6 +13,5 @@ import java.util.List;
 public class CustomizationAllowedCompleteDto {
     private String type;
     private String name;
-    private Double price;
     private List<EnableAreaDto> enabledAreas;
 }
