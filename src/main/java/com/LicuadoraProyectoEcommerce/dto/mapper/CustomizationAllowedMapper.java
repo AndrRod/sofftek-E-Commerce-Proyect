@@ -2,10 +2,12 @@ package com.LicuadoraProyectoEcommerce.dto.mapper;
 
 import com.LicuadoraProyectoEcommerce.dto.CustomizationAllowedDto;
 import com.LicuadoraProyectoEcommerce.model.CustomizationAllowed;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class CustomizationAllowedMapper {
     public CustomizationAllowedDto getDtoFromEntity(CustomizationAllowed customizationAllowed){
         return new CustomizationAllowedDto(customizationAllowed.getType(), customizationAllowed.getName());
