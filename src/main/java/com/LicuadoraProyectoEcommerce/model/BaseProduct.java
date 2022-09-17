@@ -30,4 +30,10 @@ public class BaseProduct {
         this.enabledAreas = new ArrayList<>();
     }
 
+    public void addAreaToBaseProduct(EnabledArea enabledArea) {
+        enabledAreas.add(enabledArea);
+    }
+    public void removeAreaToBaseProduct(EnabledArea enabledArea) {
+        enabledAreas.remove(enabledArea);
+    }
 }

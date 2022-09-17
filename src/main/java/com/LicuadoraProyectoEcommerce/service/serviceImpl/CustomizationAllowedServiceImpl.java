@@ -9,10 +9,12 @@ import com.LicuadoraProyectoEcommerce.repository.CustomizationAllowedRepository;
 import com.LicuadoraProyectoEcommerce.service.CustomizationAllowedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class CustomizationAllowedServiceImpl implements CustomizationAllowedService {
     private static final int SIZE_TEN = 10;
     @Autowired
@@ -52,5 +54,10 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     public CustomizationAllowedDto updateEntity(Long id, CustomizationAllowedDto customizationAllowedDto) {
         CustomizationAllowed entity = mapper.updateEntityFromDto(findEntityById(id), customizationAllowedDto);
         return mapper.getDtoFromEntity(entity);
+    }
+
+    @Override
+    public CustomizationAllowed findByTypeAndName(String type) {
+        return customizationAllowedRepository.findByType(type).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found.name", type)));
     }
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UserCreateDto {
+    private Long id;
     private String name;
     private String email;
     private String password;

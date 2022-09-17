@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.dto.mapper;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDto;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDtoComplete;
 import com.LicuadoraProyectoEcommerce.model.BaseProduct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,8 +13,9 @@ import java.util.stream.Stream;
 
 @Component
 public class BaseProductMapper {
-
-    public BaseProductDtoComplete getDtoFromEntity(BaseProduct baseProduct){return new BaseProductDtoComplete(baseProduct.getName(), baseProduct.getPrice(), baseProduct.getDescription(), baseProduct.getDaysToManufacture(), baseProduct.getManager().getUser().getName());}
+    @Autowired
+    private EnableAreaMapper enableAreaMapper;
+    public BaseProductDtoComplete getDtoFromEntity(BaseProduct baseProduct){return new BaseProductDtoComplete(baseProduct.getId(), baseProduct.getName(), baseProduct.getPrice(), baseProduct.getDescription(), baseProduct.getDaysToManufacture(), baseProduct.getManager().getUser().getName(), enableAreaMapper.getListDtoFromListEntity(baseProduct.getEnabledAreas()));}
     public List<BaseProductDtoComplete> getListDtoCompleteFromListEntity(List<BaseProduct> baseProducts){return baseProducts.stream().map(this::getDtoFromEntity).collect(Collectors.toList());}
 
     public BaseProduct getEntityCreateFromDto(BaseProductDto baseProductDto){

@@ -1,9 +1,12 @@
 package com.LicuadoraProyectoEcommerce.service.serviceImpl;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
-import com.LicuadoraProyectoEcommerce.dto.EnableAreaDto;
+import com.LicuadoraProyectoEcommerce.dto.EnabledAreaCompleteDto;
+import com.LicuadoraProyectoEcommerce.dto.EnabledAreaDto;
 import com.LicuadoraProyectoEcommerce.dto.mapper.EnableAreaMapper;
+import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
+import com.LicuadoraProyectoEcommerce.model.CustomizationAllowed;
 import com.LicuadoraProyectoEcommerce.model.EnabledArea;
 import com.LicuadoraProyectoEcommerce.repository.EnableAreaRepository;
 import com.LicuadoraProyectoEcommerce.service.EnabledAreaService;
@@ -23,18 +26,18 @@ public class EnabledAreaServiceImpl implements EnabledAreaService {
     private EnableAreaMapper enableAreaMapper;
     @Autowired
     private MessageHandler messageHandler;
-
+    @Override
     public EnabledArea findEntityById(Long id){
         return enableAreaRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }
     @Override
-    public EnableAreaDto createEntity(EnableAreaDto enableAreaDto) {
-        EnabledArea enabledArea = enableAreaRepository.save(enableAreaMapper.createEntityFromDto(enableAreaDto));
-        return enableAreaMapper.getDtoFromEntity(enabledArea);
+    public EnabledAreaDto createEntity(EnabledAreaDto enabledAreaDto) {
+        EnabledArea area = enableAreaMapper.createEntityFromDto(enabledAreaDto);
+        return enableAreaMapper.getDtoFromEntity(enableAreaRepository.save(area));
     }
 
     @Override
-    public EnableAreaDto findById(Long id) {
+    public EnabledAreaDto findById(Long id) {
         return enableAreaMapper.getDtoFromEntity(findEntityById(id));
     }
 
@@ -45,14 +48,37 @@ public class EnabledAreaServiceImpl implements EnabledAreaService {
     }
 
     @Override
-    public List<EnableAreaDto> findDtoListPagination(Integer page) {
+    public List<EnabledAreaCompleteDto> findDtoListPagination(Integer page) {
         List<EnabledArea> enabledAreas = enableAreaRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent();
-        return enableAreaMapper.getListDtoFromListEntity(enabledAreas);
+        return enableAreaMapper.getListCompleteDtoFromListEntity(enabledAreas);
     }
 
     @Override
-    public EnableAreaDto updateEntity(Long id, EnableAreaDto enableAreaDto) {
+    public EnabledAreaDto updateEntity(Long id, EnabledAreaDto enableAreaDto) {
         EnabledArea enabledArea = enableAreaMapper.updateEntityFrom(findEntityById(id), enableAreaDto);
         return enableAreaMapper.getDtoFromEntity(enableAreaRepository.save(enabledArea));
+    }
+
+    @Override
+    public EnabledArea findByName(String name) {
+        return enableAreaRepository.findByName(name).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found.name", name)));
+    }
+
+    @Override
+    public EnabledAreaCompleteDto addCustomizationAllowedToEntity(Long id, CustomizationAllowed customizationAllowed) {
+        EnabledArea enabledArea = findEntityById(id);
+        if(enabledArea.getCustomizationsAllowed().contains(customizationAllowed)) throw new BadRequestException(messageHandler.message("entity.exists", customizationAllowed.getType()));
+        enabledArea.addCustomizationAllowedToEnabledArea(customizationAllowed);
+        enableAreaRepository.save(enabledArea);
+        return enableAreaMapper.getCompleteDtoFromEntity(enabledArea);
+    }
+
+    @Override
+    public EnabledAreaCompleteDto removeCustomizationAllowedToEntity(Long id, CustomizationAllowed customizationAllowed) {
+        EnabledArea enabledArea = findEntityById(id);
+        if(!enabledArea.getCustomizationsAllowed().contains(customizationAllowed)) throw new BadRequestException(messageHandler.message("not.entity.exists", customizationAllowed.getType()));
+        enabledArea.removeCustomizationAllowedToEnabledArea(customizationAllowed);
+        enableAreaRepository.save(enabledArea);
+        return enableAreaMapper.getCompleteDtoFromEntity(enabledArea);
     }
 }

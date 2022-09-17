@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CustomizationAllowedDto {
+    private Long id;
     private String type;
-    private String name;
 }

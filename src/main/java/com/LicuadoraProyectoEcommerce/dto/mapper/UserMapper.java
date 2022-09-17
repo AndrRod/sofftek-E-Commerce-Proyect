@@ -17,8 +17,8 @@ import java.util.stream.Stream;
 public class UserMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;
-    public UserDto getDtoFromEntity(User user){return new UserDto(user.getName(), user.getEmail());}
-    public UserDtoComplete getDtoCompleteFromEntity(User user){return new UserDtoComplete(user.getName(), user.getEmail(), user.getPassword(), user.getRole());}
+    public UserDto getDtoFromEntity(User user){return new UserDto(user.getId(), user.getName(), user.getEmail());}
+    public UserDtoComplete getDtoCompleteFromEntity(User user){return new UserDtoComplete(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRole());}
     public List<UserDto> getListDtoFromListEntity(List<User> userList){return userList.stream().map(this::getDtoFromEntity).collect(Collectors.toList());}
 
     public User getEntityCreateFromDto(UserCreateDto userCreateDto){

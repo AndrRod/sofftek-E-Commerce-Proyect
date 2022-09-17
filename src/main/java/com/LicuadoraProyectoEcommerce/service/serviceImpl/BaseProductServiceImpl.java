@@ -3,17 +3,24 @@ package com.LicuadoraProyectoEcommerce.service.serviceImpl;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDto;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDtoComplete;
+import com.LicuadoraProyectoEcommerce.dto.EnabledAreaDto;
 import com.LicuadoraProyectoEcommerce.dto.mapper.BaseProductMapper;
+import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.BaseProduct;
+import com.LicuadoraProyectoEcommerce.model.EnabledArea;
+import com.LicuadoraProyectoEcommerce.model.Manager;
 import com.LicuadoraProyectoEcommerce.repository.BaseProductRepository;
+import com.LicuadoraProyectoEcommerce.repository.ManagerRepository;
 import com.LicuadoraProyectoEcommerce.service.BaseProductService;
+import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class BaseProductServiceImpl implements BaseProductService {
@@ -24,10 +31,13 @@ public class BaseProductServiceImpl implements BaseProductService {
     private BaseProductMapper baseProductMapper;
     @Autowired
     private MessageHandler messageHandler;
+    @Autowired
+    private ManagerRepository managerRepository;
     @Override
     public BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto) {
-        BaseProduct baseProduct = baseProductRepository.save(baseProductMapper.getEntityCreateFromDto(baseProductDto));
-        return baseProductMapper.getDtoFromEntity(baseProduct);
+        BaseProduct baseProduct = baseProductMapper.getEntityCreateFromDto(baseProductDto);
+        baseProduct.setManager(managerRepository.findById(1L).get()); //TODO
+        return baseProductMapper.getDtoFromEntity(baseProductRepository.save(baseProduct));
     }
 
     @Override
@@ -51,7 +61,25 @@ public class BaseProductServiceImpl implements BaseProductService {
         BaseProduct baseProduct= baseProductRepository.save(baseProductMapper.getEntityUpdateFromDto(findEntityById(id), baseProductDto));
         return baseProductMapper.getDtoFromEntity(baseProduct);
     }
+    @Override
     public BaseProduct findEntityById(Long id){
         return baseProductRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf((id)))));
+    }
+    @Override
+    public BaseProductDtoComplete addEnabledAreaToEntity(Long id, EnabledArea enabledArea) {
+        BaseProduct baseProduct = findEntityById(id);
+        if(baseProduct.getEnabledAreas().contains(enabledArea)) throw new BadRequestException(messageHandler.message("entity.exists", enabledArea.getName()));
+        baseProduct.addAreaToBaseProduct(enabledArea);
+        baseProductRepository.save(baseProduct);
+        return baseProductMapper.getDtoFromEntity(baseProduct);
+    }
+
+    @Override
+    public BaseProductDtoComplete removeEnabledAreaToEntity(Long id, EnabledArea enabledArea) {
+        BaseProduct baseProduct = findEntityById(id);
+        if(!baseProduct.getEnabledAreas().contains(enabledArea)) throw new BadRequestException(messageHandler.message("not.entity.exists", enabledArea.getName()));
+        baseProduct.removeAreaToBaseProduct(enabledArea);
+        baseProductRepository.save(baseProduct);
+        return baseProductMapper.getDtoFromEntity(baseProduct);
     }
 }

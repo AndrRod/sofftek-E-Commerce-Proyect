@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class CustomizationAllowedCompleteDto {
+    private Long id;
     private String type;
-    private String name;
-    private List<EnableAreaDto> enabledAreas;
+    private List<EnabledAreaDto> enabledAreas;
 }

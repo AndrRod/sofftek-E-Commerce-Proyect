@@ -4,9 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
-public class EnableAreaDto {
+public class EnabledAreaCompleteDto {
+    private Long id;
     private String name;
+    private List<CustomizationAllowedDto> customizationsAllowed;
 }

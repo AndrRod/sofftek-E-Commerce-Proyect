@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UserDtoComplete {
+    private Long id;
     private String name;
     private String email;
     private String password;

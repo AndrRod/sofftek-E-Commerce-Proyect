@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class SellerDto {
+    private Long id;
     private String name;
     private String email;
 }
