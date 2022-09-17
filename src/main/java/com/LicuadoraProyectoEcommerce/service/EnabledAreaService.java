@@ -2,8 +2,8 @@ package com.LicuadoraProyectoEcommerce.service;
 
 import com.LicuadoraProyectoEcommerce.dto.EnabledAreaCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.EnabledAreaDto;
-import com.LicuadoraProyectoEcommerce.model.CustomizationAllowed;
-import com.LicuadoraProyectoEcommerce.model.EnabledArea;
+import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
+import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 
 import java.util.List;
 import java.util.Map;

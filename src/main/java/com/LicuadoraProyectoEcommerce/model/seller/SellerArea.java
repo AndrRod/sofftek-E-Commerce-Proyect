@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.model;
+package com.LicuadoraProyectoEcommerce.model.seller;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
-public class Area {
+public class SellerArea {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,5 +23,5 @@ public class Area {
     @JoinTable(name = "area_customization",
     joinColumns = @JoinColumn(name = "area_id"),
     inverseJoinColumns = @JoinColumn(name = "customization_id"))
-    private List<Customization> customizations;
+    private List<SellerCustomization> customizations;
 }

@@ -1,10 +1,9 @@
 package com.LicuadoraProyectoEcommerce.controller;
 
-import com.LicuadoraProyectoEcommerce.dto.BaseProductDtoComplete;
 import com.LicuadoraProyectoEcommerce.dto.CustomizationAllowedDto;
 import com.LicuadoraProyectoEcommerce.dto.EnabledAreaCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.EnabledAreaDto;
-import com.LicuadoraProyectoEcommerce.model.CustomizationAllowed;
+import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import com.LicuadoraProyectoEcommerce.service.BaseProductService;
 import com.LicuadoraProyectoEcommerce.service.CustomizationAllowedService;
 import com.LicuadoraProyectoEcommerce.service.EnabledAreaService;

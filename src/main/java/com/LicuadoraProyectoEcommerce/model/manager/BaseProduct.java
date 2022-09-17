@@ -1,11 +1,10 @@
-package com.LicuadoraProyectoEcommerce.model;
+package com.LicuadoraProyectoEcommerce.model.manager;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -20,7 +19,7 @@ public class BaseProduct {
     @ManyToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Manager manager;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY) //TODO
     @JoinTable(
             name = "baseProduct_enableArea",
             joinColumns = @JoinColumn(name = "baseProduct_id"),

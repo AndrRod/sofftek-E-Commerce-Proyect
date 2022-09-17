@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.model;
+package com.LicuadoraProyectoEcommerce.model.manager;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

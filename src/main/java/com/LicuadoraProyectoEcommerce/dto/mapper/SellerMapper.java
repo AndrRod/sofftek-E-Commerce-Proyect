@@ -1,7 +1,7 @@
 package com.LicuadoraProyectoEcommerce.dto.mapper;
 
 import com.LicuadoraProyectoEcommerce.dto.SellerDto;
-import com.LicuadoraProyectoEcommerce.model.Seller;
+import com.LicuadoraProyectoEcommerce.model.seller.Seller;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

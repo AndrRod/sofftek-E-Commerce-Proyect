@@ -1,6 +1,6 @@
 package com.LicuadoraProyectoEcommerce.repository;
 
-import com.LicuadoraProyectoEcommerce.model.Store;
+import com.LicuadoraProyectoEcommerce.model.seller.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

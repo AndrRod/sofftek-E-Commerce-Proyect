@@ -2,8 +2,7 @@ package com.LicuadoraProyectoEcommerce.controller;
 
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDto;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDtoComplete;
-import com.LicuadoraProyectoEcommerce.dto.EnabledAreaDto;
-import com.LicuadoraProyectoEcommerce.model.EnabledArea;
+import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import com.LicuadoraProyectoEcommerce.service.BaseProductService;
 import com.LicuadoraProyectoEcommerce.service.EnabledAreaService;
 import org.springframework.beans.factory.annotation.Autowired;

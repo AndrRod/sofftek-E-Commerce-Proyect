@@ -1,6 +1,6 @@
-package com.LicuadoraProyectoEcommerce.repository;
+package com.LicuadoraProyectoEcommerce.repository.manager;
 
-import com.LicuadoraProyectoEcommerce.model.EnabledArea;
+import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

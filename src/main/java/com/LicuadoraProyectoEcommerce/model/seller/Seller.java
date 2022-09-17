@@ -1,10 +1,11 @@
-package com.LicuadoraProyectoEcommerce.model;
+package com.LicuadoraProyectoEcommerce.model.seller;
+import com.LicuadoraProyectoEcommerce.model.User;
+import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Data @Entity

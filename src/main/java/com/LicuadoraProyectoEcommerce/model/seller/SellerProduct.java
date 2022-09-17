@@ -1,11 +1,11 @@
-package com.LicuadoraProyectoEcommerce.model;
+package com.LicuadoraProyectoEcommerce.model.seller;
 
 
+import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -30,5 +30,5 @@ public class SellerProduct {
     @JoinTable(name = "sellerProduct_area",
             joinColumns = @JoinColumn(name = "seller_id"),
             inverseJoinColumns = @JoinColumn(name = "area_id"))
-    private List<Area> areas;
+    private List<SellerArea> areas;
 }

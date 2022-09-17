@@ -1,7 +1,7 @@
 package com.LicuadoraProyectoEcommerce.dto.mapper;
 
 import com.LicuadoraProyectoEcommerce.dto.ManagerDto;
-import com.LicuadoraProyectoEcommerce.model.Manager;
+import com.LicuadoraProyectoEcommerce.model.manager.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

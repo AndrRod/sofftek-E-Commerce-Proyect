@@ -1,6 +1,6 @@
-package com.LicuadoraProyectoEcommerce.repository;
+package com.LicuadoraProyectoEcommerce.repository.manager;
 
-import com.LicuadoraProyectoEcommerce.model.CustomizationAllowed;
+import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

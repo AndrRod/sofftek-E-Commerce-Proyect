@@ -2,7 +2,7 @@ package com.LicuadoraProyectoEcommerce.dto.mapper;
  
 import com.LicuadoraProyectoEcommerce.dto.EnabledAreaCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.EnabledAreaDto;
-import com.LicuadoraProyectoEcommerce.model.EnabledArea;
+import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

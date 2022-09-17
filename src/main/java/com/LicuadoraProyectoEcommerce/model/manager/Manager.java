@@ -1,12 +1,12 @@
-package com.LicuadoraProyectoEcommerce.model;
+package com.LicuadoraProyectoEcommerce.model.manager;
 
+import com.LicuadoraProyectoEcommerce.model.User;
+import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Data @Entity

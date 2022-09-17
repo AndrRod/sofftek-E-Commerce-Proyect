@@ -2,7 +2,7 @@ package com.LicuadoraProyectoEcommerce.dto.mapper;
 
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDto;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDtoComplete;
-import com.LicuadoraProyectoEcommerce.model.BaseProduct;
+import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -2,9 +2,8 @@ package com.LicuadoraProyectoEcommerce.service;
 
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDto;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDtoComplete;
-import com.LicuadoraProyectoEcommerce.dto.EnabledAreaDto;
-import com.LicuadoraProyectoEcommerce.model.BaseProduct;
-import com.LicuadoraProyectoEcommerce.model.EnabledArea;
+import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
+import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 
 import java.util.List;
 import java.util.Map;

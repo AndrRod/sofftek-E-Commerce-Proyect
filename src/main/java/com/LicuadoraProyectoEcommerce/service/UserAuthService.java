@@ -5,7 +5,7 @@ import com.LicuadoraProyectoEcommerce.dto.UserDto;
 import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
-import com.LicuadoraProyectoEcommerce.model.BaseProduct;
+import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.User;
 
 import javax.servlet.http.HttpServletRequest;
