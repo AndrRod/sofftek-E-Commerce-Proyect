@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -33,4 +34,12 @@ public class SellerProduct {
             joinColumns = @JoinColumn(name = "seller_id"),
             inverseJoinColumns = @JoinColumn(name = "area_id"))
     private List<SellerArea> areas;
+    public SellerProduct(Double basePrice, BaseProduct baseProduct, Seller seller){
+        this.basePrice = basePrice;
+        this.baseProduct=baseProduct;
+        this.seller=seller;
+    }
+    public SellerProduct(){
+        this.areas = new ArrayList<>();
+    }
 }

@@ -1,5 +1,6 @@
 package com.LicuadoraProyectoEcommerce.model.manager;
 
+import com.LicuadoraProyectoEcommerce.model.seller.SellerArea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import javax.persistence.*;
@@ -23,9 +24,17 @@ public class EnabledArea {
             joinColumns = @JoinColumn(name = "enableArea_id"),
             inverseJoinColumns = @JoinColumn(name = "customizationAllowed_id"))
     private List<CustomizationAllowed> customizationsAllowed;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "enabledArea")
+    private List<SellerArea> sellerAreas;
+
+    public EnabledArea(String name){
+        this.name = name;
+    }
     public EnabledArea(){
         this.baseProducts = new ArrayList<>();
         this.customizationsAllowed = new ArrayList<>();
+        this.sellerAreas = new ArrayList<>();
     }
     public void addCustomizationAllowedToEnabledArea(CustomizationAllowed customizationAllowed) {
         customizationsAllowed.add(customizationAllowed);

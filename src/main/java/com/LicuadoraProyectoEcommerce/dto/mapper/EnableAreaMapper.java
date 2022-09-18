@@ -28,7 +28,7 @@ public class EnableAreaMapper {
     }
 
     public EnabledArea createEntityFromDto(EnabledAreaDto enableAreaDto) {
-        return new EnabledArea(null, enableAreaDto.getName(), new ArrayList<>(), new ArrayList<>());
+        return new EnabledArea(enableAreaDto.getName());
     }
 
     public EnabledAreaCompleteDto getCompleteDtoFromEntity(EnabledArea enabledArea){

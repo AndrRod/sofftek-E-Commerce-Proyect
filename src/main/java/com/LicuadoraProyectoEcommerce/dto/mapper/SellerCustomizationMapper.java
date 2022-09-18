@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class SellerCustomizationMapper {
     SellerCustomizationCompleteDto getDtoFromEntity(SellerCustomization customization){
-        return new SellerCustomizationCompleteDto(customization.getId(), customization.getType(), customization.getName());
+        return new SellerCustomizationCompleteDto(customization.getId(), customization.getCustomizationAllowed().getType(), customization.getName());
     }
     List<SellerCustomizationCompleteDto> getDtoListFromEntityList(List<SellerCustomization> customizations){
         return customizations.stream().map(this::getDtoFromEntity).collect(Collectors.toList());

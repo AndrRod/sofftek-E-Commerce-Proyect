@@ -13,7 +13,7 @@ public interface SellerProductService {
     SellerProduct findEntityById(Long id);
     SellerProductCompleteDto findById(Long id);
     List<SellerProductCompleteDto> listDtoPagination(Integer page);
-    SellerProductCompleteDto createEntity(BaseProduct baseProduct, SellerProductDto sellerProductDto);
+    SellerProductCompleteDto createEntity(BaseProduct baseProduct);
     Map<String, String> deleteById(Long id);
     SellerProductCompleteDto updateEntity(Long id, SellerProductCompleteDto sellerProductDto);
 }

@@ -1,5 +1,6 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
 
+import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,10 +15,14 @@ public class SellerCustomization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "cant be empty or null")
-    private String type;
+//    @NotBlank(message = "cant be empty or null")
+//    private String type;
     @NotBlank(message = "cant be empty or null")
     private String name;
     @ManyToMany(mappedBy = "customizations")
     private List<SellerArea> areas;
+
+    @ManyToOne
+    @JoinColumn(name = "customization_allowed_id")
+    private CustomizationAllowed customizationAllowed;
 }

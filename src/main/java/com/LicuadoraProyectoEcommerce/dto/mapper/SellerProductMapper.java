@@ -27,6 +27,6 @@ public class SellerProductMapper {
         return sellerProducts.stream().map(this::getDtoFromEntity).collect(Collectors.toList());
     }
     public SellerProduct createEntityFromDto(BaseProduct baseProduct, SellerProductDto sellerProductDto){
-        return new SellerProduct(null, null, sellerProductDto.getBasePrice(), baseProduct, repository.findById(2L).get(), null, null); //TODO
+        return new SellerProduct(sellerProductDto.getBasePrice(), baseProduct, repository.findById(2L).get()); //TODO
     }
 }

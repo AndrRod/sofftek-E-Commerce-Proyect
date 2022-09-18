@@ -4,6 +4,7 @@ import com.LicuadoraProyectoEcommerce.dto.CustomizationAllowedDto;
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,6 @@ public class CustomizationAllowedMapper {
     }
 
     public CustomizationAllowed createEntityFromDto(CustomizationAllowedDto customizationAllowedDto) {
-        return new CustomizationAllowed(null, customizationAllowedDto.getType(), null);
+        return new CustomizationAllowed(customizationAllowedDto.getType());
     }
 }

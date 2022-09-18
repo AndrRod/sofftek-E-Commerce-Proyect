@@ -49,9 +49,10 @@ public class SellerProductServiceImpl implements SellerProductService {
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
     @Override
-    public SellerProductCompleteDto createEntity(BaseProduct baseProduct, SellerProductDto sellerProductDto) { //TODO
+    public SellerProductCompleteDto createEntity(BaseProduct baseProduct) { //TODO
 //        SellerProduct sellerProduct = sellerProductMapper.createEntityFromDto(baseProduct, sellerProductDto);
 //        sellerProduct.setAreas(baseProduct.getEnabledAreas());
+//        new SellerProduct(baseProduct.getId(), null, )
         return null;
     }
     @Override
