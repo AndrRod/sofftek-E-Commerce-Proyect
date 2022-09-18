@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.dto.mapper;
+package com.LicuadoraProyectoEcommerce.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,9 +1,11 @@
 package com.LicuadoraProyectoEcommerce.service.serviceImpl;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
+import com.LicuadoraProyectoEcommerce.dto.SellerProductCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.SellerProductDto;
 import com.LicuadoraProyectoEcommerce.dto.mapper.SellerProductMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
+import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerProductRepository;
 import com.LicuadoraProyectoEcommerce.service.SellerProductService;
@@ -29,15 +31,17 @@ public class SellerProductServiceImpl implements SellerProductService {
     }
 
     @Override
-    public SellerProductDto findById(Long id) {
+    public SellerProductCompleteDto findById(Long id) {
         return sellerProductMapper.getDtoFromEntity(findEntityById(id));
     }
 
     @Override
-    public List<SellerProductDto> listDtoPagination(Integer page) {
+    public List<SellerProductCompleteDto> listDtoPagination(Integer page) {
         List<SellerProduct> products = sellerProductRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent();
         return sellerProductMapper.getListDtoFromEntityList(products);
     }
+
+
 
     @Override
     public Map<String, String> deleteById(Long id) {
@@ -45,11 +49,13 @@ public class SellerProductServiceImpl implements SellerProductService {
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
     @Override
-    public SellerProductDto createEntity(SellerProductDto sellerProductDto) {
+    public SellerProductCompleteDto createEntity(BaseProduct baseProduct, SellerProductDto sellerProductDto) { //TODO
+//        SellerProduct sellerProduct = sellerProductMapper.createEntityFromDto(baseProduct, sellerProductDto);
+//        sellerProduct.setAreas(baseProduct.getEnabledAreas());
         return null;
     }
     @Override
-    public SellerProductDto updateEntity(Long id, SellerProductDto sellerProductDto) {
+    public SellerProductCompleteDto updateEntity(Long id, SellerProductCompleteDto sellerProductDto) {
         return null;
     }
 }

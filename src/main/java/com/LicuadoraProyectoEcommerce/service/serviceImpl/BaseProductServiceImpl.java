@@ -11,12 +11,15 @@ import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import com.LicuadoraProyectoEcommerce.repository.manager.BaseProductRepository;
 import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
 import com.LicuadoraProyectoEcommerce.service.BaseProductService;
+import com.LicuadoraProyectoEcommerce.service.EnabledAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.CascadeType;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BaseProductServiceImpl implements BaseProductService {
@@ -65,6 +68,8 @@ public class BaseProductServiceImpl implements BaseProductService {
     public BaseProductDtoComplete addEnabledAreaToEntity(Long id, EnabledArea enabledArea) {
         BaseProduct baseProduct = findEntityById(id);
         if(baseProduct.getEnabledAreas().contains(enabledArea)) throw new BadRequestException(messageHandler.message("entity.exists", enabledArea.getName()));
+        baseProduct.removeAreasToBaseProduct(baseProduct.getEnabledAreas().stream().filter(a->
+                a.getName().equals(enabledArea.getName())).collect(Collectors.toList()));
         baseProduct.addAreaToBaseProduct(enabledArea);
         baseProductRepository.save(baseProduct);
         return baseProductMapper.getDtoFromEntity(baseProduct);

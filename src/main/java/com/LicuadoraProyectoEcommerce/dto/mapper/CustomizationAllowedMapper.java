@@ -16,7 +16,7 @@ public class CustomizationAllowedMapper {
         return customizationAllowedList.stream().map(this::getDtoFromEntity).collect(Collectors.toList());
     }
     public CustomizationAllowed updateEntityFromDto(CustomizationAllowed customizationAllowed, CustomizationAllowedDto customizationAllowedDto){
-        if(customizationAllowedDto.getType()!= null) customizationAllowed.setType(customizationAllowed.getType());
+        if(customizationAllowedDto.getType()!= null) customizationAllowed.setType(customizationAllowedDto.getType());
         return customizationAllowed;
     }
 

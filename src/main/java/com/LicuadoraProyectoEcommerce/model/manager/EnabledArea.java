@@ -17,7 +17,7 @@ public class EnabledArea {
     @ManyToMany(mappedBy = "enabledAreas")
     private List<BaseProduct> baseProducts;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "enabledArea_customizationAllowed",
             joinColumns = @JoinColumn(name = "enableArea_id"),

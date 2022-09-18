@@ -1,6 +1,7 @@
 package com.LicuadoraProyectoEcommerce.dto.mapper;
 
 import com.LicuadoraProyectoEcommerce.dto.SellerCustomizationCompleteDto;
+import com.LicuadoraProyectoEcommerce.dto.SellerCustomizationDto;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import org.springframework.stereotype.Component;
 

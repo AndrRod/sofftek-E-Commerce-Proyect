@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,11 @@ public class CustomizationAllowedController {
         return ResponseEntity.ok(customizationAllowedService.deleteEntityById(Long.valueOf(id)));
     }
     @PostMapping
-    ResponseEntity<CustomizationAllowedDto> createentity(@RequestBody CustomizationAllowedDto customizationAllowedDto){
+    ResponseEntity<CustomizationAllowedDto> createentity(@RequestBody @Valid CustomizationAllowedDto customizationAllowedDto){
         return ResponseEntity.ok(customizationAllowedService.createEntity(customizationAllowedDto));
+    }
+    @PutMapping("/{id}")
+    ResponseEntity<CustomizationAllowedDto> updateteentity(@PathVariable String id, @RequestBody @Valid CustomizationAllowedDto customizationAllowedDto){
+        return ResponseEntity.ok(customizationAllowedService.updateEntity(Long.valueOf(id), customizationAllowedDto));
     }
 }

@@ -5,7 +5,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Entity
 @Data @AllArgsConstructor
@@ -19,7 +21,7 @@ public class BaseProduct {
     @ManyToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Manager manager;
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY) //TODO
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE} , fetch = FetchType.LAZY) //TODO
     @JoinTable(
             name = "baseProduct_enableArea",
             joinColumns = @JoinColumn(name = "baseProduct_id"),
@@ -34,5 +36,9 @@ public class BaseProduct {
     }
     public void removeAreaToBaseProduct(EnabledArea enabledArea) {
         enabledAreas.remove(enabledArea);
+    }
+
+    public void removeAreasToBaseProduct(List<EnabledArea> enabledAreas) {
+        this.enabledAreas.removeAll(enabledAreas);
     }
 }

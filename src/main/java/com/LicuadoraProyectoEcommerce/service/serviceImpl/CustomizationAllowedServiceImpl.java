@@ -6,7 +6,9 @@ import com.LicuadoraProyectoEcommerce.dto.mapper.CustomizationAllowedMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import com.LicuadoraProyectoEcommerce.repository.manager.CustomizationAllowedRepository;
+import com.LicuadoraProyectoEcommerce.repository.manager.EnableAreaRepository;
 import com.LicuadoraProyectoEcommerce.service.CustomizationAllowedService;
+import com.LicuadoraProyectoEcommerce.service.EnabledAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     private MessageHandler messageHandler;
     @Autowired
     private CustomizationAllowedMapper mapper;
+    @Autowired
+    private EnableAreaRepository enableAreaRepository;
 
     private CustomizationAllowed findEntityById(Long id){
         return customizationAllowedRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
@@ -40,7 +44,13 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
 
     @Override
     public Map<String, String> deleteEntityById(Long id) {
-        customizationAllowedRepository.delete(findEntityById(id));
+        CustomizationAllowed entity = findEntityById(id);
+        if(!entity.getEnabledAreas().isEmpty())
+            entity.getEnabledAreas().stream().forEach(e->{
+            e.removeCustomizationAllowedToEnabledArea(entity);
+            enableAreaRepository.save(e);
+        });
+        customizationAllowedRepository.delete(entity);
         return Map.of("message", messageHandler.message("delete.success", String.valueOf(id)));
     }
 
@@ -53,7 +63,7 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     @Override
     public CustomizationAllowedDto updateEntity(Long id, CustomizationAllowedDto customizationAllowedDto) {
         CustomizationAllowed entity = mapper.updateEntityFromDto(findEntityById(id), customizationAllowedDto);
-        return mapper.getDtoFromEntity(entity);
+        return mapper.getDtoFromEntity(customizationAllowedRepository.save(entity));
     }
 
     @Override

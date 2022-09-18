@@ -15,7 +15,9 @@ public class SellerProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Transient
     private Double finalPrice;
+    private Double basePrice;
     @ManyToOne
     @JoinColumn(name = "base_product_id", referencedColumnName = "id")
     private BaseProduct baseProduct;
