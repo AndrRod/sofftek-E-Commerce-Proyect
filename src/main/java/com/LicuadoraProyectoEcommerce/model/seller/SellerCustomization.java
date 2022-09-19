@@ -16,18 +16,16 @@ public class SellerCustomization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    @NotBlank(message = "cant be empty or null")
-//    private String type;
-//    @NotBlank(message = "cant be empty or null")
     private String name;
+    private Double customizationPrice;
     @ManyToMany(mappedBy = "customizations")
     private List<SellerArea> areas;
 
     @ManyToOne
     @JoinColumn(name = "customization_allowed_id")
     private CustomizationAllowed customizationAllowed;
-//    private CustomizationAllowed customizationAllowed;
     public SellerCustomization(){
         this.areas = new ArrayList<>();
+        this.customizationPrice = 0d;
     }
 }

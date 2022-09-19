@@ -1,8 +1,5 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
-
-
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
-import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -48,4 +45,11 @@ public class SellerProduct {
     public void removeAreaToSellerProduct(SellerArea sellerArea) {
         areas.remove(sellerArea);
     }
+    public Double getFinalPrice(){
+        areas.stream().forEach(areas -> {
+           this.finalPrice = this.basePrice + areas.getCustomizations().stream().mapToDouble(SellerCustomization::getCustomizationPrice).sum();
+        });
+        return finalPrice;
+    }
+
 }

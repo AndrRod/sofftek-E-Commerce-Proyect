@@ -7,5 +7,6 @@ import lombok.Setter;
 
 @Getter@Setter @AllArgsConstructor
 public class SellerAreaDto {
+    private Long id;
     private EnabledAreaDto enabledAreas;
 }

@@ -2,9 +2,9 @@ package com.LicuadoraProyectoEcommerce.serviceImpl.sellerServiceImpl;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.SellerCustomizationCompleteDto;
+import com.LicuadoraProyectoEcommerce.dto.SellerCustomizationDto;
 import com.LicuadoraProyectoEcommerce.dto.mapper.SellerCustomizationMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
-import com.LicuadoraProyectoEcommerce.form.SellerCustomizationNameFrom;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerCustomizationRepository;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerCustomizationService;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SellerCustomizationServiceImpl implements SellerCustomizationService {
@@ -23,10 +24,7 @@ public class SellerCustomizationServiceImpl implements SellerCustomizationServic
     private MessageHandler messageHandler;
     @Autowired
     private SellerCustomizationMapper sellerCustomizationMapper;
-    @Override
-    public SellerCustomization createAndUpdateEntity(SellerCustomization sellerCustomization, SellerCustomizationNameFrom NameForm) {
-        return null;
-    }
+
 
     @Override
     public SellerCustomizationCompleteDto findById(Long id) {
@@ -45,7 +43,20 @@ public class SellerCustomizationServiceImpl implements SellerCustomizationServic
     }
 
     @Override
-    public void delete(SellerCustomization sellerCustomization) {
-        sellerCustomizationRepository.delete(sellerCustomization);
+    public SellerCustomizationCompleteDto updateEntity(Long idCustomization, SellerCustomizationDto sellerCustomizationForm) {
+        SellerCustomization sellerCustomization = sellerCustomizationMapper.updateEntityFromDto(findEntityById(idCustomization), sellerCustomizationForm);
+        SellerCustomization customizationSaved =  sellerCustomizationRepository.save(sellerCustomization);
+        return sellerCustomizationMapper.getDtoFromEntity(customizationSaved);
     }
+
+    @Override
+    public Map<String, String> deleteEntityParams(Long idCustomization) {
+        SellerCustomization customization=findEntityById(idCustomization);
+        customization.setCustomizationPrice(0d);
+        customization.setName(null);
+        sellerCustomizationRepository.save(customization);
+        return Map.of("Message", "the name and price params were reestablished");
+    }
+
+
 }

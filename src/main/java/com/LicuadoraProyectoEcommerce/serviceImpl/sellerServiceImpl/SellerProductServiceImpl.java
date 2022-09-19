@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -57,17 +58,19 @@ public class SellerProductServiceImpl implements SellerProductService {
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
     @Override
-    public SellerProductDto createAndUpdateEntity(BaseProduct baseProduct, SellerProductPriceForm sellerProductPriceForm) { //TODO falta agregar areas y personalizaciones
+    public SellerProductDto createAndUpdateEntity(BaseProduct baseProduct, SellerProductPriceForm sellerProductPriceForm) {
         SellerProduct sellerProduct = sellerProductMapper.createEntityFromDto(baseProduct, sellerProductPriceForm);
         SellerArea sellerArea = new SellerArea();
-        SellerCustomization sellerCustomization = new SellerCustomization();
+        List<SellerCustomization> listSellerCustomization = new ArrayList<>();
         baseProduct.getEnabledAreas().stream().forEach(enabledArea -> {
             sellerArea.setEnabledArea(enabledArea);
             enabledArea.getCustomizationsAllowed().stream().forEach(customizationAllowed -> {
+                SellerCustomization sellerCustomization = new SellerCustomization();
                 sellerCustomization.setCustomizationAllowed(customizationAllowed);
-                sellerArea.getCustomizations().add(sellerCustomization);
-
+                SellerCustomization customizationSaved = customizationRepository.save(sellerCustomization);
+                listSellerCustomization.add(customizationSaved);
             });
+            sellerArea.getCustomizations().addAll(listSellerCustomization);
             sellerProduct.addAreaToSellerProduct(sellerArea);
         });
         return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));

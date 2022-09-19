@@ -9,4 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SellerCustomizationDto {
     private String name;
+    private Double customizationPrice;
 }

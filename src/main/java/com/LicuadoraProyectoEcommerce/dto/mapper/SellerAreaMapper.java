@@ -18,7 +18,7 @@ public class SellerAreaMapper {
     private SellerCustomizationMapper sellerCustomizationMapper;
 
     public SellerAreaDto getDtoFromEntity(SellerArea sellerArea){
-        return new SellerAreaDto(enableAreaMapper.getDtoFromEntity(sellerArea.getEnabledArea()));
+        return new SellerAreaDto(sellerArea.getId(), enableAreaMapper.getDtoFromEntity(sellerArea.getEnabledArea()));
         }
     public List<SellerAreaDto> listDtoFromlistEntity(List<SellerArea> areas){
         return areas.stream().map(this::getDtoFromEntity).collect(Collectors.toList());

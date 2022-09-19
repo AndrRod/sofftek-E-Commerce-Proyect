@@ -11,4 +11,5 @@ public class SellerCustomizationCompleteDto {
     private Long id;
     private CustomizationAllowedDto customizationAllowed;
     private String name;
+    private Double customizationPrice;
 }
