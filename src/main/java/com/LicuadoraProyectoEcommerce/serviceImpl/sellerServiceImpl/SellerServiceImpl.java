@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.service.serviceImpl;
+package com.LicuadoraProyectoEcommerce.serviceImpl.sellerServiceImpl;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.SellerDto;
@@ -6,7 +6,7 @@ import com.LicuadoraProyectoEcommerce.dto.mapper.SellerMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.seller.Seller;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerRepository;
-import com.LicuadoraProyectoEcommerce.service.SellerService;
+import com.LicuadoraProyectoEcommerce.service.sellerService.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

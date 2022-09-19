@@ -4,8 +4,10 @@ import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,7 +30,20 @@ public class SellerArea {
     private List<SellerCustomization> customizations;
 
     @ManyToOne
-    @JoinColumn(name = "seller_area_id")
+    @JoinColumn(name = "enabled_area_id")
     private EnabledArea enabledArea;
+    public  SellerArea(){
+        this.customizations= new ArrayList<>();
+        this.sellerProducts = new ArrayList<>();
+    }
+    public  SellerArea(EnabledArea enabledArea){
+        this.enabledArea = enabledArea;
+    }
 
+    public void addCustomizationToSellerArea(SellerCustomization sellerCustomization) {
+        customizations.add(sellerCustomization);
+    }
+    public void removeCustomizationToSellerArea(SellerCustomization sellerCustomization) {
+        customizations.remove(sellerCustomization);
+    }
 }

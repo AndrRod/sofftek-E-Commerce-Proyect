@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.service.serviceImpl;
+package com.LicuadoraProyectoEcommerce.serviceImpl;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.config.security.SecurityConfig;
 import com.LicuadoraProyectoEcommerce.dto.UserCreateDto;

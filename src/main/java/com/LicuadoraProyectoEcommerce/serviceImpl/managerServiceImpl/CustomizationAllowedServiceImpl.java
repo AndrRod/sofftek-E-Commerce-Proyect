@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.service.serviceImpl;
+package com.LicuadoraProyectoEcommerce.serviceImpl.managerServiceImpl;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.CustomizationAllowedDto;
@@ -7,8 +7,7 @@ import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import com.LicuadoraProyectoEcommerce.repository.manager.CustomizationAllowedRepository;
 import com.LicuadoraProyectoEcommerce.repository.manager.EnableAreaRepository;
-import com.LicuadoraProyectoEcommerce.service.CustomizationAllowedService;
-import com.LicuadoraProyectoEcommerce.service.EnabledAreaService;
+import com.LicuadoraProyectoEcommerce.service.managerService.CustomizationAllowedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

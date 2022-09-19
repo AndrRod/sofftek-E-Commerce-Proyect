@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.service;
+package com.LicuadoraProyectoEcommerce.service.managerService;
 
 import com.LicuadoraProyectoEcommerce.dto.ManagerDto;
 

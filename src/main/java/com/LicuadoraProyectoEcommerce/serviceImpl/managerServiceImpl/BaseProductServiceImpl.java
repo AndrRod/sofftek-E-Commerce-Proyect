@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.service.serviceImpl;
+package com.LicuadoraProyectoEcommerce.serviceImpl.managerServiceImpl;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDto;
@@ -10,13 +10,11 @@ import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import com.LicuadoraProyectoEcommerce.repository.manager.BaseProductRepository;
 import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
-import com.LicuadoraProyectoEcommerce.service.BaseProductService;
-import com.LicuadoraProyectoEcommerce.service.EnabledAreaService;
+import com.LicuadoraProyectoEcommerce.service.managerService.BaseProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.CascadeType;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

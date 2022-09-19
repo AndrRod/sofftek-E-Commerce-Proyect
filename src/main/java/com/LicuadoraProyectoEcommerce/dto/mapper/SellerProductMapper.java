@@ -2,8 +2,8 @@ package com.LicuadoraProyectoEcommerce.dto.mapper;
 
 import com.LicuadoraProyectoEcommerce.dto.SellerProductCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.SellerProductDto;
+import com.LicuadoraProyectoEcommerce.form.SellerProductPriceForm;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
-import com.LicuadoraProyectoEcommerce.model.seller.SellerArea;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,19 @@ public class SellerProductMapper {
     private SellerAreaMapper sellerAreaMapper;
     @Autowired
     private BaseProductMapper baseProductMapper;
-    public SellerProductCompleteDto getDtoFromEntity(SellerProduct sellerProduct){
+    public SellerProductCompleteDto getCompleteDtoFromEntity(SellerProduct sellerProduct){
         return new SellerProductCompleteDto(sellerProduct.getId(), baseProductMapper.getDtoFromEntity(sellerProduct.getBaseProduct()), sellerProduct.getBasePrice(), sellerProduct.getFinalPrice(), sellerAreaMapper.listDtoFromlistEntity(sellerProduct.getAreas()));
     }
-    public List<SellerProductCompleteDto> getListDtoFromEntityList(List<SellerProduct> sellerProducts){
+    public SellerProductDto getDtoFromEntity(SellerProduct sellerProduct){
+        return new SellerProductDto(sellerProduct.getId(), baseProductMapper.getDtoFromEntity(sellerProduct.getBaseProduct()), sellerProduct.getBasePrice());
+    }
+    public List<SellerProductDto> getListDtoFromEntityList(List<SellerProduct> sellerProducts){
         return sellerProducts.stream().map(this::getDtoFromEntity).collect(Collectors.toList());
     }
-    public SellerProduct createEntityFromDto(BaseProduct baseProduct, SellerProductDto sellerProductDto){
-        return new SellerProduct(sellerProductDto.getBasePrice(), baseProduct, repository.findById(2L).get()); //TODO
+    public List<SellerProductCompleteDto> getListCompleteDtoFromEntityList(List<SellerProduct> sellerProducts){
+        return sellerProducts.stream().map(this::getCompleteDtoFromEntity).collect(Collectors.toList());
+    }
+    public SellerProduct createEntityFromDto(BaseProduct baseProduct, SellerProductPriceForm sellerProductPriceForm){
+        return new SellerProduct(sellerProductPriceForm.getBasePrice(), baseProduct, repository.findById(1L).get()); //TODO falta metodo de busqueda por usuario logeado y agregar
     }
 }

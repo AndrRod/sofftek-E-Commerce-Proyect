@@ -1,7 +1,7 @@
 package com.LicuadoraProyectoEcommerce.controller;
 
 import com.LicuadoraProyectoEcommerce.dto.CustomizationAllowedDto;
-import com.LicuadoraProyectoEcommerce.service.CustomizationAllowedService;
+import com.LicuadoraProyectoEcommerce.service.managerService.CustomizationAllowedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

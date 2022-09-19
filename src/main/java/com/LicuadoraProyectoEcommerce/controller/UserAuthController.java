@@ -7,8 +7,6 @@ import com.LicuadoraProyectoEcommerce.form.RoleNameForm;
 import com.LicuadoraProyectoEcommerce.form.UserLoginForm;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
-import com.LicuadoraProyectoEcommerce.service.ManagerService;
-import com.LicuadoraProyectoEcommerce.service.SellerService;
 import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

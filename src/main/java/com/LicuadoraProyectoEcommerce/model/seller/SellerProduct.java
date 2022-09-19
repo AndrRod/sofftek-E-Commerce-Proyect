@@ -2,6 +2,7 @@ package com.LicuadoraProyectoEcommerce.model.seller;
 
 
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
+import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -33,13 +34,18 @@ public class SellerProduct {
     @JoinTable(name = "sellerProduct_area",
             joinColumns = @JoinColumn(name = "seller_id"),
             inverseJoinColumns = @JoinColumn(name = "area_id"))
-    private List<SellerArea> areas;
+    private List<SellerArea> areas = new ArrayList<>();
     public SellerProduct(Double basePrice, BaseProduct baseProduct, Seller seller){
         this.basePrice = basePrice;
         this.baseProduct=baseProduct;
         this.seller=seller;
     }
     public SellerProduct(){
-        this.areas = new ArrayList<>();
+    }
+    public void addAreaToSellerProduct(SellerArea sellerArea) {
+        areas.add(sellerArea);
+    }
+    public void removeAreaToSellerProduct(SellerArea sellerArea) {
+        areas.remove(sellerArea);
     }
 }

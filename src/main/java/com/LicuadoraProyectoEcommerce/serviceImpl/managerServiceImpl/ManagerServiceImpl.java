@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.service.serviceImpl;
+package com.LicuadoraProyectoEcommerce.serviceImpl.managerServiceImpl;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.ManagerDto;
@@ -6,7 +6,7 @@ import com.LicuadoraProyectoEcommerce.dto.mapper.ManagerMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.manager.Manager;
 import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
-import com.LicuadoraProyectoEcommerce.service.ManagerService;
+import com.LicuadoraProyectoEcommerce.service.managerService.ManagerService;
 import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ public class SellerCustomization {
     private Long id;
 //    @NotBlank(message = "cant be empty or null")
 //    private String type;
-    @NotBlank(message = "cant be empty or null")
+//    @NotBlank(message = "cant be empty or null")
     private String name;
     @ManyToMany(mappedBy = "customizations")
     private List<SellerArea> areas;
@@ -25,4 +26,8 @@ public class SellerCustomization {
     @ManyToOne
     @JoinColumn(name = "customization_allowed_id")
     private CustomizationAllowed customizationAllowed;
+//    private CustomizationAllowed customizationAllowed;
+    public SellerCustomization(){
+        this.areas = new ArrayList<>();
+    }
 }
