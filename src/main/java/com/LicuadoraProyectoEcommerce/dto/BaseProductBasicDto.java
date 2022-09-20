@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
-@AllArgsConstructor
-public class SellerCustomizationDto {
-    private Long id;
+@Setter @AllArgsConstructor
+public class BaseProductBasicDto {
     private String name;
-    private Double customizationPrice;
+    private String description;
 }

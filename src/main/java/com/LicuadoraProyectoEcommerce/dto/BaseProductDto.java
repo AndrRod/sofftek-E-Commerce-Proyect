@@ -11,7 +11,7 @@ import lombok.Setter;
 public class BaseProductDto {
     private Long id;
     private String name;
-    private Double price;
+    private Double estimatedPrice;
     private String description;
     private Integer daysToManufacture;
 

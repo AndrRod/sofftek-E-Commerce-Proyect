@@ -21,7 +21,7 @@ public class SellerProductMapper {
     @Autowired
     private BaseProductMapper baseProductMapper;
     public SellerProductCompleteDto getCompleteDtoFromEntity(SellerProduct sellerProduct){
-        return new SellerProductCompleteDto(sellerProduct.getId(), baseProductMapper.getDtoFromEntity(sellerProduct.getBaseProduct()), sellerProduct.getBasePrice(), sellerProduct.getFinalPrice(), sellerAreaMapper.listDtoFromlistEntity(sellerProduct.getAreas()));
+        return new SellerProductCompleteDto(sellerProduct.getId(), baseProductMapper.getBaseDtoFromEntity(sellerProduct.getBaseProduct()), sellerProduct.getBasePrice(), sellerProduct.getFinalPrice(), sellerAreaMapper.getListCompleteDtoFromEntityList(sellerProduct.getAreas()));
     }
     public SellerProductDto getDtoFromEntity(SellerProduct sellerProduct){
         return new SellerProductDto(sellerProduct.getId(), baseProductMapper.getDtoFromEntity(sellerProduct.getBaseProduct()), sellerProduct.getBasePrice());

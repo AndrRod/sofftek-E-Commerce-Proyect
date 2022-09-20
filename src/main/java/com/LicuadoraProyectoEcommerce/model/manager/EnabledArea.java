@@ -25,7 +25,7 @@ public class EnabledArea {
             inverseJoinColumns = @JoinColumn(name = "customizationAllowed_id"))
     private List<CustomizationAllowed> customizationsAllowed;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "enabledArea")
+    @OneToMany(mappedBy = "enabledArea", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SellerArea> sellerAreas;
 
     public EnabledArea(String name){

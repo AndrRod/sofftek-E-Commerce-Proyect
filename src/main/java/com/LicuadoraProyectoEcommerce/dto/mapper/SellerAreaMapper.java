@@ -20,11 +20,11 @@ public class SellerAreaMapper {
     public SellerAreaDto getDtoFromEntity(SellerArea sellerArea){
         return new SellerAreaDto(sellerArea.getId(), enableAreaMapper.getDtoFromEntity(sellerArea.getEnabledArea()));
         }
-    public List<SellerAreaDto> listDtoFromlistEntity(List<SellerArea> areas){
+    public List<SellerAreaDto> getlistDtoFromlistEntity(List<SellerArea> areas){
         return areas.stream().map(this::getDtoFromEntity).collect(Collectors.toList());
     }
     public SellerAreaCompleteDto getCompleteDtoFromEntity(SellerArea sellerArea){
-        return new SellerAreaCompleteDto(sellerArea.getId(), sellerArea.getEnabledArea().getName(), sellerCustomizationMapper.getDtoListFromEntityList(sellerArea.getCustomizations()));
+        return new SellerAreaCompleteDto(sellerArea.getId(), sellerArea.getEnabledArea().getName(), sellerCustomizationMapper.getCompleteDtoListFromEntityList(sellerArea.getCustomizations()));
     }
     public List<SellerAreaCompleteDto> getListCompleteDtoFromEntityList(List<SellerArea>sellerAreas){
         return sellerAreas.stream().map(this::getCompleteDtoFromEntity).collect(Collectors.toList());

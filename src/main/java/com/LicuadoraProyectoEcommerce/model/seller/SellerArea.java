@@ -18,7 +18,6 @@ public class SellerArea {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    private String name;
 
     @ManyToMany(mappedBy = "areas")
     private List<SellerProduct> sellerProducts;
@@ -30,7 +29,7 @@ public class SellerArea {
     private List<SellerCustomization> customizations;
 
     @ManyToOne
-    @JoinColumn(name = "enabled_area_id")
+    @JoinColumn(name = "enabled_area_id", referencedColumnName = "id")
     private EnabledArea enabledArea;
     public  SellerArea(){
         this.customizations= new ArrayList<>();

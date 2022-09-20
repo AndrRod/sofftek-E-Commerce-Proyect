@@ -11,5 +11,5 @@ import java.util.List;
 public class SellerAreaCompleteDto {
     private Long id;
     private String enabledArea;
-    private List<SellerCustomizationCompleteDto> customizationsAllowed;
+    private List<SellerCustomizationCompleteDto> customizations;
 }

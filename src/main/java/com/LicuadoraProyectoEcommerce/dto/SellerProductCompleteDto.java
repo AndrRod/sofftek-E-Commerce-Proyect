@@ -11,8 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class SellerProductCompleteDto {
     private Long id;
-    private BaseProductDtoComplete baseProduct;
+    private BaseProductBasicDto baseProduct;
     private Double basePrice;
     private Double finalPrice;
-    private List<SellerAreaDto> areas;
+    private List<SellerAreaCompleteDto> areas;
 }

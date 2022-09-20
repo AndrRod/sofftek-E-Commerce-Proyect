@@ -13,9 +13,9 @@ import java.util.List;
 public class BaseProductDtoComplete {
     private Long id;
     private String name;
-    private Double price;
+    private Double estimatedPrice;
     private String description;
     private Integer daysToManufacture;
     private String manager;
-    private List<EnabledAreaDto> enabledAreasDto;
+    private List<EnabledAreaCompleteDto> enabledAreas;
 }

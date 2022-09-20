@@ -16,4 +16,5 @@ public interface SellerProductService {
     List<SellerProductCompleteDto> listDtoPagination(Integer page);
     Map<String, String> deleteById(Long id);
     SellerProductDto createAndUpdateEntity(BaseProduct baseProduct, SellerProductPriceForm sellerProductPriceForm);
+    void deleteByEntity(SellerProduct sellerProduct);
 }

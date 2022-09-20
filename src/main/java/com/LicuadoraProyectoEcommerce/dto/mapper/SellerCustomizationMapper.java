@@ -14,11 +14,14 @@ import java.util.stream.Stream;
 public class SellerCustomizationMapper {
     @Autowired
     private CustomizationAllowedMapper customizationAllowedMapper;
-    public SellerCustomizationCompleteDto getDtoFromEntity(SellerCustomization customization){
+    public SellerCustomizationDto getDtoFromEntity(SellerCustomization customization){
+        return new SellerCustomizationDto(customization.getId(), customization.getName(), customization.getCustomizationPrice());
+    }
+    public SellerCustomizationCompleteDto getCompleteDtoFromEntity(SellerCustomization customization){
         return new SellerCustomizationCompleteDto(customization.getId(), customizationAllowedMapper.getDtoFromEntity(customization.getCustomizationAllowed()), customization.getName(), customization.getCustomizationPrice());
     }
-    public List<SellerCustomizationCompleteDto> getDtoListFromEntityList(List<SellerCustomization> customizations){
-        return customizations.stream().map(this::getDtoFromEntity).collect(Collectors.toList());
+    public List<SellerCustomizationCompleteDto> getCompleteDtoListFromEntityList(List<SellerCustomization> customizations){
+        return customizations.stream().map(this::getCompleteDtoFromEntity).collect(Collectors.toList());
     }
     public SellerCustomization updateEntityFromDto(SellerCustomization customization, SellerCustomizationDto sellerCustomizationDto){
         Stream.of(sellerCustomizationDto).forEach((sc)->{
@@ -26,5 +29,9 @@ public class SellerCustomizationMapper {
             if(sc.getName()!=null) customization.setName(sc.getName());
         });
         return customization;
+    }
+
+    public List<SellerCustomizationDto> getDtoListFromEntityList(List<SellerCustomization> customizations) {
+        return customizations.stream().map(this::getDtoFromEntity).collect(Collectors.toList());
     }
 }

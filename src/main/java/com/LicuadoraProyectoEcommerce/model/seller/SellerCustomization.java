@@ -22,7 +22,7 @@ public class SellerCustomization {
     private List<SellerArea> areas;
 
     @ManyToOne
-    @JoinColumn(name = "customization_allowed_id")
+    @JoinColumn(name = "customization_allowed_id" ,referencedColumnName = "id")
     private CustomizationAllowed customizationAllowed;
     public SellerCustomization(){
         this.areas = new ArrayList<>();

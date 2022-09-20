@@ -27,10 +27,10 @@ public class SellerProduct {
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
     @JoinTable(name = "sellerProduct_area",
-            joinColumns = @JoinColumn(name = "seller_id"),
-            inverseJoinColumns = @JoinColumn(name = "area_id"))
+            joinColumns = @JoinColumn(name = "product_seller_id"),
+            inverseJoinColumns = @JoinColumn(name = "seller_area_id"))
     private List<SellerArea> areas = new ArrayList<>();
     public SellerProduct(Double basePrice, BaseProduct baseProduct, Seller seller){
         this.basePrice = basePrice;

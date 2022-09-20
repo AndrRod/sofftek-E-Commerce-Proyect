@@ -28,7 +28,7 @@ public class SellerCustomizationServiceImpl implements SellerCustomizationServic
 
     @Override
     public SellerCustomizationCompleteDto findById(Long id) {
-        return sellerCustomizationMapper.getDtoFromEntity(findEntityById(id));
+        return sellerCustomizationMapper.getCompleteDtoFromEntity(findEntityById(id));
     }
 
     @Override
@@ -39,14 +39,14 @@ public class SellerCustomizationServiceImpl implements SellerCustomizationServic
     @Override
     public List<SellerCustomizationCompleteDto> geDtoListPagination(Integer page) {
         List<SellerCustomization> list = sellerCustomizationRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent();
-        return sellerCustomizationMapper.getDtoListFromEntityList(list);
+        return sellerCustomizationMapper.getCompleteDtoListFromEntityList(list);
     }
 
     @Override
     public SellerCustomizationCompleteDto updateEntity(Long idCustomization, SellerCustomizationDto sellerCustomizationForm) {
         SellerCustomization sellerCustomization = sellerCustomizationMapper.updateEntityFromDto(findEntityById(idCustomization), sellerCustomizationForm);
         SellerCustomization customizationSaved =  sellerCustomizationRepository.save(sellerCustomization);
-        return sellerCustomizationMapper.getDtoFromEntity(customizationSaved);
+        return sellerCustomizationMapper.getCompleteDtoFromEntity(customizationSaved);
     }
 
     @Override

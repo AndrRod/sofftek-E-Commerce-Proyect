@@ -60,9 +60,9 @@ public class SellerProductServiceImpl implements SellerProductService {
     @Override
     public SellerProductDto createAndUpdateEntity(BaseProduct baseProduct, SellerProductPriceForm sellerProductPriceForm) {
         SellerProduct sellerProduct = sellerProductMapper.createEntityFromDto(baseProduct, sellerProductPriceForm);
-        SellerArea sellerArea = new SellerArea();
-        List<SellerCustomization> listSellerCustomization = new ArrayList<>();
         baseProduct.getEnabledAreas().stream().forEach(enabledArea -> {
+            List<SellerCustomization> listSellerCustomization = new ArrayList<>();
+            SellerArea sellerArea = new SellerArea();
             sellerArea.setEnabledArea(enabledArea);
             enabledArea.getCustomizationsAllowed().stream().forEach(customizationAllowed -> {
                 SellerCustomization sellerCustomization = new SellerCustomization();
@@ -74,5 +74,14 @@ public class SellerProductServiceImpl implements SellerProductService {
             sellerProduct.addAreaToSellerProduct(sellerArea);
         });
         return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
+    }
+
+    @Override
+    public void deleteByEntity(SellerProduct sellerProduct) {
+        sellerAreaRepository.deleteAll(sellerProduct.getAreas());
+        sellerProduct.getAreas().forEach(sellerArea ->{
+            customizationRepository.deleteAll(sellerArea.getCustomizations());
+        });
+        sellerProductRepository.delete(sellerProduct);
     }
 }

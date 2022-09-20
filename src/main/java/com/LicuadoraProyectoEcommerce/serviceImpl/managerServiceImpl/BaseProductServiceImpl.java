@@ -11,6 +11,7 @@ import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import com.LicuadoraProyectoEcommerce.repository.manager.BaseProductRepository;
 import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
 import com.LicuadoraProyectoEcommerce.service.managerService.BaseProductService;
+import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ public class BaseProductServiceImpl implements BaseProductService {
     private MessageHandler messageHandler;
     @Autowired
     private ManagerRepository managerRepository;
+    @Autowired
+    private SellerProductService sellerProductService;
     @Override
     public BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto) {
         BaseProduct baseProduct = baseProductMapper.getEntityCreateFromDto(baseProductDto);
@@ -49,7 +52,11 @@ public class BaseProductServiceImpl implements BaseProductService {
 
     @Override
     public Map<String, String> deleteBaseProductById(Long id) {
-        baseProductRepository.delete(findEntityById(id));
+        BaseProduct baseProduct = findEntityById(id);
+        baseProduct.getSellerProducts().forEach(sellerProduct -> {
+            if(sellerProduct.getBaseProduct().getId().equals(baseProduct.getId()))sellerProductService.deleteByEntity(sellerProduct);
+        });
+        baseProductRepository.delete(baseProduct);
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
 
