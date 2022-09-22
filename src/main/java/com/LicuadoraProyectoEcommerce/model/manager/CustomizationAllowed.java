@@ -19,13 +19,13 @@ public class CustomizationAllowed {
     private String type;
     @ManyToMany(mappedBy = "customizationsAllowed")
     private List<EnabledArea> enabledAreas;
-    @OneToMany(mappedBy = "customizationAllowed", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<SellerCustomization> sellerCustomizations;
+//    @OneToMany(mappedBy = "customizationAllowed", orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+//    private List<SellerCustomization> sellerCustomizations;
     public CustomizationAllowed(String type){
         this.type = type;
     }
     public CustomizationAllowed(){
         this.enabledAreas= new ArrayList<>();
-        this.sellerCustomizations = new ArrayList<>();
+//        this.sellerCustomizations = new ArrayList<>();
     }
 }

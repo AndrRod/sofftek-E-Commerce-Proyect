@@ -2,6 +2,8 @@ package com.LicuadoraProyectoEcommerce.dto.mapper;
  
 import com.LicuadoraProyectoEcommerce.dto.EnabledAreaCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.EnabledAreaDto;
+import com.LicuadoraProyectoEcommerce.dto.SellerAreaCompleteDto;
+import com.LicuadoraProyectoEcommerce.dto.SellerCustomizationCompleteDto;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ public class EnableAreaMapper {
 
     @Autowired
     private CustomizationAllowedMapper customizationAllowedMapper;
+    @Autowired
+    private SellerCustomizationMapper customizationMapper;
     public EnabledAreaDto getDtoFromEntity(EnabledArea enabledArea){
         return new EnabledAreaDto(enabledArea.getId(), enabledArea.getName());
     }
@@ -36,5 +40,13 @@ public class EnableAreaMapper {
     }
     public List<EnabledAreaCompleteDto> getListCompleteDtoFromListEntity(List<EnabledArea> enabledAreas) {
         return enabledAreas.stream().map(this::getCompleteDtoFromEntity).collect(Collectors.toList());
+    }
+
+    public List<SellerAreaCompleteDto> getListSellerCompleteDtoFromListEntity(List<EnabledArea> areas) {
+        return areas.stream().map(this::getSellerCompleteDtoFromEntity).collect(Collectors.toList());
+    }
+
+    private SellerAreaCompleteDto getSellerCompleteDtoFromEntity(EnabledArea enabledArea) {
+        return new SellerAreaCompleteDto(enabledArea.getId(), enabledArea.getName(), customizationMapper.getCompleteDtoListFromEntityList(enabledArea.getCustomizations()));
     }
 }

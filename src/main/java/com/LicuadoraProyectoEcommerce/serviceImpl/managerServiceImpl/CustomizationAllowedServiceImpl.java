@@ -42,7 +42,7 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     }
 
     @Override
-    public Map<String, String> deleteEntityById(Long id) {
+    public Map<String, String> deleteEntityById(Long id) { //TODO falta borrar peronalizacion sin errores
         CustomizationAllowed entity = findEntityById(id);
         if(!entity.getEnabledAreas().isEmpty())
             entity.getEnabledAreas().stream().forEach(e->{

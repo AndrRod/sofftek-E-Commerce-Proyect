@@ -8,8 +8,10 @@ import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
+import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import com.LicuadoraProyectoEcommerce.repository.manager.BaseProductRepository;
 import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
+import com.LicuadoraProyectoEcommerce.repository.seller.SellerCustomizationRepository;
 import com.LicuadoraProyectoEcommerce.service.managerService.BaseProductService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,12 @@ public class BaseProductServiceImpl implements BaseProductService {
     private ManagerRepository managerRepository;
     @Autowired
     private SellerProductService sellerProductService;
+    @Autowired
+    private SellerCustomizationRepository sellerCustomizationRepository;
     @Override
     public BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto) {
         BaseProduct baseProduct = baseProductMapper.getEntityCreateFromDto(baseProductDto);
-        baseProduct.setManager(managerRepository.findById(1L).get()); //TODO
+        baseProduct.setManager(managerRepository.findById(1L).get()); //TODO buscar usario logeado
         return baseProductMapper.getDtoFromEntity(baseProductRepository.save(baseProduct));
     }
 
@@ -51,10 +55,14 @@ public class BaseProductServiceImpl implements BaseProductService {
     }
 
     @Override
-    public Map<String, String> deleteBaseProductById(Long id) {
+    public Map<String, String> deleteBaseProductById(Long id) { //TODO falta borrado total en cascada hacia producto vendedor
         BaseProduct baseProduct = findEntityById(id);
         baseProduct.getSellerProducts().forEach(sellerProduct -> {
-            if(sellerProduct.getBaseProduct().getId().equals(baseProduct.getId()))sellerProductService.deleteByEntity(sellerProduct);
+            if(sellerProduct.getBaseProduct().getId().equals(baseProduct.getId()))
+                sellerProduct.getAreas().stream().forEach(area->{
+                    sellerCustomizationRepository.deleteAll(area.getCustomizations());
+                });
+                sellerProductService.deleteByEntity(sellerProduct);
         });
         baseProductRepository.delete(baseProduct);
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));

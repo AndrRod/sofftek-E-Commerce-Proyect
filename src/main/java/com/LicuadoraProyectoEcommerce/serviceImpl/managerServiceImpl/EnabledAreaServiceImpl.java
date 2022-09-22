@@ -42,8 +42,9 @@ public class EnabledAreaServiceImpl implements EnabledAreaService {
     }
 
     @Override
-    public Map<String, String> deleteEntityById(Long id) {
-        enableAreaRepository.delete(findEntityById(id));
+    public Map<String, String> deleteEntityById(Long id) { //TODO falta borra area sin errores
+        EnabledArea enabledArea = findEntityById(id);
+        enableAreaRepository.delete(enabledArea);
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
 

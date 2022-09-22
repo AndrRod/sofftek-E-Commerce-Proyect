@@ -1,9 +1,10 @@
 package com.LicuadoraProyectoEcommerce.model.manager;
 
 import com.LicuadoraProyectoEcommerce.model.User;
-import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,8 +18,9 @@ public class Manager{
     private Long id;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "manager")
+    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL, mappedBy = "manager")
     private List<BaseProduct> baseProducts;
     public Manager(){
         this.baseProducts = new ArrayList<>();

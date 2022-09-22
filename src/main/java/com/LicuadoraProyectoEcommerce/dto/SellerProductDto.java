@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter @Getter @AllArgsConstructor
 public class SellerProductDto {
     private Long id;
-    private BaseProductDtoComplete baseProduct;
+    private String name;
+    private String description;
     private Double basePrice;
 }

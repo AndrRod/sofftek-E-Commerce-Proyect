@@ -1,6 +1,7 @@
 package com.LicuadoraProyectoEcommerce.model.manager;
 
-import com.LicuadoraProyectoEcommerce.model.seller.SellerArea;
+import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
+import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import javax.persistence.*;
@@ -25,8 +26,15 @@ public class EnabledArea {
             inverseJoinColumns = @JoinColumn(name = "customizationAllowed_id"))
     private List<CustomizationAllowed> customizationsAllowed;
 
-    @OneToMany(mappedBy = "enabledArea", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<SellerArea> sellerAreas;
+
+    @ManyToMany(mappedBy = "areas")
+    private List<SellerProduct> sellerProducts;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "area_customization",
+    joinColumns = @JoinColumn(name = "area_id"),
+    inverseJoinColumns = @JoinColumn(name = "customization_id"))
+    private List<SellerCustomization> customizations;
 
     public EnabledArea(String name){
         this.name = name;
@@ -34,12 +42,19 @@ public class EnabledArea {
     public EnabledArea(){
         this.baseProducts = new ArrayList<>();
         this.customizationsAllowed = new ArrayList<>();
-        this.sellerAreas = new ArrayList<>();
     }
     public void addCustomizationAllowedToEnabledArea(CustomizationAllowed customizationAllowed) {
         customizationsAllowed.add(customizationAllowed);
+        customizationAllowed.getEnabledAreas().add(this);
     }
     public void removeCustomizationAllowedToEnabledArea(CustomizationAllowed customizationAllowed) {
         customizationsAllowed.remove(customizationAllowed);
+        customizationAllowed.getEnabledAreas().remove(this);
+    }
+    public void addCustomizationToSellerArea(SellerCustomization sellerCustomization) {
+        customizations.add(sellerCustomization);
+    }
+    public void removeCustomizationToSellerArea(SellerCustomization sellerCustomization) {
+        customizations.remove(sellerCustomization);
     }
 }

@@ -1,11 +1,13 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
 
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
+import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +21,11 @@ public class SellerCustomization {
     private String name;
     private Double customizationPrice;
     @ManyToMany(mappedBy = "customizations")
-    private List<SellerArea> areas;
+    private List<EnabledArea> areas;
 
     @ManyToOne
     @JoinColumn(name = "customization_allowed_id" ,referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomizationAllowed customizationAllowed;
     public SellerCustomization(){
         this.areas = new ArrayList<>();

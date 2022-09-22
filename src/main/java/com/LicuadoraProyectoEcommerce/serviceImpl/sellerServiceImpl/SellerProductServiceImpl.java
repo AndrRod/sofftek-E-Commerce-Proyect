@@ -7,11 +7,10 @@ import com.LicuadoraProyectoEcommerce.dto.mapper.SellerProductMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.SellerProductPriceForm;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
-import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
-import com.LicuadoraProyectoEcommerce.model.seller.SellerArea;
+import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
-import com.LicuadoraProyectoEcommerce.repository.seller.SellerAreaRepository;
+import com.LicuadoraProyectoEcommerce.repository.manager.EnableAreaRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerCustomizationRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerProductRepository;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
@@ -28,8 +27,10 @@ public class SellerProductServiceImpl implements SellerProductService {
     private static final int SIZE_TEN = 10;
     @Autowired
     private SellerProductRepository sellerProductRepository;
+//    @Autowired
+//    private SellerAreaRepository sellerAreaRepository;
     @Autowired
-    private SellerAreaRepository sellerAreaRepository;
+    private EnableAreaRepository enableAreaRepository;
     @Autowired
     private SellerCustomizationRepository customizationRepository;
     @Autowired
@@ -62,23 +63,21 @@ public class SellerProductServiceImpl implements SellerProductService {
         SellerProduct sellerProduct = sellerProductMapper.createEntityFromDto(baseProduct, sellerProductPriceForm);
         baseProduct.getEnabledAreas().stream().forEach(enabledArea -> {
             List<SellerCustomization> listSellerCustomization = new ArrayList<>();
-            SellerArea sellerArea = new SellerArea();
-            sellerArea.setEnabledArea(enabledArea);
             enabledArea.getCustomizationsAllowed().stream().forEach(customizationAllowed -> {
                 SellerCustomization sellerCustomization = new SellerCustomization();
                 sellerCustomization.setCustomizationAllowed(customizationAllowed);
                 SellerCustomization customizationSaved = customizationRepository.save(sellerCustomization);
                 listSellerCustomization.add(customizationSaved);
             });
-            sellerArea.getCustomizations().addAll(listSellerCustomization);
-            sellerProduct.addAreaToSellerProduct(sellerArea);
+            enabledArea.getCustomizations().addAll(listSellerCustomization);
+            sellerProduct.addAreaToSellerProduct(enabledArea);
         });
         return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
     }
 
     @Override
     public void deleteByEntity(SellerProduct sellerProduct) {
-        sellerAreaRepository.deleteAll(sellerProduct.getAreas());
+        enableAreaRepository.deleteAll(sellerProduct.getAreas());
         sellerProduct.getAreas().forEach(sellerArea ->{
             customizationRepository.deleteAll(sellerArea.getCustomizations());
         });
