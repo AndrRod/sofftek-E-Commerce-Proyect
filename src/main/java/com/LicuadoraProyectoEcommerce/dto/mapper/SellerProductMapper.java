@@ -20,8 +20,10 @@ public class SellerProductMapper {
     private EnableAreaMapper enableAreaMapper;
     @Autowired
     private BaseProductMapper baseProductMapper;
+    @Autowired
+    private SellerAreaMapper sellerAreaMapper;
     public SellerProductCompleteDto getCompleteDtoFromEntity(SellerProduct sellerProduct){
-        return new SellerProductCompleteDto(sellerProduct.getId(), sellerProduct.getBaseProduct().getName(), sellerProduct.getBaseProduct().getDescription(), sellerProduct.getBasePrice(), sellerProduct.getFinalPrice(), enableAreaMapper.getListSellerCompleteDtoFromListEntity(sellerProduct.getAreas()));
+        return new SellerProductCompleteDto(sellerProduct.getId(), sellerProduct.getBaseProduct().getName(), sellerProduct.getBaseProduct().getDescription(), sellerProduct.getBasePrice(), sellerProduct.getFinalPrice(), sellerAreaMapper.getListCompleteDtoFromEntityList(sellerProduct.getAreas()));
     }
     public SellerProductDto getDtoFromEntity(SellerProduct sellerProduct){
         return new SellerProductDto(sellerProduct.getId(), sellerProduct.getBaseProduct().getName(), sellerProduct.getBaseProduct().getDescription(), sellerProduct.getBasePrice());

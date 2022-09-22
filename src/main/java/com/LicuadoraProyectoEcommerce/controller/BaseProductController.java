@@ -48,7 +48,7 @@ public class BaseProductController {
     }
     @PostMapping("/{id}/removeArea/{idArea}")
     ResponseEntity<BaseProductDtoComplete> removeAreaToProduct(@PathVariable String id, @PathVariable String idArea){
-        EnabledArea enabledArea = enabledAreaService.findEntityById(Long.valueOf(id));
-        return new ResponseEntity<>(baseProductService.removeEnabledAreaToEntity(Long.valueOf(id), enabledAreaService.findEntityById(Long.valueOf(idArea))), HttpStatus.OK);
+        EnabledArea enabledArea = enabledAreaService.findEntityById(Long.valueOf(idArea));
+        return new ResponseEntity<>(baseProductService.removeEnabledAreaToEntity(Long.valueOf(id), enabledArea), HttpStatus.OK);
     }
 }

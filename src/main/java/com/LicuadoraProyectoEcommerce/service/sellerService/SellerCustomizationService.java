@@ -13,4 +13,5 @@ public interface SellerCustomizationService {
     List<SellerCustomizationCompleteDto> geDtoListPagination(Integer page);
     SellerCustomizationCompleteDto updateEntity(Long idCustomization, SellerCustomizationDto sellerCustomizationForm);
     Map<String, String> deleteEntityParams(Long idCustomization);
+    Map<String, String> deleteEntity(Long idCustomization);
 }

@@ -22,7 +22,7 @@ public class BaseProduct {
     @ManyToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Manager manager;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE} , fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH} , fetch = FetchType.LAZY)
     @JoinTable(
             name = "baseProduct_enableArea",
             joinColumns = @JoinColumn(name = "base_product_id"),

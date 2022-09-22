@@ -57,13 +57,13 @@ public class BaseProductServiceImpl implements BaseProductService {
     @Override
     public Map<String, String> deleteBaseProductById(Long id) { //TODO falta borrado total en cascada hacia producto vendedor
         BaseProduct baseProduct = findEntityById(id);
-        baseProduct.getSellerProducts().forEach(sellerProduct -> {
-            if(sellerProduct.getBaseProduct().getId().equals(baseProduct.getId()))
-                sellerProduct.getAreas().stream().forEach(area->{
-                    sellerCustomizationRepository.deleteAll(area.getCustomizations());
-                });
-                sellerProductService.deleteByEntity(sellerProduct);
-        });
+//        baseProduct.getSellerProducts().forEach(sellerProduct -> {
+//            if(sellerProduct.getBaseProduct().getId().equals(baseProduct.getId()))
+//                sellerProduct.getAreas().stream().forEach(area->{
+//                    sellerCustomizationRepository.deleteAll(area.getCustomizations());
+//                });
+//                sellerProductService.deleteByEntity(sellerProduct);
+//        });
         baseProductRepository.delete(baseProduct);
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }

@@ -1,5 +1,6 @@
 package com.LicuadoraProyectoEcommerce.model.manager;
 
+import com.LicuadoraProyectoEcommerce.model.seller.Seller;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class EnabledArea {
     @ManyToMany(mappedBy = "enabledAreas")
     private List<BaseProduct> baseProducts;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "enabledArea_customizationAllowed",
             joinColumns = @JoinColumn(name = "enableArea_id"),
@@ -30,7 +31,7 @@ public class EnabledArea {
     @ManyToMany(mappedBy = "areas")
     private List<SellerProduct> sellerProducts;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(name = "area_customization",
     joinColumns = @JoinColumn(name = "area_id"),
     inverseJoinColumns = @JoinColumn(name = "customization_id"))
@@ -50,6 +51,10 @@ public class EnabledArea {
     public void removeCustomizationAllowedToEnabledArea(CustomizationAllowed customizationAllowed) {
         customizationsAllowed.remove(customizationAllowed);
         customizationAllowed.getEnabledAreas().remove(this);
+    }
+    public void removeAllCustomizationAllowedToEnabledArea(List<SellerCustomization> customizations) {
+        this.customizations.remove(customizations);
+        customizations.remove(this);
     }
     public void addCustomizationToSellerArea(SellerCustomization sellerCustomization) {
         customizations.add(sellerCustomization);

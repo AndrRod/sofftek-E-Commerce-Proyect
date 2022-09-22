@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.serviceImpl.managerServiceImpl;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.CustomizationAllowedDto;
 import com.LicuadoraProyectoEcommerce.dto.mapper.CustomizationAllowedMapper;
+import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import com.LicuadoraProyectoEcommerce.repository.manager.CustomizationAllowedRepository;
@@ -44,6 +45,7 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     @Override
     public Map<String, String> deleteEntityById(Long id) { //TODO falta borrar peronalizacion sin errores
         CustomizationAllowed entity = findEntityById(id);
+        if(!entity.getEnabledAreas().stream().anyMatch(e-> !e.getSellerProducts().isEmpty())) throw new BadRequestException(messageHandler.message("cant.delete", null));
         if(!entity.getEnabledAreas().isEmpty())
             entity.getEnabledAreas().stream().forEach(e->{
             e.removeCustomizationAllowedToEnabledArea(entity);

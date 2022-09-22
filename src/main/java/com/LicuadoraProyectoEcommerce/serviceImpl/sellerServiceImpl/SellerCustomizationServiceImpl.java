@@ -57,6 +57,11 @@ public class SellerCustomizationServiceImpl implements SellerCustomizationServic
         sellerCustomizationRepository.save(customization);
         return Map.of("Message", "the name and price params were reestablished");
     }
+    @Override
+    public Map<String, String> deleteEntity(Long idCustomization) {
+        sellerCustomizationRepository.delete(findEntityById(idCustomization));
+        return Map.of("Message", "entity was deleted");
+    }
 
 
 }

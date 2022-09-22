@@ -27,8 +27,12 @@ public class SellerCustomizationController {
     ResponseEntity<SellerCustomizationCompleteDto> updateEntity(@PathVariable String id, @RequestBody SellerCustomizationDto customizationDto){
         return ResponseEntity.ok(sellerCustomizationService.updateEntity(Long.valueOf(id), customizationDto));
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("params/{id}")
     ResponseEntity<Map<String, String>> deleteEntityParams(@PathVariable String id){
         return ResponseEntity.ok(sellerCustomizationService.deleteEntityParams(Long.valueOf(id)));
+    }
+    @DeleteMapping("/{id}")
+    ResponseEntity<Map<String, String>> deleteEntityById(@PathVariable String id){ //TODO AGREGADO PARA PRUEBA
+        return ResponseEntity.ok(sellerCustomizationService.deleteEntity(Long.valueOf(id)));
     }
 }
