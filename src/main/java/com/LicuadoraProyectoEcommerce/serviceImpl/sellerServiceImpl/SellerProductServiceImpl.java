@@ -7,7 +7,6 @@ import com.LicuadoraProyectoEcommerce.dto.mapper.SellerProductMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.SellerProductPriceForm;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
-import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerArea;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
@@ -23,10 +22,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.*;
 
 @Service
 public class SellerProductServiceImpl implements SellerProductService {
@@ -87,40 +82,29 @@ public class SellerProductServiceImpl implements SellerProductService {
 
     @Override
     public void deleteByEntity(SellerProduct sellerProduct) { //TODO borrar todo junto
-
-        sellerProduct.getAreas().stream().forEach(sellerArea ->
-        {
-            List<SellerCustomization> customizations = new ArrayList<>();
-            sellerProduct.removeAreaToSellerProduct(sellerArea);
-            sellerAreaRepository.delete(sellerArea);
+        List<SellerArea> areas = sellerProduct.getAreas();
+        areas.stream().forEach(sellerArea ->{
             sellerArea.getCustomizations().stream().forEach(customization -> {
-                sellerArea.removeCustomizationToSellerArea(customization);
-                customizations.add(customization);
+                customization.removeArea(sellerArea);
+                customizationRepository.deleteById(customization.getId());
             });
-            customizationRepository.deleteAll(customizations);
-            sellerProductRepository.delete(sellerProduct);
         });
+        areas.stream().forEach(sellerArea ->{
+        sellerArea.removeProduct(sellerProduct);
+        sellerAreaRepository.delete(sellerArea);
+        });
+        sellerProductRepository.delete(sellerProduct);
+        }
 
-
-
-//
-//
-//
-//        sellerProduct.getAreas().forEach(sellerArea ->{
-//            sellerAreaRepository.delete(sellerArea);
-//            customizationRepository.deleteAll(sellerArea.getCustomizations());
-//        });
-//        sellerProductRepository.delete(sellerProduct);
-    }
 }
 
-//    ProductSeller productSeller = productSellerRepository.findById(id).get();
-//        productSeller.getAreas().stream().forEach(area -> {
-//                area.getCustomizations().clear();
-//                area.getCustomizations().stream().forEach(customization -> {
-//
-//                productSellerRepository.findById(customization.getId());
-//                });
-//                });
-//                productSellerRepository.deleteById(id);
-//                }
+//sellerProduct.getAreas().stream().forEach(sellerArea ->{
+//        sellerArea.getCustomizations().stream().forEach(customization -> {
+//        sellerArea.removeCustomizationToSellerArea(customization);
+//        customizationRepository.deleteById(customization.getId());
+//        });
+//        sellerProduct.removeAreaToSellerProduct(sellerArea);
+//        sellerAreaRepository.delete(sellerArea);
+//        });
+//        sellerProductRepository.delete(sellerProduct);
+//        }

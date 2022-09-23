@@ -3,6 +3,8 @@ import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class SellerProduct {
     private Double basePrice;
     @ManyToOne
     @JoinColumn(name = "base_product_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private BaseProduct baseProduct;
     @ManyToOne
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
@@ -45,7 +48,7 @@ public class SellerProduct {
     }
     public void removeAreaToSellerProduct(SellerArea sellerArea) {
         areas.remove(sellerArea);
-        sellerArea.getSellerProducts().remove(this);
+//        sellerArea.getSellerProducts().remove(this);
     }
     public Double getFinalPrice(){
         areas.stream().forEach(areas -> {

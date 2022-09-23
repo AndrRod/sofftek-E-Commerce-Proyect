@@ -3,6 +3,8 @@ package com.LicuadoraProyectoEcommerce.model.seller;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class SellerArea {
 
     @ManyToOne
     @JoinColumn(name = "enabled_area_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private EnabledArea enabledArea;
     public  SellerArea(){
         this.customizations= new ArrayList<>();
@@ -42,5 +45,20 @@ public class SellerArea {
     public void removeCustomizationToSellerArea(SellerCustomization sellerCustomization) {
         customizations.remove(sellerCustomization);
         sellerCustomization.getAreas().remove(this);
+    }
+    public void removeAllCustomization(List<SellerCustomization> customizations){
+        customizations.stream().forEach(customization -> {
+            removeCustomizationToSellerArea(customization);
+        });
+    }
+    public void removeProduct(SellerProduct sellerProduct){
+        this.sellerProducts.remove(sellerProduct);
+        sellerProduct.getAreas().remove(this);
+    }
+    public void removeAllProducts(List<SellerProduct> products){
+        products.stream().forEach(sellerProduct -> {
+            removeProduct(sellerProduct);
+        });
+
     }
 }

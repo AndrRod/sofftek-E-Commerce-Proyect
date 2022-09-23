@@ -23,7 +23,7 @@ public class SellerCustomization {
     @ManyToMany(mappedBy = "customizations")
     private List<SellerArea> areas;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "customization_allowed_id" ,referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomizationAllowed customizationAllowed;
@@ -31,7 +31,13 @@ public class SellerCustomization {
         this.areas = new ArrayList<>();
         this.customizationPrice = 0d;
     }
-    void removeCustomizationAllowed(CustomizationAllowed customizationAllowed){
-        this.customizationAllowed.getEnabledAreas().remove(customizationAllowed);
+    public void removeArea(SellerArea sellerArea){
+        this.areas.remove(sellerArea);
+        sellerArea.getCustomizations().remove(this);
+    }
+    public void removeAllAreas(){
+        this.areas.stream().forEach(area->{
+            removeArea(area);
+        });
     }
 }

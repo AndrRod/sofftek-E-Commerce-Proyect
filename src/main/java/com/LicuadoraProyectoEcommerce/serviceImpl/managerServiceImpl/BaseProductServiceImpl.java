@@ -40,7 +40,7 @@ public class BaseProductServiceImpl implements BaseProductService {
     @Override
     public BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto) {
         BaseProduct baseProduct = baseProductMapper.getEntityCreateFromDto(baseProductDto);
-        baseProduct.setManager(managerRepository.findById(1L).get()); //TODO buscar usario logeado
+        baseProduct.setManager(managerRepository.findById(2L).get()); //TODO buscar usario logeado
         return baseProductMapper.getDtoFromEntity(baseProductRepository.save(baseProduct));
     }
 
