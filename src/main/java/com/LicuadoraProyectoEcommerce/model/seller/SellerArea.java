@@ -39,26 +39,8 @@ public class SellerArea {
         this.enabledArea = enabledArea;
     }
 
-    public void addCustomizationToSellerArea(SellerCustomization sellerCustomization) {
-        customizations.add(sellerCustomization);
-    }
-    public void removeCustomizationToSellerArea(SellerCustomization sellerCustomization) {
-        customizations.remove(sellerCustomization);
-        sellerCustomization.getAreas().remove(this);
-    }
-    public void removeAllCustomization(List<SellerCustomization> customizations){
-        customizations.stream().forEach(customization -> {
-            removeCustomizationToSellerArea(customization);
-        });
-    }
     public void removeProduct(SellerProduct sellerProduct){
-//        this.sellerProducts.remove(sellerProduct);
+        this.sellerProducts.remove(sellerProduct);
         sellerProduct.getAreas().remove(this);
-    }
-    public void removeAllProducts(List<SellerProduct> products){
-        products.stream().forEach(sellerProduct -> {
-            removeProduct(sellerProduct);
-        });
-
     }
 }

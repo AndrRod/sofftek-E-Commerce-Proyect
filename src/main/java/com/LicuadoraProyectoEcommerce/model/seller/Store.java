@@ -1,7 +1,5 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
 
-import com.LicuadoraProyectoEcommerce.model.seller.Seller;
-import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

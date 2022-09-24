@@ -1,6 +1,5 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
-import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -42,19 +41,15 @@ public class SellerProduct {
         this.seller=seller;
     }
     public SellerProduct(){
+        this.finalPrice = 0d;
     }
     public void addAreaToSellerProduct(SellerArea sellerArea) {
         areas.add(sellerArea);
     }
-    public void removeAreaToSellerProduct(SellerArea sellerArea) {
-        areas.remove(sellerArea);
-//        sellerArea.getSellerProducts().remove(this);
-    }
-    public Double getFinalPrice(){
+    public Double getFinalPrice() {
         areas.stream().forEach(areas -> {
-            this.finalPrice = this.basePrice + areas.getCustomizations().stream().mapToDouble(SellerCustomization::getCustomizationPrice).sum();
+            this.finalPrice += areas.getCustomizations().stream().mapToDouble(SellerCustomization::getCustomizationPrice).sum();
         });
-        return finalPrice;
+        return finalPrice + this.basePrice;
     }
-
 }

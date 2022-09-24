@@ -1,7 +1,6 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
 
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
-import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -32,7 +31,7 @@ public class SellerCustomization {
         this.customizationPrice = 0d;
     }
     public void removeArea(SellerArea sellerArea){
-//        this.areas.remove(sellerArea);
+        this.areas.remove(sellerArea);
         sellerArea.getCustomizations().remove(this);
     }
     public void removeAllAreas(){
