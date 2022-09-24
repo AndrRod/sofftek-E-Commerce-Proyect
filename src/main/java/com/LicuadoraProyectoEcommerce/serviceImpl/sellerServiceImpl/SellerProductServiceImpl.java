@@ -15,13 +15,16 @@ import com.LicuadoraProyectoEcommerce.repository.seller.SellerAreaRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerCustomizationRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerProductRepository;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
+import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class SellerProductServiceImpl implements SellerProductService {
@@ -81,30 +84,18 @@ public class SellerProductServiceImpl implements SellerProductService {
     }
 
     @Override
-    public void deleteByEntity(SellerProduct sellerProduct) { //TODO borrar todo junto
-        List<SellerArea> areas = sellerProduct.getAreas();
-        areas.stream().forEach(sellerArea ->{
-            sellerArea.getCustomizations().stream().forEach(customization -> {
-                customization.removeArea(sellerArea);
-                customizationRepository.deleteById(customization.getId());
-            });
-        });
-        areas.stream().forEach(sellerArea ->{
-        sellerArea.removeProduct(sellerProduct);
-        sellerAreaRepository.delete(sellerArea);
-        });
+    public void deleteByEntity(SellerProduct sellerProduct) {
+        List<SellerArea> areas = new ArrayList<>(sellerProduct.getAreas());
+        for(SellerArea area : areas){
+            int size = area.getCustomizations().size();
+            for(int i= 0; i< size; i+=1){
+                SellerCustomization customization = area.getCustomizations().get(0);
+                customization.removeArea(area);
+                customizationRepository.delete(customization);
+            }
+            area.removeProduct(sellerProduct);
+            sellerAreaRepository.delete(area);
+        }
         sellerProductRepository.delete(sellerProduct);
         }
-
 }
-
-//sellerProduct.getAreas().stream().forEach(sellerArea ->{
-//        sellerArea.getCustomizations().stream().forEach(customization -> {
-//        sellerArea.removeCustomizationToSellerArea(customization);
-//        customizationRepository.deleteById(customization.getId());
-//        });
-//        sellerProduct.removeAreaToSellerProduct(sellerArea);
-//        sellerAreaRepository.delete(sellerArea);
-//        });
-//        sellerProductRepository.delete(sellerProduct);
-//        }

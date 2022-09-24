@@ -32,7 +32,7 @@ public class SellerCustomization {
         this.customizationPrice = 0d;
     }
     public void removeArea(SellerArea sellerArea){
-        this.areas.remove(sellerArea);
+//        this.areas.remove(sellerArea);
         sellerArea.getCustomizations().remove(this);
     }
     public void removeAllAreas(){

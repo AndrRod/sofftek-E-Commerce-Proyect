@@ -52,7 +52,7 @@ public class SellerArea {
         });
     }
     public void removeProduct(SellerProduct sellerProduct){
-        this.sellerProducts.remove(sellerProduct);
+//        this.sellerProducts.remove(sellerProduct);
         sellerProduct.getAreas().remove(this);
     }
     public void removeAllProducts(List<SellerProduct> products){
