@@ -6,7 +6,7 @@ import com.LicuadoraProyectoEcommerce.dto.UserDto;
 import com.LicuadoraProyectoEcommerce.dto.UserDtoComplete;
 import com.LicuadoraProyectoEcommerce.dto.mapper.UserMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
-import com.LicuadoraProyectoEcommerce.model.User;
+import com.LicuadoraProyectoEcommerce.model.userAuth.User;
 import com.LicuadoraProyectoEcommerce.repository.UserRepository;
 import com.LicuadoraProyectoEcommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

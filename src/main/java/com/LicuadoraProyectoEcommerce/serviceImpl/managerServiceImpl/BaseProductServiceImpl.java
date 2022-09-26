@@ -43,8 +43,8 @@ public class BaseProductServiceImpl implements BaseProductService {
     @Override
     public BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto, HttpServletRequest request) {
         BaseProduct baseProduct = baseProductMapper.getEntityCreateFromDto(baseProductDto);
-        baseProduct.setManager(userAuthService.findManagerLogged(request)); //TODO VERIFICAR QUE TOME MANAGER Y USAR HARCODEADO PARA PRUEBAS
-//        baseProduct.setManager(managerRepository.findById(1L).get());
+//        baseProduct.setManager(userAuthService.findManagerLogged(request)); //TODO VERIFICAR QUE TOME MANAGER Y USAR HARCODEADO PARA PRUEBAS
+        baseProduct.setManager(managerRepository.findById(1L).get());
         return baseProductMapper.getDtoFromEntity(baseProductRepository.save(baseProduct));
     }
 

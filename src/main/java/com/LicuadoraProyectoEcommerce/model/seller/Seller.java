@@ -1,6 +1,5 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
-import com.LicuadoraProyectoEcommerce.model.User;
-import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
+import com.LicuadoraProyectoEcommerce.model.userAuth.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +19,8 @@ public class Seller {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "seller")
     private List<SellerProduct> sellerProducts;
+
+    public Seller(User user) {
+        this.user=user;
+    }
 }

@@ -1,5 +1,6 @@
-package com.LicuadoraProyectoEcommerce.model;
+package com.LicuadoraProyectoEcommerce.model.userAuth;
 
+import com.LicuadoraProyectoEcommerce.model.userAuth.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.model;
+package com.LicuadoraProyectoEcommerce.model.userAuth;
 
 import org.springframework.security.core.GrantedAuthority;
 

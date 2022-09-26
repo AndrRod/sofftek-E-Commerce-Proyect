@@ -6,7 +6,7 @@ import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
-import com.LicuadoraProyectoEcommerce.model.User;
+import com.LicuadoraProyectoEcommerce.model.userAuth.User;
 import com.LicuadoraProyectoEcommerce.model.manager.Manager;
 import com.LicuadoraProyectoEcommerce.model.seller.Seller;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;

@@ -20,7 +20,7 @@ public class BaseProductMapper {
     public List<BaseProductDtoComplete> getListDtoCompleteFromListEntity(List<BaseProduct> baseProducts){return baseProducts.stream().map(this::getDtoFromEntity).collect(Collectors.toList());}
 
     public BaseProduct getEntityCreateFromDto(BaseProductDto baseProductDto){
-        return new BaseProduct(baseProductDto.getName(), baseProductDto.getEstimatedPrice(), baseProductDto.getDescription(), baseProductDto.getDaysToManufacture(), new ArrayList<>()); //TODO se crea producto agregar manager logeado
+        return new BaseProduct(baseProductDto.getName(), baseProductDto.getEstimatedPrice(), baseProductDto.getDescription(), baseProductDto.getDaysToManufacture(), new ArrayList<>());
     }
     public BaseProduct getEntityUpdateFromDto(BaseProduct baseProduct, BaseProductDto baseProductDto){
         Stream.of(baseProductDto).forEach((dto)-> {

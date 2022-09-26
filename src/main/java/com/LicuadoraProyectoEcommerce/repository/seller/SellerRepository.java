@@ -1,6 +1,6 @@
 package com.LicuadoraProyectoEcommerce.repository.seller;
 import com.LicuadoraProyectoEcommerce.model.seller.Seller;
-import com.LicuadoraProyectoEcommerce.model.User;
+import com.LicuadoraProyectoEcommerce.model.userAuth.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

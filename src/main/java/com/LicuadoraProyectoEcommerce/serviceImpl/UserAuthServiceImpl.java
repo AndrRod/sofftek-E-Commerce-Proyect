@@ -1,7 +1,6 @@
 package com.LicuadoraProyectoEcommerce.serviceImpl;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.config.security.SecurityConfig;
-import com.LicuadoraProyectoEcommerce.controller.SellerProductController;
 import com.LicuadoraProyectoEcommerce.dto.UserCreateDto;
 import com.LicuadoraProyectoEcommerce.dto.UserDto;
 import com.LicuadoraProyectoEcommerce.dto.mapper.UserMapper;
@@ -10,20 +9,18 @@ import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
-import com.LicuadoraProyectoEcommerce.model.*;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.manager.Manager;
 import com.LicuadoraProyectoEcommerce.model.seller.Seller;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
+import com.LicuadoraProyectoEcommerce.model.userAuth.Role;
+import com.LicuadoraProyectoEcommerce.model.userAuth.User;
 import com.LicuadoraProyectoEcommerce.repository.manager.BaseProductRepository;
 import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerProductRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerRepository;
 import com.LicuadoraProyectoEcommerce.repository.UserRepository;
 import com.LicuadoraProyectoEcommerce.service.UserAuthService;
-import com.LicuadoraProyectoEcommerce.service.managerService.BaseProductService;
-import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
-import com.LicuadoraProyectoEcommerce.service.sellerService.SellerService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -31,15 +28,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -211,8 +200,8 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         Seller seller = sellerRepository.findByUser(user).orElse(null);
         if(manager != null) managerRepository.delete(manager);
         if(seller != null) sellerRepository.delete(seller);
-        if(user.getRole()== Role.MANAGER) managerRepository.save(new Manager(null, user, null));
-        if(user.getRole()== Role.SELLER) sellerRepository.save(new Seller(null, user, null));
+        if(user.getRole()== Role.MANAGER) managerRepository.save(new Manager(user));
+        if(user.getRole()== Role.SELLER) sellerRepository.save(new Seller(user));
         return new MessageInfo(messageHandler.message("update.success", "to role: " + roleName), 200, request.getRequestURL().toString());
     }
 
@@ -222,7 +211,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         if(user.getRole()== null)  throw new BadRequestException(messageHandler.message("havent.role", null));
         user.setRole(Role.NONE);
         userRepository.save(user);
-        Manager manager = managerRepository.findByUser(user).orElse(null); //TODO VERIFICAR SI FUNCIONA BIEN
+        Manager manager = managerRepository.findByUser(user).orElse(null);
         Seller seller = sellerRepository.findByUser(user).orElse(null);
         if(manager != null) managerRepository.delete(manager);
         if(seller != null) sellerRepository.delete(seller);

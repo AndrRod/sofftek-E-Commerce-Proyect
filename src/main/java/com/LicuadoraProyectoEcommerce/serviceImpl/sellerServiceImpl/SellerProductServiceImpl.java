@@ -14,6 +14,7 @@ import com.LicuadoraProyectoEcommerce.repository.manager.EnableAreaRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerAreaRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerCustomizationRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerProductRepository;
+import com.LicuadoraProyectoEcommerce.repository.seller.SellerRepository;
 import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
 import io.vavr.control.Try;
@@ -47,6 +48,9 @@ public class SellerProductServiceImpl implements SellerProductService {
     private SellerAreaRepository sellerAreaRepository;
     @Autowired
     private UserAuthService userAuthService;
+    @Autowired
+    private SellerRepository sellerRepository;
+
     @Override
     public SellerProduct findEntityById(Long id) {
         return sellerProductRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
@@ -83,7 +87,8 @@ public class SellerProductServiceImpl implements SellerProductService {
             sellerArea.getCustomizations().addAll(listSellerCustomization);
             sellerProduct.addAreaToSellerProduct(sellerArea);
         });
-        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
+//        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
+        sellerProduct.setSeller(sellerRepository.findById(1L).get());
         return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
     }
 

@@ -1,6 +1,6 @@
 package com.LicuadoraProyectoEcommerce.model.manager;
 
-import com.LicuadoraProyectoEcommerce.model.User;
+import com.LicuadoraProyectoEcommerce.model.userAuth.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -22,6 +22,9 @@ public class Manager{
     private User user;
     @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL, mappedBy = "manager")
     private List<BaseProduct> baseProducts;
+    public Manager(User user){
+        this.user=user;
+    }
     public Manager(){
         this.baseProducts = new ArrayList<>();
     }

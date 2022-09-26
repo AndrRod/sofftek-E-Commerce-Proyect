@@ -1,4 +1,5 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.OrderProduct;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,13 +35,15 @@ public class SellerProduct {
             joinColumns = @JoinColumn(name = "product_seller_id"),
             inverseJoinColumns = @JoinColumn(name = "seller_area_id"))
     private List<SellerArea> areas = new ArrayList<>();
-
+    @OneToMany(mappedBy = "sellerProduct", cascade = CascadeType.ALL)
+    private List<OrderProduct> orderProducts;
     public SellerProduct(Double basePrice, BaseProduct baseProduct){
         this.basePrice = basePrice;
         this.baseProduct=baseProduct;
     }
     public SellerProduct(){
         this.finalPrice = 0d;
+        this.orderProducts = new ArrayList<>();
     }
     public void addAreaToSellerProduct(SellerArea sellerArea) {
         areas.add(sellerArea);

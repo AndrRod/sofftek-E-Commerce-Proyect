@@ -1,6 +1,6 @@
 package com.LicuadoraProyectoEcommerce.message;
 
-import com.LicuadoraProyectoEcommerce.model.Role;
+import com.LicuadoraProyectoEcommerce.model.userAuth.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
