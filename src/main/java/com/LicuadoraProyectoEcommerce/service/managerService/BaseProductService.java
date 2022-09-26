@@ -5,11 +5,12 @@ import com.LicuadoraProyectoEcommerce.dto.BaseProductDtoComplete;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
 public interface BaseProductService {
-    BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto);
+    BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto, HttpServletRequest request);
     BaseProductDtoComplete getBaseProductById(Long id);
     List<BaseProductDtoComplete> getBaseProductListPage(Integer page);
     Map<String, String> deleteBaseProductById(Long id);

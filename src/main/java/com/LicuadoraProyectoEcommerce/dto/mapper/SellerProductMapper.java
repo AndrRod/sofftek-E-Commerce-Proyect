@@ -34,7 +34,7 @@ public class SellerProductMapper {
     public List<SellerProductCompleteDto> getListCompleteDtoFromEntityList(List<SellerProduct> sellerProducts){
         return sellerProducts.stream().map(this::getCompleteDtoFromEntity).collect(Collectors.toList());
     }
-    public SellerProduct createEntityFromDto(BaseProduct baseProduct, SellerProductPriceForm sellerProductPriceForm){
-        return new SellerProduct(sellerProductPriceForm.getBasePrice(), baseProduct, repository.findById(1L).get()); //TODO falta metodo de busqueda por usuario logeado y agregar
+    public SellerProduct createEntityFromDto(BaseProduct baseProduct, SellerProductPriceForm sellerProductPriceForm){ //TODO agregar usuario logeado
+        return new SellerProduct(sellerProductPriceForm.getBasePrice(), baseProduct);
     }
 }

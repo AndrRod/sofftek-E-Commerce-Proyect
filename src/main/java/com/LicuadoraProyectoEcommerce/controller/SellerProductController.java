@@ -5,6 +5,7 @@ import com.LicuadoraProyectoEcommerce.dto.SellerProductDto;
 import com.LicuadoraProyectoEcommerce.form.SellerProductPriceForm;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
+import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.managerService.BaseProductService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -23,10 +25,12 @@ public class SellerProductController {
     private SellerProductService sellerProductService;
     @Autowired
     private BaseProductService baseProductService;
+    @Autowired
+    private UserAuthService userAuthService;
     @PostMapping("/{id}")
-    public ResponseEntity<SellerProductDto> createEntity(@PathVariable String id, @RequestBody SellerProductPriceForm priceForm){
+    public ResponseEntity<SellerProductDto> createEntity(@PathVariable String id, @RequestBody SellerProductPriceForm priceForm, HttpServletRequest request){
         BaseProduct baseProduct = baseProductService.findEntityById(Long.valueOf(id));
-        return ResponseEntity.status(201).body(sellerProductService.createAndUpdateEntity(baseProduct,priceForm));
+        return ResponseEntity.status(201).body(sellerProductService.createEntity(baseProduct,priceForm, request));
     }
     @GetMapping
     public ResponseEntity<List<SellerProductCompleteDto>> getDtoListPagination(@RequestParam String page){
@@ -37,7 +41,8 @@ public class SellerProductController {
         return ResponseEntity.status(201).body(sellerProductService.findById(Long.valueOf(id)));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>> deleteById(@PathVariable String id){
+    public ResponseEntity<Map<String, String>> deleteById(@PathVariable String id, HttpServletRequest request){
+        //        userAuthService.isSellerProductSellerCreator(request, sellerProductService.findEntityById(Long.valueOf(id))); //TODO PRUEBA DE FILTRO POR USUARIO CREADOR DEL PRODUCTO
         return ResponseEntity.status(201).body(sellerProductService.deleteById(Long.valueOf(id)));
     }
 }

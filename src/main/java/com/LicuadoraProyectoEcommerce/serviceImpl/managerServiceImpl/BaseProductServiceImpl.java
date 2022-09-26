@@ -12,12 +12,14 @@ import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import com.LicuadoraProyectoEcommerce.repository.manager.BaseProductRepository;
 import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerCustomizationRepository;
+import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.managerService.BaseProductService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,14 +35,16 @@ public class BaseProductServiceImpl implements BaseProductService {
     private MessageHandler messageHandler;
     @Autowired
     private ManagerRepository managerRepository;
-    @Autowired
-    private SellerProductService sellerProductService;
+
     @Autowired
     private SellerCustomizationRepository sellerCustomizationRepository;
+    @Autowired
+    private UserAuthService userAuthService;
     @Override
-    public BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto) {
+    public BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto, HttpServletRequest request) {
         BaseProduct baseProduct = baseProductMapper.getEntityCreateFromDto(baseProductDto);
-        baseProduct.setManager(managerRepository.findById(2L).get()); //TODO buscar usario logeado
+        baseProduct.setManager(userAuthService.findManagerLogged(request)); //TODO VERIFICAR QUE TOME MANAGER Y USAR HARCODEADO PARA PRUEBAS
+//        baseProduct.setManager(managerRepository.findById(1L).get());
         return baseProductMapper.getDtoFromEntity(baseProductRepository.save(baseProduct));
     }
 

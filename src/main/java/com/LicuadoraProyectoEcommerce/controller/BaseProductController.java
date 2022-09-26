@@ -3,13 +3,16 @@ package com.LicuadoraProyectoEcommerce.controller;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDto;
 import com.LicuadoraProyectoEcommerce.dto.BaseProductDtoComplete;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
+import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.managerService.BaseProductService;
 import com.LicuadoraProyectoEcommerce.service.managerService.EnabledAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +24,11 @@ public class BaseProductController {
     private BaseProductService baseProductService;
     @Autowired
     private EnabledAreaService enabledAreaService;
+    @Autowired
+    private UserAuthService userAuthService;
     @PostMapping
-    ResponseEntity<BaseProductDtoComplete> createProduct(@RequestBody @Valid BaseProductDto productDto){
-        return ResponseEntity.status(201).body(baseProductService.createBaseProduct(productDto));
+    ResponseEntity<BaseProductDtoComplete> createProduct(@RequestBody @Valid BaseProductDto productDto, HttpServletRequest request){
+        return ResponseEntity.status(201).body(baseProductService.createBaseProduct(productDto, request));
     }
     @GetMapping("/{id}")
     ResponseEntity<BaseProductDtoComplete> getProductById(@PathVariable String id){

@@ -14,12 +14,14 @@ import com.LicuadoraProyectoEcommerce.repository.manager.EnableAreaRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerAreaRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerCustomizationRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerProductRepository;
+import com.LicuadoraProyectoEcommerce.service.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,7 +45,8 @@ public class SellerProductServiceImpl implements SellerProductService {
     private SellerCustomizationRepository sellerCustomizationRepository;
     @Autowired
     private SellerAreaRepository sellerAreaRepository;
-
+    @Autowired
+    private UserAuthService userAuthService;
     @Override
     public SellerProduct findEntityById(Long id) {
         return sellerProductRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
@@ -65,7 +68,7 @@ public class SellerProductServiceImpl implements SellerProductService {
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
     @Override
-    public SellerProductDto createAndUpdateEntity(BaseProduct baseProduct, SellerProductPriceForm sellerProductPriceForm) {
+    public SellerProductDto createEntity(BaseProduct baseProduct, SellerProductPriceForm sellerProductPriceForm, HttpServletRequest request) {
         SellerProduct sellerProduct = sellerProductMapper.createEntityFromDto(baseProduct, sellerProductPriceForm);
         baseProduct.getEnabledAreas().stream().forEach(enabledArea -> {
             List<SellerCustomization> listSellerCustomization = new ArrayList<>();
@@ -80,6 +83,7 @@ public class SellerProductServiceImpl implements SellerProductService {
             sellerArea.getCustomizations().addAll(listSellerCustomization);
             sellerProduct.addAreaToSellerProduct(sellerArea);
         });
+        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
         return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
     }
 

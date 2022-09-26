@@ -7,6 +7,9 @@ import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.User;
+import com.LicuadoraProyectoEcommerce.model.manager.Manager;
+import com.LicuadoraProyectoEcommerce.model.seller.Seller;
+import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,9 +23,14 @@ public interface UserAuthService {
     User findUserLogedByEmail(HttpServletRequest request);
     String emailUserLoged(HttpServletRequest request);
     MessageInfo updateUserRol(Long idUser, String roleName, HttpServletRequest request);
-    void isTheUserCreatorOfProduct(User user, HttpServletRequest request, BaseProduct product);
     User getUserLoged(HttpServletRequest request);
     User findUserByEmail(String email);
 
     Map<String, String> deleteManagerOrSellerByIdUser(Long id);
+    void isManagerProductCreator(HttpServletRequest request, BaseProduct baseProduct);
+    void isSellerProductSellerCreator(HttpServletRequest request, SellerProduct sellerProduct);
+
+    Seller findSellerLogged(HttpServletRequest request);
+
+    Manager findManagerLogged(HttpServletRequest request);
 }

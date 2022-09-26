@@ -1,6 +1,7 @@
 package com.LicuadoraProyectoEcommerce.serviceImpl;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.config.security.SecurityConfig;
+import com.LicuadoraProyectoEcommerce.controller.SellerProductController;
 import com.LicuadoraProyectoEcommerce.dto.UserCreateDto;
 import com.LicuadoraProyectoEcommerce.dto.UserDto;
 import com.LicuadoraProyectoEcommerce.dto.mapper.UserMapper;
@@ -13,10 +14,16 @@ import com.LicuadoraProyectoEcommerce.model.*;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.manager.Manager;
 import com.LicuadoraProyectoEcommerce.model.seller.Seller;
+import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
+import com.LicuadoraProyectoEcommerce.repository.manager.BaseProductRepository;
 import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
+import com.LicuadoraProyectoEcommerce.repository.seller.SellerProductRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerRepository;
 import com.LicuadoraProyectoEcommerce.repository.UserRepository;
 import com.LicuadoraProyectoEcommerce.service.UserAuthService;
+import com.LicuadoraProyectoEcommerce.service.managerService.BaseProductService;
+import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
+import com.LicuadoraProyectoEcommerce.service.sellerService.SellerService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -24,7 +31,15 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -51,13 +66,18 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     private UserMapper userMapper;
     @Autowired
     private MessageHandler messageHandler;
-
     @Autowired
     private ManagerRepository managerRepository;
     @Autowired
     private SellerRepository sellerRepository;
     @Autowired
     private SecurityConfig securityConfig;
+    @Autowired
+    private SellerProductRepository sellerProductRepository;
+    @Autowired
+    private BaseProductRepository baseProductRepository;
+
+
     public User findUserEntityById(Long id) {
         return userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }
@@ -67,7 +87,6 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         User user= userRepository.save(userMapper.getEntityCreateFromDto(userDto));
         return userMapper.getDtoFromEntity(user);
     }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = findUserByEmail(email);
@@ -134,7 +153,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     }
     @Override
     public User findUserByEmail(String email) {
-        return Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(() -> new NotFoundException(messageHandler.message("not.found.email", email)));
+            return Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(() -> new NotFoundException(messageHandler.message("not.found.email", email)));
     }
 
 
@@ -146,12 +165,31 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     }
 
 
+
     @Override
-    public void isTheUserCreatorOfProduct(User user, HttpServletRequest request, BaseProduct product) {
-        User u = getUserLoged(request);
-        if(!user.equals(u) && !u.getRole().equals(Role.MANAGER))throw new NotFoundException(messageHandler.message("not.authorizate", null));
+    public Seller findSellerLogged(HttpServletRequest request) {
+        User sellerUser = findUserLogedByEmail(request);
+        return sellerRepository.findByUser(sellerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.permissions", "seller")));
     }
 
+    @Override
+    public Manager findManagerLogged(HttpServletRequest request) {
+        User managerUser = findUserLogedByEmail(request);
+        return managerRepository.findByUser(managerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.permissions", "manager")));
+    }
+
+    @Override
+    public void isSellerProductSellerCreator(HttpServletRequest request, SellerProduct sellerProduct){
+        User  sellerUser = findUserLogedByEmail(request);
+        Seller seller = sellerRepository.findByUser(sellerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.authorizate", "seller")));
+        if(!sellerUser.getRole().equals(Role.SELLER) || !seller.getSellerProducts().contains(sellerProduct)) throw new BadRequestException(messageHandler.message("not.creator", "seller"));
+    }
+    @Override
+    public void isManagerProductCreator(HttpServletRequest request, BaseProduct baseProduct){
+        User  managerUser = findUserLogedByEmail(request);
+        Manager manager = managerRepository.findByUser(managerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.authorizate", "manager")));
+        if(!managerUser.getRole().equals(Role.MANAGER) || !manager.getBaseProducts().contains(baseProduct)) throw new BadRequestException(messageHandler.message("not.creator", "manager"));
+    }
     @Override
     public User getUserLoged(HttpServletRequest request) {
         String autorizacionHeader = request.getHeader(AUTHORIZATION);
@@ -169,8 +207,8 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         if(user.getRole()!= null) {if( roleName.equals(user.getRole().name())) throw new BadRequestException(messageHandler.message("same.role", roleName));}
         Try.of(() -> {user.setRole(Role.valueOf(roleName)); return userRepository.save(user);
         }).onFailure(e -> {throw new NotFoundException(messageHandler.message("not.found.rol", roleName));});
-        Manager manager = managerRepository.findByUser(user);
-        Seller seller = sellerRepository.findByUser(user);
+        Manager manager = managerRepository.findByUser(user).orElse(null);
+        Seller seller = sellerRepository.findByUser(user).orElse(null);
         if(manager != null) managerRepository.delete(manager);
         if(seller != null) sellerRepository.delete(seller);
         if(user.getRole()== Role.MANAGER) managerRepository.save(new Manager(null, user, null));
@@ -184,12 +222,10 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         if(user.getRole()== null)  throw new BadRequestException(messageHandler.message("havent.role", null));
         user.setRole(Role.NONE);
         userRepository.save(user);
-        Manager manager = managerRepository.findByUser(user);
-        Seller seller = sellerRepository.findByUser(user);
+        Manager manager = managerRepository.findByUser(user).orElse(null); //TODO VERIFICAR SI FUNCIONA BIEN
+        Seller seller = sellerRepository.findByUser(user).orElse(null);
         if(manager != null) managerRepository.delete(manager);
         if(seller != null) sellerRepository.delete(seller);
         return Map.of("Message", messageHandler.message("delete.success.entityasociate", String.valueOf(id)));
     }
-
-
 }

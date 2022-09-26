@@ -35,10 +35,9 @@ public class SellerProduct {
             inverseJoinColumns = @JoinColumn(name = "seller_area_id"))
     private List<SellerArea> areas = new ArrayList<>();
 
-    public SellerProduct(Double basePrice, BaseProduct baseProduct, Seller seller){
+    public SellerProduct(Double basePrice, BaseProduct baseProduct){
         this.basePrice = basePrice;
         this.baseProduct=baseProduct;
-        this.seller=seller;
     }
     public SellerProduct(){
         this.finalPrice = 0d;
