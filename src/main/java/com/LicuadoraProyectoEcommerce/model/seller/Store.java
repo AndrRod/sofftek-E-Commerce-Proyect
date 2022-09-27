@@ -21,7 +21,7 @@ public class Store {
     private List<PaymentMethod> paymentMethods;
     @OneToOne(mappedBy = "store")
     private Seller seller;
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store")
     private List<SellerProduct> sellerProducts;
     public Store(){
         this.sellerProducts = new ArrayList<>();
@@ -30,5 +30,13 @@ public class Store {
     public Store(String name, String description){
         this.name = name;
         this.description = description;
+    }
+    public void addNewProduct(SellerProduct product){
+        this.getSellerProducts().add(product);
+        product.setStore(this);
+    }
+    public void removeNewProduct(SellerProduct product){
+        this.getSellerProducts().remove(product);
+        product.setStore(null);
     }
 }

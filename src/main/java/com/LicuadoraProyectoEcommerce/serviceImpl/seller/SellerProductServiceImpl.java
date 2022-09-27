@@ -75,9 +75,7 @@ public class SellerProductServiceImpl implements SellerProductService {
         SellerProduct sellerProduct = sellerProductMapper.createEntityFromDto(baseProduct, sellerProductPriceForm);
         //        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
         Seller seller = sellerRepository.findById(1L).get();
-        if(seller.getStore()==null) throw new NotFoundException(messageHandler.message("store.not.found", seller.getUser().getName()));
         sellerProduct.setSeller(seller);
-        sellerProduct.setStore(seller.getStore());
         baseProduct.getEnabledAreas().stream().forEach(enabledArea -> {
             List<SellerCustomization> listSellerCustomization = new ArrayList<>();
             SellerArea sellerArea = new SellerArea();

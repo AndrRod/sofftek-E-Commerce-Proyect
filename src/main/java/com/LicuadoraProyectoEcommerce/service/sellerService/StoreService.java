@@ -16,4 +16,6 @@ public interface StoreService {
     Map<String, String> deleteById(Long id);
     SellerStoreCompleteDto addNewPaymentMethod(Long id, String newPayMethod);
     SellerStoreCompleteDto removePaymentMethod(Long id, String newPayMethod);
+    SellerStoreCompleteDto addProductById(Long idStore, Long idProduct);
+    SellerStoreCompleteDto removeProductById(Long idStore, Long idProduct);
 }

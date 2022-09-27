@@ -6,15 +6,19 @@ import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreDto;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.mapper.seller.StoreMapper;
 import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
+import com.LicuadoraProyectoEcommerce.model.seller.Seller;
+import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import com.LicuadoraProyectoEcommerce.model.seller.Store;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.StoreRepository;
+import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.StoreService;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 import java.util.Map;
 @Service
 public class StoreServiceImpl implements StoreService {
@@ -26,12 +30,15 @@ public class StoreServiceImpl implements StoreService {
     private MessageHandler messageHandler;
     @Autowired
     private SellerRepository sellerRepository;
+    @Autowired
+    private SellerProductService sellerProductService;
     @Override
     public SellerStoreCompleteDto createEntity(SellerStoreDto sellerStoreDto, HttpServletRequest request) {
         Store store= storeMapper.createEntityFromDto(sellerStoreDto);
         //        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
 // TODO AGREGAR METODO QUE VERIFIQUE QUE EL USARIO SOLO TIENE UNA TIENDA
-        store.setSeller(sellerRepository.findById(1L).get());
+        Seller seller = sellerRepository.findById(1L).get();
+        seller.setStore(store);
         return storeMapper.getCompleteDtoFromEntity(storeRepository.save(store));
     }
 
@@ -61,14 +68,30 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public SellerStoreCompleteDto addNewPaymentMethod(Long id, String newPayMethod) {
         Store store = findEntityById(id);
-        Try.of(()-> store.getPaymentMethods().add(PaymentMethod.valueOf(newPayMethod))).getOrElseThrow(()-> new NotFoundException(messageHandler.message("method.not.found", newPayMethod)));
+        Try.of(()-> store.getPaymentMethods().add(PaymentMethod.valueOf(newPayMethod.toUpperCase(Locale.ROOT)))).getOrElseThrow(()-> new NotFoundException(messageHandler.message("method.not.found", newPayMethod)));
         return storeMapper.getCompleteDtoFromEntity(storeRepository.save(store));
     }
 
     @Override
     public SellerStoreCompleteDto removePaymentMethod(Long id, String newPayMethod) {
         Store store = findEntityById(id);
-        Try.of(()-> store.getPaymentMethods().remove(PaymentMethod.valueOf(newPayMethod))).getOrElseThrow(()-> new NotFoundException(messageHandler.message("method.not.found", newPayMethod)));
+        Try.of(()-> store.getPaymentMethods().remove(PaymentMethod.valueOf(newPayMethod.toUpperCase(Locale.ROOT)))).getOrElseThrow(()-> new NotFoundException(messageHandler.message("method.not.found", newPayMethod)));
+        return storeMapper.getCompleteDtoFromEntity(storeRepository.save(store));
+    }
+
+    @Override
+    public SellerStoreCompleteDto addProductById(Long idStore, Long idProduct) {
+        SellerProduct sellerProduct = sellerProductService.findEntityById(idProduct);
+        Store store = findEntityById(idProduct);
+        store.addNewProduct(sellerProduct);
+        return storeMapper.getCompleteDtoFromEntity(storeRepository.save(store));
+    }
+
+    @Override
+    public SellerStoreCompleteDto removeProductById(Long idStore, Long idProduct) {
+        SellerProduct sellerProduct = sellerProductService.findEntityById(idProduct);
+        Store store = findEntityById(idProduct);
+        store.removeNewProduct(sellerProduct);
         return storeMapper.getCompleteDtoFromEntity(storeRepository.save(store));
     }
 }
