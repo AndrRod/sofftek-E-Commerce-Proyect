@@ -19,11 +19,17 @@ public class ShoppingCart {
     private Double finalPrice;
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts;
-    public ShoppingCart(){this.orderProducts = new ArrayList<>();
+    public ShoppingCart(){
+        this.orderProducts = new ArrayList<>();
+    }
+    public ShoppingCart(String buyerName, String buyerEmail, String buyerDni){
+        this.buyerName = buyerName;
+        this.buyerEmail = buyerEmail;
+        this.buyerDni = buyerDni;
     }
 
     public Double getFinalPrice() {
-        orderProducts.stream().forEach(orderProduct -> {
+        if(orderProducts!=null) orderProducts.stream().forEach(orderProduct -> {
               this.finalPrice += orderProduct.getFinalPricePerQuantity();});
         return finalPrice;
     }

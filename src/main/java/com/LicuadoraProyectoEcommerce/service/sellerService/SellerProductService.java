@@ -1,8 +1,8 @@
 package com.LicuadoraProyectoEcommerce.service.sellerService;
 
 
-import com.LicuadoraProyectoEcommerce.dto.SellerProductCompleteDto;
-import com.LicuadoraProyectoEcommerce.dto.SellerProductDto;
+import com.LicuadoraProyectoEcommerce.dto.seller.SellerProductCompleteDto;
+import com.LicuadoraProyectoEcommerce.dto.seller.SellerProductDto;
 import com.LicuadoraProyectoEcommerce.form.SellerProductPriceForm;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;

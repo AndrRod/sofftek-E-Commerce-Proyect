@@ -1,7 +1,7 @@
 package com.LicuadoraProyectoEcommerce.service.managerService;
 
-import com.LicuadoraProyectoEcommerce.dto.EnabledAreaCompleteDto;
-import com.LicuadoraProyectoEcommerce.dto.EnabledAreaDto;
+import com.LicuadoraProyectoEcommerce.dto.manager.EnabledAreaCompleteDto;
+import com.LicuadoraProyectoEcommerce.dto.manager.EnabledAreaDto;
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 

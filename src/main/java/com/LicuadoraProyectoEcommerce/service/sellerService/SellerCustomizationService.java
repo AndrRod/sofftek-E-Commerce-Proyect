@@ -1,7 +1,7 @@
 package com.LicuadoraProyectoEcommerce.service.sellerService;
 
-import com.LicuadoraProyectoEcommerce.dto.SellerCustomizationCompleteDto;
-import com.LicuadoraProyectoEcommerce.dto.SellerCustomizationDto;
+import com.LicuadoraProyectoEcommerce.dto.seller.SellerCustomizationCompleteDto;
+import com.LicuadoraProyectoEcommerce.dto.seller.SellerCustomizationDto;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 
 import java.util.List;

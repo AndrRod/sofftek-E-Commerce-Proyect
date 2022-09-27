@@ -3,8 +3,10 @@ package com.LicuadoraProyectoEcommerce.model.shoppingCart;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -15,11 +17,9 @@ public class OrderProduct {
     private Long id;
 
     @ManyToOne
-    @MapsId("shoppingCart_id")
     @JoinColumn(name = "shoppingCart_id", referencedColumnName = "id")
     private ShoppingCart shoppingCart;
     @ManyToOne
-    @MapsId("sellerProduct_id")
     @JoinColumn(name = "sellerProduct_id", referencedColumnName = "id")
     private SellerProduct sellerProduct;
 
@@ -27,6 +27,8 @@ public class OrderProduct {
     @Transient
     private Double finalPricePerQuantity;
 
+    @CreationTimestamp
+    private LocalDateTime orderDate;
     public OrderProduct(){
         this.finalPricePerQuantity = 1d;
         this.quantityOfProducts = 1;

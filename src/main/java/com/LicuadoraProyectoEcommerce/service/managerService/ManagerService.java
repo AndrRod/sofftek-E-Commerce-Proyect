@@ -1,6 +1,6 @@
 package com.LicuadoraProyectoEcommerce.service.managerService;
 
-import com.LicuadoraProyectoEcommerce.dto.ManagerDto;
+import com.LicuadoraProyectoEcommerce.dto.manager.ManagerDto;
 
 import java.util.List;
 import java.util.Map;

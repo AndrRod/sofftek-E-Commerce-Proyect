@@ -1,6 +1,6 @@
 package com.LicuadoraProyectoEcommerce.service.managerService;
 
-import com.LicuadoraProyectoEcommerce.dto.CustomizationAllowedDto;
+import com.LicuadoraProyectoEcommerce.dto.manager.CustomizationAllowedDto;
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 
 import java.util.List;
