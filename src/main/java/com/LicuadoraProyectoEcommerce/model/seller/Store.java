@@ -2,6 +2,8 @@ package com.LicuadoraProyectoEcommerce.model.seller;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.*;
@@ -15,17 +17,18 @@ public class Store {
     private String description;
     @ElementCollection
     @CollectionTable(name = "payment_methods", joinColumns = @JoinColumn(name = "store_id"))
-    @Column(name = "payment_method_name")
-    private Set<String> paymentMethods;
-    @OneToOne
-    @JoinColumn(name = "seller_id", referencedColumnName = "id")
+    @Enumerated(value = EnumType.STRING)
+    private List<PaymentMethod> paymentMethods;
+    @OneToOne(mappedBy = "store")
     private Seller seller;
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<SellerProduct> sellerProducts;
     public Store(){
         this.sellerProducts = new ArrayList<>();
-        this.paymentMethods = new HashSet<>();
+        this.paymentMethods = new ArrayList<>();
     }
-    private void addNewsPaymentMethods(String ... newPayMethods){
-        Collections.addAll(this.paymentMethods, newPayMethods);}
+    public Store(String name, String description){
+        this.name = name;
+        this.description = description;
+    }
 }

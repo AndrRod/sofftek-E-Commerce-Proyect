@@ -16,7 +16,9 @@ public class Seller {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
+    @JoinColumn(name = "store_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Store store;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "seller")
     private List<SellerProduct> sellerProducts;
 

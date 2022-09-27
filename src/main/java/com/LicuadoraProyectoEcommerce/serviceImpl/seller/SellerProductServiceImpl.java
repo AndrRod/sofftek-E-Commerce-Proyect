@@ -7,6 +7,7 @@ import com.LicuadoraProyectoEcommerce.mapper.seller.SellerProductMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.SellerProductPriceForm;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
+import com.LicuadoraProyectoEcommerce.model.seller.Seller;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerArea;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
@@ -17,6 +18,7 @@ import com.LicuadoraProyectoEcommerce.repository.seller.SellerProductRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerRepository;
 import com.LicuadoraProyectoEcommerce.service.UserAuth.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
+import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -71,6 +73,11 @@ public class SellerProductServiceImpl implements SellerProductService {
     @Override
     public SellerProductDto createEntity(BaseProduct baseProduct, SellerProductPriceForm sellerProductPriceForm, HttpServletRequest request) {
         SellerProduct sellerProduct = sellerProductMapper.createEntityFromDto(baseProduct, sellerProductPriceForm);
+        //        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
+        Seller seller = sellerRepository.findById(1L).get();
+        if(seller.getStore()==null) throw new NotFoundException(messageHandler.message("store.not.found", seller.getUser().getName()));
+        sellerProduct.setSeller(seller);
+        sellerProduct.setStore(seller.getStore());
         baseProduct.getEnabledAreas().stream().forEach(enabledArea -> {
             List<SellerCustomization> listSellerCustomization = new ArrayList<>();
             SellerArea sellerArea = new SellerArea();
@@ -84,8 +91,6 @@ public class SellerProductServiceImpl implements SellerProductService {
             sellerArea.getCustomizations().addAll(listSellerCustomization);
             sellerProduct.addAreaToSellerProduct(sellerArea);
         });
-//        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
-        sellerProduct.setSeller(sellerRepository.findById(1L).get());
         return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
     }
 

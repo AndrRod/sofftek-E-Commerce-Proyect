@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.serviceImpl.shoppingCart;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ShoppingCartCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ShoppingCartDto;
+import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.mapper.shoppingCart.ShoppingCartMapper;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
@@ -26,8 +27,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartMapper shoppingCartMapper;
     @Override
     public ShoppingCartDto createEntity(ShoppingCartDto shoppingCartDto) {
-        ShoppingCart entity = shoppingCartRepository.save(shoppingCartMapper.getEntityFromDto(shoppingCartDto));
-        return shoppingCartMapper.getDtoFromEntity(entity);
+        ShoppingCart entity = shoppingCartMapper.getEntityFromDto(shoppingCartDto);
+        if(!entity.getOrderProducts().get(0).getSellerProduct().getStore().getPaymentMethods().contains(entity.getPaymentMethod())) throw new NotFoundException(messageHandler.message("payment.method.not.found", entity.getPaymentMethod().toString()));
+        return shoppingCartMapper.getDtoFromEntity(shoppingCartRepository.save(entity));
     }
 
     @Override

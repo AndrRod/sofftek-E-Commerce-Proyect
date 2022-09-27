@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.mapper.shoppingCart;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ProductDto;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ShoppingCartCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ShoppingCartDto;
+import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.OrderProduct;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
@@ -17,11 +18,10 @@ import java.util.stream.Stream;
 public class ShoppingCartMapper {
 
     public ShoppingCart getEntityFromDto(ShoppingCartDto shoppingCartDto){
-        return new ShoppingCart(shoppingCartDto.getBuyerName(), shoppingCartDto.getBuyerEmail(), shoppingCartDto.getBuyerDni());
+        return new ShoppingCart(shoppingCartDto.getBuyerName(), shoppingCartDto.getBuyerEmail(), shoppingCartDto.getBuyerDni(), PaymentMethod.valueOf(shoppingCartDto.getPaymentMethod()));
     }
     public ShoppingCartDto getDtoFromEntity(ShoppingCart shoppingCart){
-        return new ShoppingCartDto(shoppingCart.getId(), shoppingCart.getBuyerName(), shoppingCart.getBuyerEmail(), shoppingCart.getBuyerDni(), shoppingCart.getFinalPrice()
-        );
+        return new ShoppingCartDto(shoppingCart.getId(), shoppingCart.getBuyerName(), shoppingCart.getBuyerEmail(), shoppingCart.getBuyerDni(), shoppingCart.getFinalPrice(), shoppingCart.getPaymentMethod().toString());
     }
 
     public List<ShoppingCartDto> getListDtoFromListEntity(List<ShoppingCart> shoppingCartList){
