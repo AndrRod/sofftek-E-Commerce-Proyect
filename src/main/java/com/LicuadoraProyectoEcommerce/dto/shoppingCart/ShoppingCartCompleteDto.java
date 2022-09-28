@@ -25,6 +25,4 @@ public class ShoppingCartCompleteDto {
     private Double finalPrice;
     @JsonProperty("products ordered")
     private List<ProductDto> productsOrdered;
-    @JsonProperty("payment method")
-    private String paymentMethod;
 }

@@ -26,7 +26,4 @@ public class ShoppingCartDto {
     private String buyerDni;
     @JsonProperty("final price")
     private Double finalPrice;
-    @JsonProperty("payment method")
-    private String paymentMethod;
-//    TODO falta agregar la forma de pago el cliente tiene que seleccionar de la tienda la forma de pago
 }

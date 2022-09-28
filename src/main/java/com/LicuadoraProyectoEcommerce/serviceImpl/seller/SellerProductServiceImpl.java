@@ -51,7 +51,7 @@ public class SellerProductServiceImpl implements SellerProductService {
 
     @Override
     public SellerProduct findEntityById(Long id) {
-        return sellerProductRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
+        return sellerProductRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id) + " (seller product)")));
     }
 
     @Override

@@ -1,5 +1,4 @@
 package com.LicuadoraProyectoEcommerce.model.shoppingCart;
-import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,14 +14,14 @@ public class ShoppingCart {
     private String buyerName;
     private String buyerEmail;
     private String buyerDni;
-
-    private PaymentMethod paymentMethod;
     @Transient
     private Double finalPrice;
+
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts;
     public ShoppingCart(){
         this.orderProducts = new ArrayList<>();
+        this.finalPrice =  0d;
     }
     public ShoppingCart(String buyerName, String buyerEmail, String buyerDni){
         this.buyerName = buyerName;
@@ -31,8 +30,9 @@ public class ShoppingCart {
     }
 
     public Double getFinalPrice() {
-        if(orderProducts!=null) orderProducts.stream().forEach(orderProduct -> {
-              this.finalPrice += orderProduct.getFinalPricePerQuantity();});
+        if(orderProducts==null) return 0d;
+        orderProducts.stream().forEach(orderProduct -> {
+              finalPrice += orderProduct.getFinalPricePerQuantity();});
         return finalPrice;
     }
 }

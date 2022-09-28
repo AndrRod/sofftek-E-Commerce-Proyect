@@ -36,6 +36,8 @@ public class SellerProduct {
             joinColumns = @JoinColumn(name = "product_seller_id"),
             inverseJoinColumns = @JoinColumn(name = "seller_area_id"))
     private List<SellerArea> areas = new ArrayList<>();
+
+
     @OneToMany(mappedBy = "sellerProduct", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts;
     public SellerProduct(Double basePrice, BaseProduct baseProduct, String description){
@@ -52,6 +54,7 @@ public class SellerProduct {
     }
     public Double getFinalPrice() {
         if(this.finalPrice==null) return this.basePrice;
+        this.finalPrice = 0d;
         areas.stream().forEach(areas -> {
             this.finalPrice += areas.getCustomizations().stream().mapToDouble(SellerCustomization::getCustomizationPrice).sum();
         });

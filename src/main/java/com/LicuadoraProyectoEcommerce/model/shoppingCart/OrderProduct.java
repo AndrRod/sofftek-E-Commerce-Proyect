@@ -19,6 +19,7 @@ public class OrderProduct {
     @ManyToOne
     @JoinColumn(name = "shoppingCart_id", referencedColumnName = "id")
     private ShoppingCart shoppingCart;
+
     @ManyToOne
     @JoinColumn(name = "sellerProduct_id", referencedColumnName = "id")
     private SellerProduct sellerProduct;
@@ -30,10 +31,22 @@ public class OrderProduct {
     @CreationTimestamp
     private LocalDateTime orderDate;
     public OrderProduct(){
-        this.finalPricePerQuantity = 1d;
+        this.finalPricePerQuantity = 0d;
         this.quantityOfProducts = 1;
     }
-    public Double getFinalPricePerQuantity() {
-        return quantityOfProducts*sellerProduct.getFinalPrice();
+    public OrderProduct(ShoppingCart shoppingCart, SellerProduct sellerProduct, Integer quantityOfProducts){
+        this.shoppingCart = shoppingCart;
+        this.sellerProduct = sellerProduct;
+        this.quantityOfProducts = quantityOfProducts;
     }
+    public Double getFinalPricePerQuantity() {
+        this.finalPricePerQuantity = 0d;
+        Double price = sellerProduct.getFinalPrice();
+        finalPricePerQuantity = (quantityOfProducts==1 || quantityOfProducts ==0)? price: quantityOfProducts*Math.round(price);
+        return finalPricePerQuantity;
+    }
+    public Integer getQuantityOfProducts(){
+        if(quantityOfProducts==null || quantityOfProducts == 0) return this.quantityOfProducts= 1;
+        return this.quantityOfProducts;
+    };
 }
