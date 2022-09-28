@@ -36,8 +36,8 @@ public class StoreController {
     public ResponseEntity<SellerStoreCompleteDto> addNewPaymentMethod(@PathVariable String id, @RequestParam String paymethod){
         return ResponseEntity.status(201).body(storeService.addNewPaymentMethod(Long.valueOf(id), paymethod));
     }
-    @PostMapping("/{id}/remove")
+    @DeleteMapping("/{id}/remove")
     public ResponseEntity<SellerStoreCompleteDto> removePaymentMethod(@PathVariable String id, @RequestParam String paymethod){
-        return ResponseEntity.status(201).body(storeService.removePaymentMethod(Long.valueOf(id), paymethod));
+        return ResponseEntity.status(200).body(storeService.removePaymentMethod(Long.valueOf(id), paymethod));
     }
 }

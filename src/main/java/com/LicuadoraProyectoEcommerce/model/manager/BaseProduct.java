@@ -15,7 +15,6 @@ public class BaseProduct {
     private Long id;
     private String name;
     private Double estimatedPrice;
-    private String description;
     private Integer daysToManufacture;
     @OneToMany(mappedBy = "baseProduct", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SellerProduct> sellerProducts;
@@ -31,10 +30,9 @@ public class BaseProduct {
     public BaseProduct(){
         this.enabledAreas = new ArrayList<>();
     }
-    public BaseProduct(String name, Double estimatedPrice, String description, Integer daysToManufacture, List<EnabledArea> enabledAreas){
+    public BaseProduct(String name, Double estimatedPrice, Integer daysToManufacture, List<EnabledArea> enabledAreas){
         this.name = name;
         this.estimatedPrice = estimatedPrice;
-        this.description = description;
         this.daysToManufacture = daysToManufacture;
         this.enabledAreas=enabledAreas;
 

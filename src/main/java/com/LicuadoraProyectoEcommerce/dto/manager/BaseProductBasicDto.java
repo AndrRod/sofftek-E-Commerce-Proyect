@@ -8,5 +8,4 @@ import lombok.Setter;
 @Setter @AllArgsConstructor
 public class BaseProductBasicDto {
     private String name;
-    private String description;
 }

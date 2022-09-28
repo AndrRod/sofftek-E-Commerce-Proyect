@@ -30,6 +30,7 @@ public class SellerProduct {
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;
+    private String description;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH} )
     @JoinTable(name = "sellerProduct_area",
             joinColumns = @JoinColumn(name = "product_seller_id"),
@@ -37,9 +38,10 @@ public class SellerProduct {
     private List<SellerArea> areas = new ArrayList<>();
     @OneToMany(mappedBy = "sellerProduct", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts;
-    public SellerProduct(Double basePrice, BaseProduct baseProduct){
+    public SellerProduct(Double basePrice, BaseProduct baseProduct, String description){
         this.basePrice = basePrice;
         this.baseProduct=baseProduct;
+        this.description= description;
     }
     public SellerProduct(){
         this.finalPrice = 0d;
@@ -49,6 +51,7 @@ public class SellerProduct {
         areas.add(sellerArea);
     }
     public Double getFinalPrice() {
+        if(this.finalPrice==null) return this.basePrice;
         areas.stream().forEach(areas -> {
             this.finalPrice += areas.getCustomizations().stream().mapToDouble(SellerCustomization::getCustomizationPrice).sum();
         });

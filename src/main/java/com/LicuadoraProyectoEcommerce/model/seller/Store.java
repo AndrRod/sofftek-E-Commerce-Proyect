@@ -31,12 +31,4 @@ public class Store {
         this.name = name;
         this.description = description;
     }
-    public void addNewProduct(SellerProduct product){
-        this.getSellerProducts().add(product);
-        product.setStore(this);
-    }
-    public void removeNewProduct(SellerProduct product){
-        this.getSellerProducts().remove(product);
-        product.setStore(null);
-    }
 }

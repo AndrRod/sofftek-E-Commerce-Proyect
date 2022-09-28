@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.serviceImpl.seller;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreDto;
+import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.mapper.seller.StoreMapper;
 import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
@@ -30,8 +31,6 @@ public class StoreServiceImpl implements StoreService {
     private MessageHandler messageHandler;
     @Autowired
     private SellerRepository sellerRepository;
-    @Autowired
-    private SellerProductService sellerProductService;
     @Override
     public SellerStoreCompleteDto createEntity(SellerStoreDto sellerStoreDto, HttpServletRequest request) {
         Store store= storeMapper.createEntityFromDto(sellerStoreDto);
@@ -68,6 +67,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public SellerStoreCompleteDto addNewPaymentMethod(Long id, String newPayMethod) {
         Store store = findEntityById(id);
+        if(store.getPaymentMethods().contains(PaymentMethod.valueOf(newPayMethod.toUpperCase(Locale.ROOT)))) throw new BadRequestException(messageHandler.message("already.exists", newPayMethod));
         Try.of(()-> store.getPaymentMethods().add(PaymentMethod.valueOf(newPayMethod.toUpperCase(Locale.ROOT)))).getOrElseThrow(()-> new NotFoundException(messageHandler.message("method.not.found", newPayMethod)));
         return storeMapper.getCompleteDtoFromEntity(storeRepository.save(store));
     }
@@ -75,23 +75,8 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public SellerStoreCompleteDto removePaymentMethod(Long id, String newPayMethod) {
         Store store = findEntityById(id);
+        if(!store.getPaymentMethods().contains(PaymentMethod.valueOf(newPayMethod.toUpperCase(Locale.ROOT)))) throw new BadRequestException(messageHandler.message("already.deleted", newPayMethod));
         Try.of(()-> store.getPaymentMethods().remove(PaymentMethod.valueOf(newPayMethod.toUpperCase(Locale.ROOT)))).getOrElseThrow(()-> new NotFoundException(messageHandler.message("method.not.found", newPayMethod)));
-        return storeMapper.getCompleteDtoFromEntity(storeRepository.save(store));
-    }
-
-    @Override
-    public SellerStoreCompleteDto addProductById(Long idStore, Long idProduct) {
-        SellerProduct sellerProduct = sellerProductService.findEntityById(idProduct);
-        Store store = findEntityById(idProduct);
-        store.addNewProduct(sellerProduct);
-        return storeMapper.getCompleteDtoFromEntity(storeRepository.save(store));
-    }
-
-    @Override
-    public SellerStoreCompleteDto removeProductById(Long idStore, Long idProduct) {
-        SellerProduct sellerProduct = sellerProductService.findEntityById(idProduct);
-        Store store = findEntityById(idProduct);
-        store.removeNewProduct(sellerProduct);
         return storeMapper.getCompleteDtoFromEntity(storeRepository.save(store));
     }
 }

@@ -9,5 +9,5 @@ public class SellerProductDto {
     private Long id;
     private String name;
     private String description;
-    private Double basePrice;
+    private Double finalPrice;
 }
