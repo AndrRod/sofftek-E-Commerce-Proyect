@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.serviceImpl.seller;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerProductCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerProductDto;
+import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreDto;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.mapper.seller.SellerProductMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
@@ -47,8 +48,6 @@ public class SellerProductServiceImpl implements SellerProductService {
     private UserAuthService userAuthService;
     @Autowired
     private SellerRepository sellerRepository;
-    @Autowired
-    private StoreService storeService;
 
     @Override
     public SellerProduct findEntityById(Long id) {
@@ -64,6 +63,12 @@ public class SellerProductServiceImpl implements SellerProductService {
     public List<SellerProductCompleteDto> listDtoPagination(Integer page) {
         List<SellerProduct> products = sellerProductRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent();
         return sellerProductMapper.getListCompleteDtoFromEntityList(products);
+    }
+
+    @Override
+    public List<SellerProductDto> listPartDtoPagination(Integer page) {
+        List<SellerProduct> products = sellerProductRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent();
+        return sellerProductMapper.getListDtoFromEntityList(products);
     }
     @Override
     public Map<String, String> deleteById(Long id) {
@@ -131,4 +136,5 @@ public class SellerProductServiceImpl implements SellerProductService {
         sellerProduct.setStore(null);
         return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
     }
+
 }

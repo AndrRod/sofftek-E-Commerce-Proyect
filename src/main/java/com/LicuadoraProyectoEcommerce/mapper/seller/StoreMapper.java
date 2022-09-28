@@ -1,5 +1,6 @@
 package com.LicuadoraProyectoEcommerce.mapper.seller;
 
+import com.LicuadoraProyectoEcommerce.dto.seller.SellerProductDto;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreDto;
 import com.LicuadoraProyectoEcommerce.model.seller.Store;
@@ -22,8 +23,11 @@ public class StoreMapper {
          return new SellerStoreCompleteDto(store.getId(), store.getName(), store.getDescription(), store.getPaymentMethods(),
                  (store.getSellerProducts()==null) ? new ArrayList<>() :sellerProductMapper.getListDtoFromEntityList(store.getSellerProducts()));
      }
-    public List<SellerStoreCompleteDto> getListDtoFromEntityList(List<Store> stores){
-         return stores.stream().map(this::getCompleteDtoFromEntity).collect(Collectors.toList());
+     public SellerStoreDto getDtoFromEntity(Store store){
+        return new SellerStoreDto(store.getId(), store.getName(), store.getDescription());
+     }
+    public List<SellerStoreDto> getListDtoFromEntityList(List<Store> stores){
+         return stores.stream().map(this::getDtoFromEntity).collect(Collectors.toList());
      }
      public Store updateEntityFromDto(Store store, SellerStoreDto sellerStoreDto){
          Stream.of(sellerStoreDto).forEach(dto->{
@@ -32,4 +36,8 @@ public class StoreMapper {
          });
          return store;
      }
+
+    public SellerStoreCompleteDto getCompleteDtoAndProductPageFromEntity(Store store, List<SellerProductDto> listDto) {
+        return new SellerStoreCompleteDto(store.getId(), store.getName(), store.getDescription(), store.getPaymentMethods(),listDto);
+    }
 }

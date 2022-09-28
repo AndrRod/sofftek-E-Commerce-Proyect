@@ -21,4 +21,6 @@ public interface SellerProductService {
     void deleteByEntity(SellerProduct sellerProduct);
     SellerProductDto addStoreById(Long idProduct);
     SellerProductDto removeStoreById(Long idProduct);
+
+    List<SellerProductDto> listPartDtoPagination(Integer page);
 }
