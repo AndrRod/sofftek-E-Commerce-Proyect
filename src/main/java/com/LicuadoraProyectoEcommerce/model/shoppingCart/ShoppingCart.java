@@ -24,11 +24,10 @@ public class ShoppingCart {
     public ShoppingCart(){
         this.orderProducts = new ArrayList<>();
     }
-    public ShoppingCart(String buyerName, String buyerEmail, String buyerDni, PaymentMethod paymentMethod){
+    public ShoppingCart(String buyerName, String buyerEmail, String buyerDni){
         this.buyerName = buyerName;
         this.buyerEmail = buyerEmail;
         this.buyerDni = buyerDni;
-        this.paymentMethod = paymentMethod;
     }
 
     public Double getFinalPrice() {

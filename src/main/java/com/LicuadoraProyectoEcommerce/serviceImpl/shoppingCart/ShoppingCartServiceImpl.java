@@ -28,7 +28,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCartDto createEntity(ShoppingCartDto shoppingCartDto) {
         ShoppingCart entity = shoppingCartMapper.getEntityFromDto(shoppingCartDto);
-        if(!entity.getOrderProducts().get(0).getSellerProduct().getStore().getPaymentMethods().contains(entity.getPaymentMethod())) throw new NotFoundException(messageHandler.message("payment.method.not.found", entity.getPaymentMethod().toString()));
+//        if(!entity.getOrderProducts().get(0).getSellerProduct().getStore().getPaymentMethods().contains(entity.getPaymentMethod())) throw new NotFoundException(messageHandler.message("payment.method.not.found", entity.getPaymentMethod().toString()));
         return shoppingCartMapper.getDtoFromEntity(shoppingCartRepository.save(entity));
     }
 
