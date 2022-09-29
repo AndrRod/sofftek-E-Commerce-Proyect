@@ -43,7 +43,7 @@ public class ShoppingCartController {
     }
     @PostMapping("/{id}/product/{idProduct}")
     public ResponseEntity<ShoppingCartCompleteDto> addNewProductToCart(@PathVariable String id, @PathVariable String idProduct, @RequestParam(required = false) Integer amount){
-        return ResponseEntity.ok(shoppingCartService.addProductToCart(Long.valueOf(id), Long.valueOf(idProduct), amount));
+        return ResponseEntity.ok(shoppingCartService.addProductToCart(Long.valueOf(id), Long.valueOf(idProduct), (amount==null || amount == 0)?1:amount));
     }
     @DeleteMapping("/{id}/order/{idorder}")
     public ResponseEntity<ShoppingCartCompleteDto> deletedOrderById(@PathVariable String id, @PathVariable String idorder){

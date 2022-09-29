@@ -40,13 +40,13 @@ public class OrderProduct {
         this.quantityOfProducts = quantityOfProducts;
     }
     public Double getFinalPricePerQuantity() {
-        this.finalPricePerQuantity = 0d;
         Double price = sellerProduct.getFinalPrice();
-        finalPricePerQuantity = (quantityOfProducts==1 || quantityOfProducts ==0)? price: quantityOfProducts*Math.round(price);
+        this.finalPricePerQuantity = 0d;
+        finalPricePerQuantity += quantityOfProducts*Math.round(price);
         return finalPricePerQuantity;
     }
     public Integer getQuantityOfProducts(){
-        if(quantityOfProducts==null || quantityOfProducts == 0) return this.quantityOfProducts= 1;
+        if(quantityOfProducts==1 || quantityOfProducts ==0 || quantityOfProducts ==null) return this.quantityOfProducts= 1;
         return this.quantityOfProducts;
     };
 }

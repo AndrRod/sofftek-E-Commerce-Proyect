@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.serviceImpl.shoppingCart;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ShoppingCartCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ShoppingCartDto;
+import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.OrderProductForm;
 import com.LicuadoraProyectoEcommerce.mapper.shoppingCart.ShoppingCartMapper;
