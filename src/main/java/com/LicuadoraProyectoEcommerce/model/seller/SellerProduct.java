@@ -1,5 +1,5 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.OrderProduct;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.ProductOrder;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,7 +39,7 @@ public class SellerProduct {
 
 
     @OneToMany(mappedBy = "sellerProduct", cascade = CascadeType.ALL)
-    private List<OrderProduct> orderProducts;
+    private List<ProductOrder> productOrders;
     public SellerProduct(Double basePrice, BaseProduct baseProduct, String description){
         this.basePrice = basePrice;
         this.baseProduct=baseProduct;
@@ -47,7 +47,7 @@ public class SellerProduct {
     }
     public SellerProduct(){
         this.finalPrice = 0d;
-        this.orderProducts = new ArrayList<>();
+        this.productOrders = new ArrayList<>();
     }
     public void addAreaToSellerProduct(SellerArea sellerArea) {
         areas.add(sellerArea);

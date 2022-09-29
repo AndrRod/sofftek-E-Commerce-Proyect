@@ -3,10 +3,9 @@ package com.LicuadoraProyectoEcommerce.mapper.shoppingCart;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ProductDto;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ShoppingCartCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ShoppingCartDto;
-import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.OrderProduct;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.ProductOrder;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
-import com.LicuadoraProyectoEcommerce.repository.shoppingCart.OrderProductRepository;
+import com.LicuadoraProyectoEcommerce.repository.shoppingCart.ProductOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,7 @@ import java.util.stream.Stream;
 @Component
 public class ShoppingCartMapper {
     @Autowired
-    private OrderProductRepository orderProductRepository;
+    private ProductOrderRepository productOrderRepository;
 
     public ShoppingCart getEntityFromDto(ShoppingCartDto shoppingCartDto){
         return new ShoppingCart(shoppingCartDto.getBuyerName(), shoppingCartDto.getBuyerEmail(), shoppingCartDto.getBuyerDni());
@@ -39,12 +38,12 @@ public class ShoppingCartMapper {
     }
 
     public ShoppingCartCompleteDto getCompleteDtoFromEntity(ShoppingCart shoppingCart){
-        List<OrderProduct> listEntity = shoppingCart.getOrderProducts();
+        List<ProductOrder> listEntity = shoppingCart.getProductOrders();
         return new ShoppingCartCompleteDto(shoppingCart.getId(), shoppingCart.getBuyerName(), shoppingCart.getBuyerEmail(), shoppingCart.getBuyerDni(), shoppingCart.getFinalPrice(), getProductDtoFromShoppingCart(shoppingCart));
     }
     public List<ProductDto> getProductDtoFromShoppingCart(ShoppingCart shoppingCart){
         List<ProductDto> productsDto = new ArrayList<>();
-        shoppingCart.getOrderProducts().stream().forEach(o-> {
+        shoppingCart.getProductOrders().stream().forEach(o-> {
             productsDto.add(new ProductDto(o.getId(), o.getSellerProduct().getBaseProduct().getName(), o.getSellerProduct().getDescription(), o.getFinalPricePerQuantity(), o.getQuantityOfProducts()));});
         return productsDto;
     }

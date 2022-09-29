@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderProductForm {
+public class productOrderForm {
     @JsonProperty("quantity of products")
     private Integer quantityOfProducts;
 }

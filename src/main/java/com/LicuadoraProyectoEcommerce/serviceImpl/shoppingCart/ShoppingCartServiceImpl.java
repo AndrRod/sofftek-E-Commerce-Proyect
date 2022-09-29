@@ -5,14 +5,14 @@ import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ShoppingCartCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.ShoppingCartDto;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
-import com.LicuadoraProyectoEcommerce.form.OrderProductForm;
+import com.LicuadoraProyectoEcommerce.form.productOrderForm;
 import com.LicuadoraProyectoEcommerce.mapper.shoppingCart.ShoppingCartMapper;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.OrderProduct;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.ProductOrder;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
 import com.LicuadoraProyectoEcommerce.repository.shoppingCart.ShoppingCartRepository;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
-import com.LicuadoraProyectoEcommerce.service.shoppingCart.OrderProductService;
+import com.LicuadoraProyectoEcommerce.service.shoppingCart.ProductOrderService;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +33,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     private SellerProductService sellerProductService;
     @Autowired
-    private OrderProductService orderProductService;
+    private ProductOrderService productOrderService;
     @Override
     public ShoppingCartDto createEntity(ShoppingCartDto shoppingCartDto) {
         ShoppingCart entity = shoppingCartMapper.getEntityFromDto(shoppingCartDto);
@@ -73,16 +73,22 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCartCompleteDto addProductToCart(Long id, Long idProduct, Integer amountProduct) {
         SellerProduct product  = sellerProductService.findEntityById(idProduct);
         ShoppingCart shoppingCart = findEntityById(id);
-        orderProductService.createNewOrderProduct(shoppingCart, product, amountProduct);
-        return shoppingCartMapper.getCompleteDtoFromEntity(shoppingCart);
+        isTheSameStore(product, shoppingCart);
+        ProductOrder productOrder = productOrderService.createNewOrderProduct(shoppingCart, product, amountProduct);
+        return shoppingCartMapper.getCompleteDtoFromEntity(productOrder.getShoppingCart());
     }
-
     @Override
-    public ShoppingCartCompleteDto updateProductToCart(Long id, Long idOrderProduct, Long idProduct, OrderProductForm form) {
+    public ShoppingCartCompleteDto updateProductToCart(Long id, Long idOrderProduct, Long idProduct, productOrderForm form) {
         SellerProduct product  = (idProduct==null) ? null:sellerProductService.findEntityById(idProduct);
         ShoppingCart shoppingCart = findEntityById(id);
-        orderProductService.updateEntityById(idOrderProduct, product, form.getQuantityOfProducts());
-        return shoppingCartMapper.getCompleteDtoFromEntity(shoppingCart);
+        isTheSameStore(product, shoppingCart);
+        ProductOrder productOrder = productOrderService.updateEntityById(idOrderProduct, product, form.getQuantityOfProducts());
+        return shoppingCartMapper.getCompleteDtoFromEntity(productOrder.getShoppingCart());
     }
-
+    void isTheSameStore(SellerProduct product, ShoppingCart shoppingCart){
+        List<ProductOrder> productOrderList = shoppingCart.getProductOrders();
+        Boolean isTrue = product==null || productOrderList.isEmpty() || productOrderList.stream().anyMatch(p->
+                        p.getSellerProduct().getSeller().getStore().getSellerProducts().contains(product));
+        if(!isTrue) throw new BadRequestException("you cant add to the cart products from another store or products that do not have a store");
+    }
 }

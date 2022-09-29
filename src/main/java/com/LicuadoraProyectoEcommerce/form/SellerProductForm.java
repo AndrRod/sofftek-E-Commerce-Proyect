@@ -8,12 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @AllArgsConstructor @NoArgsConstructor
 public class SellerProductForm {
-    @NotBlank(message = "can't be null or empty")
+    @NotNull(message = "can't be null or empty")
     @JsonProperty("base price")
     private Double basePrice;
     @NotBlank(message = "can't be null or empty")

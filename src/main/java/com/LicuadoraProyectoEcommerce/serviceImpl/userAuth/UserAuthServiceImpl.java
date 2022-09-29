@@ -189,7 +189,6 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         DecodedJWT decodedJWT = verifier.verify(token);
         return findUserByEmail(decodedJWT.getSubject());
     }
-
     @Override
     public MessageInfo updateUserRol(Long idUser, String roleName, HttpServletRequest request) {
         User user = findUserEntityById(idUser);

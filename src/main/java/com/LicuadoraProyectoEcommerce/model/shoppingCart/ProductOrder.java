@@ -1,6 +1,7 @@
 package com.LicuadoraProyectoEcommerce.model.shoppingCart;
 
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @AllArgsConstructor
-public class OrderProduct {
+public class ProductOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,16 +26,19 @@ public class OrderProduct {
     private SellerProduct sellerProduct;
 
     private Integer quantityOfProducts;
+
     @Transient
     private Double finalPricePerQuantity;
 
     @CreationTimestamp
+    @Column(name = "orderDate",updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime orderDate;
-    public OrderProduct(){
+    public ProductOrder(){
         this.finalPricePerQuantity = 0d;
         this.quantityOfProducts = 1;
     }
-    public OrderProduct(ShoppingCart shoppingCart, SellerProduct sellerProduct, Integer quantityOfProducts){
+    public ProductOrder(ShoppingCart shoppingCart, SellerProduct sellerProduct, Integer quantityOfProducts){
         this.shoppingCart = shoppingCart;
         this.sellerProduct = sellerProduct;
         this.quantityOfProducts = quantityOfProducts;
