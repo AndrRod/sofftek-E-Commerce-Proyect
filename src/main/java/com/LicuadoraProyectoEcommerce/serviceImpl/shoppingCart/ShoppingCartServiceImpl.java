@@ -16,6 +16,7 @@ import com.LicuadoraProyectoEcommerce.service.shoppingCart.ProductOrderService;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,7 +70,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
 
-    @Override
+    @Override //TODO ver si no es mejorar mandar un mensaje
     public ShoppingCartCompleteDto addProductToCart(Long id, Long idProduct, Integer amountProduct) {
         SellerProduct product  = sellerProductService.findEntityById(idProduct);
         ShoppingCart shoppingCart = findEntityById(id);
@@ -77,7 +78,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ProductOrder productOrder = productOrderService.createNewOrderProduct(shoppingCart, product, amountProduct);
         return shoppingCartMapper.getCompleteDtoFromEntity(productOrder.getShoppingCart());
     }
-    @Override
+    @Override //TODO ver si no es mejorar mandar un mensaje
     public ShoppingCartCompleteDto updateProductToCart(Long id, Long idOrderProduct, Long idProduct, productOrderForm form) {
         SellerProduct product  = (idProduct==null) ? null:sellerProductService.findEntityById(idProduct);
         ShoppingCart shoppingCart = findEntityById(id);

@@ -24,7 +24,7 @@ public class ExceptHandler {
     }
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<MessageInfo> notFoundException(NotFoundException ex, HttpServletRequest request){
-        return ResponseEntity.badRequest().body(new MessageInfo(ex.getMessage(), HttpStatus.BAD_REQUEST.value(), request.getRequestURL().toString()));
+        return ResponseEntity.badRequest().body(new MessageInfo(ex.getMessage(), HttpStatus.NOT_FOUND.value(), request.getRequestURL().toString()));
     }
     @ExceptionHandler({NumberFormatException.class})
     public ResponseEntity<MessageInfo> numberFormatException(NumberFormatException ex, HttpServletRequest request){
