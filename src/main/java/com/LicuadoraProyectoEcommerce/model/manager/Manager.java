@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class Manager{
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @Pattern(regexp = "([A-Z]{1}[a-z]{2,})?(\\s[A-Z]{1}[a-z]{2,})?(\\s[A-Z]{1}[a-z]{2,})") //TODO PROBAR
     private User user;
     @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL, mappedBy = "manager")
     private List<BaseProduct> baseProducts;

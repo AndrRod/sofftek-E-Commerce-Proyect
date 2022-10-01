@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.dto.shoppingCart;
 import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Payment;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,17 +17,11 @@ import java.util.Map;
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class PaymentDto {
     private Long id;
+    @JsonProperty("payment method")
     private PaymentMethod paymentMethod;
+    @JsonProperty("number of transaction")
     private String numberOfTransaction;
+    @JsonProperty("total purchase")
     private Double totalPurchase;
-    private List<Map<String, Double>> products = new ArrayList<>();
-    public PaymentDto(Long id, PaymentMethod paymentMethod, String numberOfTransaction, ShoppingCart shoppingCart){
-        this.id = id;
-        this.paymentMethod = paymentMethod;
-        this.numberOfTransaction = numberOfTransaction;
-        this.totalPurchase= shoppingCart.getFinalPrice();
-        shoppingCart.getProductOrders().stream().forEach(p->{
-            this.products.add(Map.of(p.getSellerProduct().getBaseProduct().getName(), p.getFinalPricePerQuantity()));
-        });
-    }
+    private List<String> products = new ArrayList<>();
 }

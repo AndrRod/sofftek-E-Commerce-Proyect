@@ -7,17 +7,22 @@ import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.PaymentForm;
 import com.LicuadoraProyectoEcommerce.mapper.shoppingCart.PaymentMapper;
 import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
+import com.LicuadoraProyectoEcommerce.model.seller.Store;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Payment;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
 import com.LicuadoraProyectoEcommerce.repository.shoppingCart.PaymentRepository;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.PaymentService;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.ShoppingCartService;
+import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -33,6 +38,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentDto createEntity(Long idShoppingCart, PaymentForm paymentForm) {
         ShoppingCart shoppingCart = shoppingCartService.findEntityById(idShoppingCart);
+        if(paymentRepository.existsByShoppingCart(shoppingCart)) throw new BadRequestException("the shopping cart is already paid");
         paymentMethodExist(paymentForm, shoppingCart);
         Payment payment = paymentMapper.createFromForm(shoppingCart, paymentForm);
         return paymentMapper.getDtoFromEntity(paymentRepository.save(payment));
@@ -41,8 +47,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentDto updateEntity(Long id, Long idShoppingCart, PaymentForm paymentForm) {
         Payment payment = findEntityById(id);
-        if(idShoppingCart!=null){
+        if(idShoppingCart!=null && idShoppingCart != payment.getShoppingCart().getId()){
         ShoppingCart shoppingCart = shoppingCartService.findEntityById(idShoppingCart);
+        if(paymentRepository.existsByShoppingCart(shoppingCart)) throw new BadRequestException("the shopping cart is already paid");
         payment.setShoppingCart(shoppingCart);
         }
         paymentMethodExist(paymentForm, payment.getShoppingCart());
@@ -50,8 +57,10 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentMapper.getDtoFromEntity(paymentRepository.save(updateEntity));
     }
     void paymentMethodExist(PaymentForm paymentForm, ShoppingCart shoppingCart){
-        if(PaymentMethod.valueOf(paymentForm.getPaymentMethod())== null ||
-                !shoppingCart.getProductOrders().get(0).getSellerProduct().getStore().getPaymentMethods().contains(PaymentMethod.valueOf(paymentForm.getPaymentMethod()))) throw new BadRequestException("payment method not exist or not allowed for the store");
+        Store store = shoppingCart.getProductOrders().get(0).getSellerProduct().getStore();
+        if (!store.getPaymentMethods().stream().anyMatch(m-> m.toString().equals(paymentForm.getPaymentMethod()))){
+            String payMethodsAllowedString = store.getPaymentMethods().stream().map(m-> m.toString()).collect(Collectors.joining(", "));
+            throw new BadRequestException("payment " + paymentForm.getPaymentMethod() + " method not allowed for the store or not exist. The allowed methods are: " + payMethodsAllowedString);}
     }
     @Override
     public Map<String, String> deleteById(Long id) {

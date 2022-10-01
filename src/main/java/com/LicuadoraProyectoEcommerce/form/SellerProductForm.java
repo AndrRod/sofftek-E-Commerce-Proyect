@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -18,5 +19,6 @@ public class SellerProductForm {
     @JsonProperty("base price")
     private Double basePrice;
     @NotBlank(message = "can't be null or empty")
+    @Column(columnDefinition = "TEXT")
     private String description;
 }

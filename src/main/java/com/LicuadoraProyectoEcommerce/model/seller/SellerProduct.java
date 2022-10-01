@@ -30,6 +30,7 @@ public class SellerProduct {
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;
+    @Column(columnDefinition = "TEXT")
     private String description;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH} )
     @JoinTable(name = "sellerProduct_area",

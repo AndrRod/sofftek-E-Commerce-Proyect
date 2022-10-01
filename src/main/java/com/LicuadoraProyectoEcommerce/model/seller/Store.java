@@ -14,6 +14,7 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String description;
     @ElementCollection
     @CollectionTable(name = "payment_methods", joinColumns = @JoinColumn(name = "store_id"))
