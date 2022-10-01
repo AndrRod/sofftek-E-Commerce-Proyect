@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ExceptHandler {
@@ -24,7 +21,7 @@ public class ExceptHandler {
     }
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<MessageInfo> notFoundException(NotFoundException ex, HttpServletRequest request){
-        return ResponseEntity.badRequest().body(new MessageInfo(ex.getMessage(), HttpStatus.NOT_FOUND.value(), request.getRequestURL().toString()));
+        return ResponseEntity.status(404).body(new MessageInfo(ex.getMessage(), HttpStatus.NOT_FOUND.value(), request.getRequestURL().toString()));
     }
     @ExceptionHandler({NumberFormatException.class})
     public ResponseEntity<MessageInfo> numberFormatException(NumberFormatException ex, HttpServletRequest request){

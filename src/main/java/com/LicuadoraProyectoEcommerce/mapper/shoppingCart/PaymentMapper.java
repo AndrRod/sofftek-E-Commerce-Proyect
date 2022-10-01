@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 @Component
 public class PaymentMapper {
     public PaymentDto getDtoFromEntity(Payment payment){
-        return new PaymentDto(payment.getId(), payment.getPaymentMethod(), payment.getNumberOfTransaction(), payment.getTotalPurchase(), payment.getProducts());
+        return new PaymentDto(payment.getId(), payment.getStoreName(), payment.getPaymentMethod(), payment.getNumberOfTransaction(), payment.getTotalPurchase(), payment.getProducts(), payment.getBuyerName(), payment.getBuyerEmail(), payment.getBuyerDni());
     }
     public List<PaymentDto> getListDtoFromListEntity(List<Payment> payments){
         return payments.stream().map(this::getDtoFromEntity).collect(Collectors.toList());

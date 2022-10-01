@@ -17,6 +17,8 @@ import java.util.Map;
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class PaymentDto {
     private Long id;
+    @JsonProperty("store name")
+    private String storeName;
     @JsonProperty("payment method")
     private PaymentMethod paymentMethod;
     @JsonProperty("number of transaction")
@@ -24,4 +26,10 @@ public class PaymentDto {
     @JsonProperty("total purchase")
     private Double totalPurchase;
     private List<String> products = new ArrayList<>();
+    @JsonProperty("buyer name")
+    private String buyerName;
+    @JsonProperty("buyer email")
+    private String buyerEmail;
+    @JsonProperty("buyer dni")
+    private String buyerDni;
 }

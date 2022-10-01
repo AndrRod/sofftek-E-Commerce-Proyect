@@ -13,15 +13,12 @@ import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
 import com.LicuadoraProyectoEcommerce.repository.shoppingCart.PaymentRepository;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.PaymentService;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.ShoppingCartService;
-import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service

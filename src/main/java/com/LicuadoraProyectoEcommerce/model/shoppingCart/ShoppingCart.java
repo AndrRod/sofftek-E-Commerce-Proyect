@@ -21,7 +21,6 @@ public class ShoppingCart {
     private String buyerDni;
     @Transient
     private Double finalPrice;
-
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
     private List<ProductOrder> productOrders;
     public ShoppingCart(){

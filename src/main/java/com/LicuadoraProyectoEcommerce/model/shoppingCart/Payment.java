@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,11 @@ public class Payment {
     @OneToOne
     @JoinColumn(name = "shoppingCart_id", referencedColumnName = "id")
     private ShoppingCart shoppingCart;
+
+    private String storeName;
+    private String buyerName;
+    private String buyerEmail;
+    private String buyerDni;
     @Enumerated(value = EnumType.STRING)
     private PaymentMethod paymentMethod;
     private String numberOfTransaction;
@@ -28,6 +34,10 @@ public class Payment {
     public Payment(ShoppingCart shoppingCart, PaymentMethod paymentMethod, String numberOfTransaction){
         this.shoppingCart= shoppingCart;
         this.paymentMethod = paymentMethod;
+        this.storeName= this.shoppingCart.getProductOrders().get(0).getSellerProduct().getStore().getName();
+        this.buyerDni= shoppingCart.getBuyerDni();
+        this.buyerEmail=shoppingCart.getBuyerEmail();
+        this.buyerName= shoppingCart.getBuyerName();
         this.numberOfTransaction = numberOfTransaction;
         this.totalPurchase= shoppingCart.getFinalPrice();
         shoppingCart.getProductOrders().stream().forEach(p->{
