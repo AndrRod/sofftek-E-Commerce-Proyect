@@ -5,7 +5,8 @@ import org.springframework.security.core.GrantedAuthority;
 public enum Role implements GrantedAuthority {
     MANAGER(Code.MANAGER),
     SELLER(Code.SELLER),
-    NONE(Code.NONE);
+    NONE(Code.NONE),
+    ADMIN(Code.ADMIN);
     private final String authority;
 
     Role(String authority) {
@@ -21,5 +22,6 @@ public enum Role implements GrantedAuthority {
         public static final String SELLER = "ROLE_SELLER";
 
         public static final String NONE = "NONE";
+        public static final String ADMIN = "ROLE_ADMIN";
     }
 }

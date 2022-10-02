@@ -47,4 +47,8 @@ public class ExceptHandler {
                 {errors.put(e.getField(), e.getDefaultMessage());});
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<MessageInfo> illegalArgumentException(IllegalArgumentException ex, HttpServletRequest request){
+        return ResponseEntity.badRequest().body(new MessageInfo(ex.getMessage(), HttpStatus.BAD_REQUEST.value(), request.getRequestURL().toString()));
+    }
 }

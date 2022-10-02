@@ -1,7 +1,7 @@
 package com.LicuadoraProyectoEcommerce.serviceImpl.userAuth;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.config.security.SecurityConfig;
-import com.LicuadoraProyectoEcommerce.dto.userAuth.UserCreateDto;
+import com.LicuadoraProyectoEcommerce.form.UserRegisterForm;
 import com.LicuadoraProyectoEcommerce.dto.userAuth.UserDto;
 import com.LicuadoraProyectoEcommerce.mapper.userAuth.UserMapper;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
@@ -72,9 +72,17 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     }
 
     @Override
-    public UserDto registerUser(UserCreateDto userDto) {
+    public UserDto registerUser(UserRegisterForm userDto) {
+        if(userRepository.existsByEmail(userDto.getEmail())) throw new BadRequestException("the email " + userDto.getEmail() + " already are registered");
         User user= userRepository.save(userMapper.getEntityCreateFromDto(userDto));
         return userMapper.getDtoFromEntity(user);
+    }
+    @Override
+    public UserDto updateUser(Long id, UserRegisterForm userDto) {
+        if(userRepository.existsByEmail(userDto.getEmail())) throw new BadRequestException("the email " + userDto.getEmail() + " already are registered");
+        User user = findUserEntityById(id);
+        User userSaved = userRepository.save(userMapper.getEntityUpdateFromDto(user, userDto));
+        return userMapper.getDtoFromEntity(userSaved);
     }
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -167,11 +175,18 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         return managerRepository.findByUser(managerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.permissions", "manager")));
     }
 
+
     @Override
     public void isSellerProductSellerCreator(HttpServletRequest request, SellerProduct sellerProduct){
         User  sellerUser = findUserLogedByEmail(request);
         Seller seller = sellerRepository.findByUser(sellerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.authorizate", "seller")));
         if(!sellerUser.getRole().equals(Role.SELLER) || !seller.getSellerProducts().contains(sellerProduct)) throw new BadRequestException(messageHandler.message("not.creator", "seller"));
+    }
+    @Override
+    public void isTheSameUserLogged(User user, HttpServletRequest request){
+        User userLogged = findUserLogedByEmail(request);
+        if(user!= userLogged || userLogged.getRole().equals("ROLE_ADMIN")) throw new BadRequestException("" +
+                "This user does not have permission to do this action");
     }
     @Override
     public void isManagerProductCreator(HttpServletRequest request, BaseProduct baseProduct){

@@ -1,7 +1,7 @@
 package com.LicuadoraProyectoEcommerce.serviceImpl.userAuth;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.config.security.SecurityConfig;
-import com.LicuadoraProyectoEcommerce.dto.userAuth.UserCreateDto;
+import com.LicuadoraProyectoEcommerce.form.UserRegisterForm;
 import com.LicuadoraProyectoEcommerce.dto.userAuth.UserDto;
 import com.LicuadoraProyectoEcommerce.dto.userAuth.UserDtoComplete;
 import com.LicuadoraProyectoEcommerce.mapper.userAuth.UserMapper;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SecurityConfig securityConfig;
     @Override
-    public UserDto createEntity(UserCreateDto userDto) {
+    public UserDto createEntity(UserRegisterForm userDto) {
         User user= userRepository.save(userMapper.getEntityCreateFromDto(userDto));
         return userMapper.getDtoFromEntity(user);
     }
@@ -50,10 +50,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateEntity(Long idUserEntity, UserCreateDto userDto) {
+    public UserDto updateEntity(Long idUserEntity, UserRegisterForm userDto) {
         User user = userRepository.save(userMapper.getEntityUpdateFromDto(findEntityById(idUserEntity), userDto));
         return userMapper.getDtoFromEntity(user);
     }
+
+    @Override
     public User findEntityById(Long id){
         return userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }

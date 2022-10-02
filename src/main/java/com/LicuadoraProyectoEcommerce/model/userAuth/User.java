@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Data @Entity
 @AllArgsConstructor
@@ -13,8 +14,12 @@ import javax.persistence.*;
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "can't be null or empty")
     private String name;
+    @Column(unique = true)
+    @NotBlank(message = "can't be null or empty")
     private String email;
+    @NotBlank(message = "can't be null or empty")
     private String password;
     @Enumerated(value = EnumType.STRING)
     private Role role;

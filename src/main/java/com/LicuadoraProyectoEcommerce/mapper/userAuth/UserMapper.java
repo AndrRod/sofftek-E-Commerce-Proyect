@@ -1,6 +1,6 @@
 package com.LicuadoraProyectoEcommerce.mapper.userAuth;
 
-import com.LicuadoraProyectoEcommerce.dto.userAuth.UserCreateDto;
+import com.LicuadoraProyectoEcommerce.form.UserRegisterForm;
 import com.LicuadoraProyectoEcommerce.dto.userAuth.UserDto;
 import com.LicuadoraProyectoEcommerce.dto.userAuth.UserDtoComplete;
 import com.LicuadoraProyectoEcommerce.model.userAuth.Role;
@@ -21,10 +21,10 @@ public class UserMapper {
     public UserDtoComplete getDtoCompleteFromEntity(User user){return new UserDtoComplete(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRole());}
     public List<UserDto> getListDtoFromListEntity(List<User> userList){return userList.stream().map(this::getDtoFromEntity).collect(Collectors.toList());}
 
-    public User getEntityCreateFromDto(UserCreateDto userCreateDto){
-        return new User(null, userCreateDto.getName(), userCreateDto.getEmail(), passwordEncoder.encode(userCreateDto.getPassword()), Role.NONE);
+    public User getEntityCreateFromDto(UserRegisterForm userRegisterForm){
+        return new User(null, userRegisterForm.getName(), userRegisterForm.getEmail(), passwordEncoder.encode(userRegisterForm.getPassword()), Role.NONE);
     }
-    public User getEntityUpdateFromDto(User user, UserCreateDto userDto){
+    public User getEntityUpdateFromDto(User user, UserRegisterForm userDto){
         Stream.of(userDto).forEach((dto)-> {
             if (dto.getEmail() != null) user.setEmail(dto.getEmail());
             if (dto.getName() != null) user.setName(dto.getName());
