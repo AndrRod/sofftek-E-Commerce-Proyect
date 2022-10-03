@@ -26,9 +26,9 @@ public class UserSeeder implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if(userRepository.findAll().isEmpty()){
             List<User> userList = userRepository.saveAll(List.of(
-            new User(null, "Andres Manager", "rodrigueza.federacion@gmail.com", passwordEncoder.encode("12345678912"), Role.MANAGER),
-            new User(null, "Victor Seller", "victor@gmail.com", passwordEncoder.encode("12345678912"), Role.SELLER),
-            new User(null, "Admin", "admin@gmail.com", passwordEncoder.encode("12345678912"), Role.ADMIN)
+            new User(null, "Andres Manager", "rodrigueza.federacion@gmail.com", passwordEncoder.encode("12345678"), Role.MANAGER),
+            new User(null, "Victor Seller", "victor@gmail.com", passwordEncoder.encode("12345678"), Role.SELLER),
+            new User(null, "Admin", "admin@gmail.com", passwordEncoder.encode("12345678"), Role.ADMIN)
             ));
             managerRepository.save(new Manager(userList.get(0)));
             sellerRepository.save(new Seller(userList.get(1)));

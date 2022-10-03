@@ -1,6 +1,8 @@
 package com.LicuadoraProyectoEcommerce.exception;
 
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -51,4 +53,15 @@ public class ExceptHandler {
     public ResponseEntity<MessageInfo> illegalArgumentException(IllegalArgumentException ex, HttpServletRequest request){
         return ResponseEntity.badRequest().body(new MessageInfo(ex.getMessage(), HttpStatus.BAD_REQUEST.value(), request.getRequestURL().toString()));
     }
+    @ExceptionHandler({TokenExpiredException.class})
+    public ResponseEntity<MessageInfo> tokenExpiredException(TokenExpiredException ex, HttpServletRequest request){
+        String msgComplete = ex.getMessage();
+        String message  = msgComplete.substring(0, msgComplete.lastIndexOf(" on "));
+        return ResponseEntity.badRequest().body(new MessageInfo(message + ", please login again!!", HttpStatus.BAD_REQUEST.value(), request.getRequestURL().toString()));
+    }
+    @ExceptionHandler({JWTDecodeException.class})
+    public ResponseEntity<MessageInfo> jWTDecodeException(JWTDecodeException ex, HttpServletRequest request){
+        return ResponseEntity.badRequest().body(new MessageInfo("the token is incomplete or don't have a valid format", HttpStatus.BAD_REQUEST.value(), request.getRequestURL().toString()));
+    }
+
 }

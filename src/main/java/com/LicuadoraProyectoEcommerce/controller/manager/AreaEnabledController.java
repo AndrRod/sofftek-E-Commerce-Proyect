@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/enabledarea")
+@RequestMapping("/manager/area")
 public class AreaEnabledController {
     @Autowired
     private BaseProductService productService;
@@ -38,16 +38,20 @@ public class AreaEnabledController {
     ResponseEntity<EnabledAreaDto> createEntity(@RequestBody @Valid EnabledAreaDto enabledAreaDto){
         return new ResponseEntity<>(enabledAreaService.createEntity(enabledAreaDto), HttpStatus.CREATED);
     }
+    @PutMapping("/{id}")
+    ResponseEntity<EnabledAreaDto> updateEntity(@PathVariable String id, @RequestBody EnabledAreaDto enabledAreaDto){
+        return ResponseEntity.ok(enabledAreaService.updateEntity(Long.valueOf(id), enabledAreaDto));
+    }
     @DeleteMapping("/{id}")
     ResponseEntity<Map<String, String>> deleteById(@PathVariable String id){
         return ResponseEntity.ok(enabledAreaService.deleteEntityById(Long.valueOf(id)));
     }
-    @PostMapping("/{id}/addCustomizationAllowed")
+    @PostMapping("/{id}/customization")
     ResponseEntity<EnabledAreaCompleteDto> addAreaToProduct(@PathVariable String id, @RequestBody @Valid CustomizationAllowedDto dto){
         CustomizationAllowed  customizationAllowed = customizationAllowedService.findByTypeAndName(dto.getType());
         return ResponseEntity.ok(enabledAreaService.addCustomizationAllowedToEntity(Long.valueOf(id), customizationAllowed));
     }
-    @PostMapping("/{id}/removeCustomizationAllowed")
+    @DeleteMapping("/{id}/customization")
     ResponseEntity<EnabledAreaCompleteDto> removeAreaToProduct(@PathVariable String id, @RequestBody @Valid CustomizationAllowedDto dto){
         CustomizationAllowed  customizationAllowed = customizationAllowedService.findByTypeAndName(dto.getType());
         return ResponseEntity.ok(enabledAreaService.removeCustomizationAllowedToEntity(Long.valueOf(id), customizationAllowed));

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class EnableAreaMapper {
@@ -26,7 +27,9 @@ public class EnableAreaMapper {
     }
 
     public EnabledArea updateEntityFrom(EnabledArea enabledArea, EnabledAreaDto enableAreaDto){
-        if(enableAreaDto.getName()!=null) enabledArea.setName(enableAreaDto.getName());
+        Stream.of(enableAreaDto).forEachOrdered(dto-> {
+            if (dto.getName() != null) enabledArea.setName(enableAreaDto.getName());
+        });
         return enabledArea;
     }
 

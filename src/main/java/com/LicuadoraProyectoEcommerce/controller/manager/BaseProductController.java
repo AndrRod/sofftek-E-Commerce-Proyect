@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/baseproduct")
+@RequestMapping("/manager/product")
 public class BaseProductController {
     @Autowired
     private BaseProductService baseProductService;
@@ -42,17 +42,17 @@ public class BaseProductController {
         return ResponseEntity.ok(baseProductService.deleteBaseProductById(Long.valueOf(id)));
     }
     @PutMapping("/{id}")
-    ResponseEntity<BaseProductDtoComplete> updateProduct(@PathVariable String id, @RequestBody BaseProductDto baseProductDto){
-        return ResponseEntity.ok(baseProductService.updateBaseProduct(Long.valueOf(id), baseProductDto));
+    ResponseEntity<BaseProductDtoComplete> updateProduct(@PathVariable String id, @RequestBody BaseProductDto baseProductDto, HttpServletRequest request){
+        return ResponseEntity.ok(baseProductService.updateBaseProduct(Long.valueOf(id), baseProductDto, request));
     }
-    @PostMapping("/{id}/addArea/{idArea}")
-    ResponseEntity<BaseProductDtoComplete> addAreaToProduct(@PathVariable String id, @PathVariable String idArea){
+    @PostMapping("/{id}/area/{idArea}")
+    ResponseEntity<BaseProductDtoComplete> addAreaToProduct(@PathVariable String id, @PathVariable String idArea, HttpServletRequest request){
         EnabledArea enabledArea = enabledAreaService.findEntityById(Long.valueOf(idArea));
-        return ResponseEntity.ok(baseProductService.addEnabledAreaToEntity(Long.valueOf(id), enabledArea));
+        return ResponseEntity.ok(baseProductService.addEnabledAreaToEntity(Long.valueOf(id), enabledArea, request));
     }
-    @PostMapping("/{id}/removeArea/{idArea}")
-    ResponseEntity<BaseProductDtoComplete> removeAreaToProduct(@PathVariable String id, @PathVariable String idArea){
+    @DeleteMapping("/{id}/area/{idArea}")
+    ResponseEntity<BaseProductDtoComplete> removeAreaToProduct(@PathVariable String id, @PathVariable String idArea, HttpServletRequest request){
         EnabledArea enabledArea = enabledAreaService.findEntityById(Long.valueOf(idArea));
-        return new ResponseEntity<>(baseProductService.removeEnabledAreaToEntity(Long.valueOf(id), enabledArea), HttpStatus.OK);
+        return new ResponseEntity<>(baseProductService.removeEnabledAreaToEntity(Long.valueOf(id), enabledArea, request), HttpStatus.OK);
     }
 }

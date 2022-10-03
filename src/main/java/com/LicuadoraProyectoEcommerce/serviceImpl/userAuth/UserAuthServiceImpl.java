@@ -166,13 +166,13 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     @Override
     public Seller findSellerLogged(HttpServletRequest request) {
         User sellerUser = findUserLogedByEmail(request);
-        return sellerRepository.findByUser(sellerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.permissions", "seller")));
+        return sellerRepository.findByUser(sellerUser).orElseThrow(()-> new BadRequestException(messageHandler.message("not.permissions", "seller")));
     }
 
     @Override
     public Manager findManagerLogged(HttpServletRequest request) {
         User managerUser = findUserLogedByEmail(request);
-        return managerRepository.findByUser(managerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.permissions", "manager")));
+        return managerRepository.findByUser(managerUser).orElseThrow(()-> new BadRequestException(messageHandler.message("not.permissions", "manager")));
     }
 
 

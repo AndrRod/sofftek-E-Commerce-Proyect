@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface CustomizationAllowedRepository extends JpaRepository<CustomizationAllowed, Long> {
     Optional<CustomizationAllowed> findByType(String type);
+
+    boolean existsByType(String type);
 }

@@ -21,7 +21,7 @@ public class Manager{
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL, mappedBy = "manager")
+    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL, mappedBy = "managerCreator")
     private List<BaseProduct> baseProducts;
     public Manager(User user){
         this.user=user;

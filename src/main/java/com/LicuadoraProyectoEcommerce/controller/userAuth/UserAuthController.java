@@ -45,7 +45,7 @@ public class UserAuthController {
     public void refreshToken(@RequestBody @Valid RefreshTokenForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
         userAuthService.refreshToken(form, request, response);
     }
-    @PostMapping("/addrole/{id}")
+    @PostMapping("/{id}/role")
     public ResponseEntity<MessageInfo> addRoleToUser(@PathVariable String id, @RequestBody @Valid RoleNameForm role, HttpServletRequest request){
         return ResponseEntity.ok(userAuthService.updateUserRol(Long.valueOf(id), role.getRole_name(), request));
     }

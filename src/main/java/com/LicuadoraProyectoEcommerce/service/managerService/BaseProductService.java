@@ -14,9 +14,9 @@ public interface BaseProductService {
     BaseProductDtoComplete getBaseProductById(Long id);
     List<BaseProductDtoComplete> getBaseProductListPage(Integer page);
     Map<String, String> deleteBaseProductById(Long id);
-    BaseProductDtoComplete updateBaseProduct(Long id, BaseProductDto baseProductDto);
+    BaseProductDtoComplete updateBaseProduct(Long id, BaseProductDto baseProductDto, HttpServletRequest request);
 
     BaseProduct findEntityById(Long id);
-    BaseProductDtoComplete addEnabledAreaToEntity(Long id, EnabledArea enabledArea);
-    BaseProductDtoComplete removeEnabledAreaToEntity(Long id, EnabledArea enabledArea);
+    BaseProductDtoComplete addEnabledAreaToEntity(Long id, EnabledArea enabledArea, HttpServletRequest request);
+    BaseProductDtoComplete removeEnabledAreaToEntity(Long id, EnabledArea enabledArea, HttpServletRequest request);
 }

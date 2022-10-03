@@ -6,6 +6,7 @@ import com.LicuadoraProyectoEcommerce.mapper.manager.CustomizationAllowedMapper;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
+import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import com.LicuadoraProyectoEcommerce.repository.manager.CustomizationAllowedRepository;
 import com.LicuadoraProyectoEcommerce.repository.manager.EnableAreaRepository;
 import com.LicuadoraProyectoEcommerce.service.managerService.CustomizationAllowedService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +35,7 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     }
     @Override
     public CustomizationAllowedDto createEntity(CustomizationAllowedDto customizationAllowedDto) {
+        if(customizationAllowedRepository.existsByType(customizationAllowedDto.getType())) throw new BadRequestException("the " + customizationAllowedDto.getType() + " type already exists in the database!!!");
         CustomizationAllowed entity = customizationAllowedRepository.save(mapper.createEntityFromDto(customizationAllowedDto));
         return mapper.getDtoFromEntity(entity);
     }
@@ -45,12 +48,15 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     @Override
     public Map<String, String> deleteEntityById(Long id) { //TODO falta borrar peronalizacion sin errores
         CustomizationAllowed entity = findEntityById(id);
-        if(!entity.getEnabledAreas().stream().anyMatch(e-> !e.getSellerProducts().isEmpty())) throw new BadRequestException(messageHandler.message("cant.delete", null));
-        if(!entity.getEnabledAreas().isEmpty())
-            entity.getEnabledAreas().stream().forEach(e->{
-            e.removeCustomizationAllowedToEnabledArea(entity);
-            enableAreaRepository.save(e);
-        });
+        List<EnabledArea> enabledAreaList = new ArrayList<>(entity.getEnabledAreas());
+        if(enabledAreaList.stream().anyMatch(e-> !e.getSellerProducts().isEmpty())) throw new BadRequestException(messageHandler.message("cant.delete", null));
+        if(!enabledAreaList.isEmpty()) {
+            int size = enabledAreaList.size();
+            for (int i = 0; i < size; i++);{
+                enabledAreaList.get(0).removeCustomizationAllowedToEnabledArea(entity);
+                enableAreaRepository.save(enabledAreaList.get(0));
+            }
+        }
         customizationAllowedRepository.delete(entity);
         return Map.of("message", messageHandler.message("delete.success", String.valueOf(id)));
     }
@@ -64,6 +70,7 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     @Override
     public CustomizationAllowedDto updateEntity(Long id, CustomizationAllowedDto customizationAllowedDto) {
         CustomizationAllowed entity = mapper.updateEntityFromDto(findEntityById(id), customizationAllowedDto);
+        if(customizationAllowedRepository.existsByType(customizationAllowedDto.getType())) throw new BadRequestException("the " + customizationAllowedDto.getType() + " type already exists in the database!!!");
         return mapper.getDtoFromEntity(customizationAllowedRepository.save(entity));
     }
 
