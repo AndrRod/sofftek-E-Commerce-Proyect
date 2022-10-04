@@ -19,7 +19,8 @@ public class SellerCustomizationMapper {
         return new SellerCustomizationDto(customization.getId(), customization.getName(), customization.getCustomizationPrice());
     }
     public SellerCustomizationCompleteDto getCompleteDtoFromEntity(SellerCustomization customization){
-        return new SellerCustomizationCompleteDto(customization.getId(), customizationAllowedMapper.getDtoFromEntity(customization.getCustomizationAllowed()), customization.getName(), customization.getCustomizationPrice());
+        return new SellerCustomizationCompleteDto(customization.getId(), customization.getCustomizationAllowed().getType(), customization.getName(), customization.getCustomizationPrice());
+//        customizationAllowedMapper.getDtoFromEntity(customization.getCustomizationAllowed())
     }
     public List<SellerCustomizationCompleteDto> getCompleteDtoListFromEntityList(List<SellerCustomization> customizations){
         return customizations.stream().map(this::getCompleteDtoFromEntity).collect(Collectors.toList());

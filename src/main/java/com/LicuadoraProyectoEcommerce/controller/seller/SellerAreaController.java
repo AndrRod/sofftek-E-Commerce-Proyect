@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sellerArea")
+@RequestMapping("/seller/area")
 public class SellerAreaController {
     @Autowired
     private SellerAreaService sellerAreaService;

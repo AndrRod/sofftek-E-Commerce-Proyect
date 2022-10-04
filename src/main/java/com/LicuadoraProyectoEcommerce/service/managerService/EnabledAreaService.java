@@ -12,7 +12,7 @@ public interface EnabledAreaService {
 
     EnabledAreaDto createEntity(EnabledAreaDto enabledAreaDto);
 
-    EnabledAreaDto findById(Long id);
+    EnabledAreaCompleteDto findById(Long id);
     Map<String, String> deleteEntityById(Long id);
     List<EnabledAreaCompleteDto> findDtoListPagination(Integer page);
     EnabledAreaDto updateEntity(Long id, EnabledAreaDto enableAreaDto);

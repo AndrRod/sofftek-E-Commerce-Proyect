@@ -1,8 +1,6 @@
 package com.LicuadoraProyectoEcommerce.dto.shoppingCart;
 
 import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.Payment;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,12 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
-public class PaymentDto {
+public class PurchaseDto {
     private Long id;
     @JsonProperty("store name")
     private String storeName;

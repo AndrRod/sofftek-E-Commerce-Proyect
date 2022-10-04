@@ -16,8 +16,8 @@ public class BaseProductDto {
     @NotBlank(message = "can't be null or empty")
     private String name;
     @NotNull(message = "can't be null or empty")
-    @JsonProperty("estimated price")
-    private Double estimatedPrice;
+    @JsonProperty("price")
+    private Double price;
     @NotNull(message = "can't be null or empty")
     @JsonProperty("days to manufacture")
     private Integer daysToManufacture;

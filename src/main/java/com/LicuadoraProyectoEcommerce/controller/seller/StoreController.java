@@ -33,13 +33,13 @@ public class StoreController {
     public ResponseEntity<SellerStoreCompleteDto> updateEntity(@PathVariable String id, SellerStoreDto sellerStoreDto){
         return ResponseEntity.ok(storeService.updateEntity(Long.valueOf(id), sellerStoreDto));
     }
-    @PostMapping("/{id}/add")
-    public ResponseEntity<SellerStoreCompleteDto> addNewPaymentMethod(@PathVariable String id, @RequestParam String paymethod){
-        return ResponseEntity.status(201).body(storeService.addNewPaymentMethod(Long.valueOf(id), paymethod));
+    @PostMapping("/{id}/payment")
+    public ResponseEntity<SellerStoreCompleteDto> addNewPaymentMethod(@PathVariable String id, @RequestParam String name){
+        return ResponseEntity.status(201).body(storeService.addNewPaymentMethod(Long.valueOf(id), name));
     }
-    @DeleteMapping("/{id}/remove")
-    public ResponseEntity<SellerStoreCompleteDto> removePaymentMethod(@PathVariable String id, @RequestParam String paymethod){
-        return ResponseEntity.status(200).body(storeService.removePaymentMethod(Long.valueOf(id), paymethod));
+    @DeleteMapping("/{id}/payment")
+    public ResponseEntity<SellerStoreCompleteDto> removePaymentMethod(@PathVariable String id, @RequestParam String name){
+        return ResponseEntity.status(200).body(storeService.removePaymentMethod(Long.valueOf(id), name));
     }
     @GetMapping
     public ResponseEntity<List<SellerStoreDto>> getListStorePagination(@RequestParam String page){

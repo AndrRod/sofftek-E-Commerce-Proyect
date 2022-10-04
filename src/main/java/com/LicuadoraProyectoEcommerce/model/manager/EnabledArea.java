@@ -1,6 +1,4 @@
 package com.LicuadoraProyectoEcommerce.model.manager;
-
-import com.LicuadoraProyectoEcommerce.model.seller.Seller;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import lombok.AllArgsConstructor;
@@ -52,14 +50,8 @@ public class EnabledArea {
         customizationsAllowed.remove(customizationAllowed);
         customizationAllowed.getEnabledAreas().remove(this);
     }
-    public void removeAllCustomizationAllowedToEnabledArea(List<SellerCustomization> customizations) {
-        this.customizations.remove(customizations);
-        customizations.remove(this);
-    }
-    public void addCustomizationToSellerArea(SellerCustomization sellerCustomization) {
-        customizations.add(sellerCustomization);
-    }
-    public void removeCustomizationToSellerArea(SellerCustomization sellerCustomization) {
-        customizations.remove(sellerCustomization);
+    public void removeProduct(BaseProduct product){
+        this.getBaseProducts().remove(product);
+        product.getEnabledAreas().remove(this);
     }
 }

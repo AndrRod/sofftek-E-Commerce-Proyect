@@ -161,18 +161,18 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
         return findUserByEmail(email);
     }
 
-
-
     @Override
     public Seller findSellerLogged(HttpServletRequest request) {
         User sellerUser = findUserLogedByEmail(request);
-        return sellerRepository.findByUser(sellerUser).orElseThrow(()-> new BadRequestException(messageHandler.message("not.permissions", "seller")));
+        Seller seller = sellerRepository.findByUser(sellerUser).orElseThrow(()-> new BadRequestException("You don't have permissions because you are not have a seller role"));
+        return seller;
     }
 
     @Override
     public Manager findManagerLogged(HttpServletRequest request) {
         User managerUser = findUserLogedByEmail(request);
-        return managerRepository.findByUser(managerUser).orElseThrow(()-> new BadRequestException(messageHandler.message("not.permissions", "manager")));
+        Manager manager = managerRepository.findByUser(managerUser).orElseThrow(()-> new BadRequestException("You don't have permissions because you are not have a manager role"));
+        return manager;
     }
 
 

@@ -4,8 +4,6 @@ import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,8 +16,8 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
-    @JoinColumn(name = "payment_id", referencedColumnName = "id")
-    private Payment payment;
+    @JoinColumn(name = "purchase_id", referencedColumnName = "id")
+    private Purchase purchase;
     @Enumerated(value = EnumType.STRING)
     private StatusPayment status;
     private String storeName;
@@ -35,21 +33,21 @@ public class Invoice {
     private String buyerEmail;
     private String buyerDni;
 
-    public Invoice(Payment payment, String invoiceNumber, StatusPayment status){
-        this.payment= payment;
+    public Invoice(Purchase purchase, String invoiceNumber, StatusPayment status){
+        this.purchase = purchase;
         this.invoiceNumber = invoiceNumber;
         this.status= status;
-        this.storeName= this.payment.getStoreName();
-        this.buyerDni= this.payment.getBuyerDni();
-        this.buyerEmail=this.payment.getBuyerEmail();
-        this.buyerName= this.payment.getBuyerName();
-        this.paymentMethod = this.payment.getPaymentMethod();
-        this.numberOfTransaction = this.payment.getNumberOfTransaction();
-        this.totalPurchase= this.payment.getTotalPurchase();
-        this.buyerProducts.addAll(this.payment.getProducts());
+        this.storeName= this.purchase.getStoreName();
+        this.buyerDni= this.purchase.getBuyerDni();
+        this.buyerEmail=this.purchase.getBuyerEmail();
+        this.buyerName= this.purchase.getBuyerName();
+        this.paymentMethod = this.purchase.getPaymentMethod();
+        this.numberOfTransaction = this.purchase.getNumberOfTransaction();
+        this.totalPurchase= this.purchase.getTotalPurchase();
+        this.buyerProducts.addAll(this.purchase.getProducts());
     }
     public void setBuyerProducts() {
         this.buyerProducts.clear();
-        this.buyerProducts.addAll(this.payment.getProducts());
+        this.buyerProducts.addAll(this.purchase.getProducts());
     }
 }

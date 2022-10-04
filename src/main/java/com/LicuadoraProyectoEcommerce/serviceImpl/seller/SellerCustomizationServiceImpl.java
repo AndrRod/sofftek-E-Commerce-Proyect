@@ -7,11 +7,13 @@ import com.LicuadoraProyectoEcommerce.mapper.seller.SellerCustomizationMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerCustomizationRepository;
+import com.LicuadoraProyectoEcommerce.service.UserAuth.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerCustomizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +27,8 @@ public class SellerCustomizationServiceImpl implements SellerCustomizationServic
     @Autowired
     private SellerCustomizationMapper sellerCustomizationMapper;
 
-
+    @Autowired
+    private UserAuthService userAuthService;
     @Override
     public SellerCustomizationCompleteDto findById(Long id) {
         return sellerCustomizationMapper.getCompleteDtoFromEntity(findEntityById(id));
@@ -43,23 +46,29 @@ public class SellerCustomizationServiceImpl implements SellerCustomizationServic
     }
 
     @Override
-    public SellerCustomizationCompleteDto updateEntity(Long idCustomization, SellerCustomizationDto sellerCustomizationForm) {
-        SellerCustomization sellerCustomization = sellerCustomizationMapper.updateEntityFromDto(findEntityById(idCustomization), sellerCustomizationForm);
+    public SellerCustomizationCompleteDto updateEntity(Long idCustomization, SellerCustomizationDto sellerCustomizationForm, HttpServletRequest request) {
+        SellerCustomization sellerCustomizationFound = findEntityById(idCustomization);
+        userAuthService.isSellerProductSellerCreator(request, sellerCustomizationFound.getAreas().get(0).getSellerProducts().get(0)); //TODO SACAR PARA PRUEBAS - verifica usuario
+        SellerCustomization sellerCustomization = sellerCustomizationMapper.updateEntityFromDto(sellerCustomizationFound, sellerCustomizationForm);
+
         SellerCustomization customizationSaved =  sellerCustomizationRepository.save(sellerCustomization);
         return sellerCustomizationMapper.getCompleteDtoFromEntity(customizationSaved);
     }
 
     @Override
-    public Map<String, String> deleteEntityParams(Long idCustomization) {
+    public Map<String, String> deleteEntityParams(Long idCustomization, HttpServletRequest request) {
         SellerCustomization customization=findEntityById(idCustomization);
+        userAuthService.isSellerProductSellerCreator(request, customization.getAreas().get(0).getSellerProducts().get(0)); //TODO SACAR PARA PRUEBAS - verifica usuario
         customization.setCustomizationPrice(0d);
         customization.setName(null);
         sellerCustomizationRepository.save(customization);
         return Map.of("Message", "the name and price params were reestablished");
     }
     @Override
-    public Map<String, String> deleteEntity(Long idCustomization) {
-        sellerCustomizationRepository.delete(findEntityById(idCustomization));
+    public Map<String, String> deleteEntity(Long idCustomization, HttpServletRequest request) {
+        SellerCustomization customization=findEntityById(idCustomization);
+        userAuthService.isSellerProductSellerCreator(request, customization.getAreas().get(0).getSellerProducts().get(0)); //TODO SACAR PARA PRUEBAS - verifica usuario
+        sellerCustomizationRepository.delete(customization);
         return Map.of("Message", "entity was deleted");
     }
 

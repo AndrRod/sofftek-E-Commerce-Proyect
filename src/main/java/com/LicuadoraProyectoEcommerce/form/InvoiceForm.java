@@ -1,6 +1,5 @@
 package com.LicuadoraProyectoEcommerce.form;
 
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.Payment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

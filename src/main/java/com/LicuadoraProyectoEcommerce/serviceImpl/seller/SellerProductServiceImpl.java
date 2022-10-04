@@ -71,16 +71,27 @@ public class SellerProductServiceImpl implements SellerProductService {
         return sellerProductMapper.getListDtoFromEntityList(products);
     }
     @Override
-    public Map<String, String> deleteById(Long id) {
-        deleteByEntity(findEntityById(id));
+    public Map<String, String> deleteById(Long id, HttpServletRequest request) {
+        SellerProduct sellerProduct = findEntityById(id);
+        userAuthService.isSellerProductSellerCreator(request, sellerProduct); //TODO SACAR PARA PRUEBAS - verifica usuario
+        List<SellerArea> areas = new ArrayList<>(sellerProduct.getAreas());
+        for(SellerArea area : areas){
+            int size = area.getCustomizations().size();
+            for(int i= 0; i< size; i+=1){
+                SellerCustomization customization = area.getCustomizations().get(0);
+                customization.removeArea(area);
+                customizationRepository.delete(customization);
+            }
+            area.removeProduct(sellerProduct);
+            sellerAreaRepository.delete(area);
+        }
+        sellerProductRepository.delete(sellerProduct);
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
     @Override
     public SellerProductDto createEntity(BaseProduct baseProduct, SellerProductForm sellerProductForm, HttpServletRequest request) {
         SellerProduct sellerProduct = sellerProductMapper.createEntityFromDto(baseProduct, sellerProductForm);
-        //        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
-        Seller seller = sellerRepository.findById(1L).get();
-        sellerProduct.setSeller(seller);
+        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
         baseProduct.getEnabledAreas().stream().forEach(enabledArea -> {
             List<SellerCustomization> listSellerCustomization = new ArrayList<>();
             SellerArea sellerArea = new SellerArea();
@@ -98,40 +109,46 @@ public class SellerProductServiceImpl implements SellerProductService {
     }
 
     @Override
-    public SellerProductDto updateEntity(Long id, SellerProductForm sellerProductForm) {
-        SellerProduct sellerProduct = sellerProductMapper.updateEntityFromDto(findEntityById(id), sellerProductForm);
-        sellerProductRepository.save(sellerProduct);
-        return sellerProductMapper.getDtoFromEntity(sellerProduct);
+    public SellerProductDto updateEntity(Long id, SellerProductForm sellerProductForm, HttpServletRequest request) {
+        SellerProduct sellerProduct = findEntityById(id);
+        userAuthService.isSellerProductSellerCreator(request, sellerProduct); //TODO SACAR PARA PRUEBAS - verifica usuario
+        SellerProduct sellerProductSaved = sellerProductMapper.updateEntityFromDto(sellerProduct, sellerProductForm);
+        sellerProductRepository.save(sellerProductSaved);
+        return sellerProductMapper.getDtoFromEntity(sellerProductSaved);
     }
 
-    @Override
-    public void deleteByEntity(SellerProduct sellerProduct) {
-        List<SellerArea> areas = new ArrayList<>(sellerProduct.getAreas());
-        for(SellerArea area : areas){
-            int size = area.getCustomizations().size();
-            for(int i= 0; i< size; i+=1){
-                SellerCustomization customization = area.getCustomizations().get(0);
-                customization.removeArea(area);
-                customizationRepository.delete(customization);
-            }
-            area.removeProduct(sellerProduct);
-            sellerAreaRepository.delete(area);
-        }
-        sellerProductRepository.delete(sellerProduct);
-        }
+    //TODO VER SI FUNCIONA EL DELETE ANTES DE SACAR
+//    @Override
+//    public void deleteByEntity(SellerProduct sellerProduct, HttpServletRequest request) {
+//        userAuthService.isSellerProductSellerCreator(request, sellerProduct); //TODO SACAR PARA PRUEBAS - verifica usuario
+//        List<SellerArea> areas = new ArrayList<>(sellerProduct.getAreas());
+//        for(SellerArea area : areas){
+//            int size = area.getCustomizations().size();
+//            for(int i= 0; i< size; i+=1){
+//                SellerCustomization customization = area.getCustomizations().get(0);
+//                customization.removeArea(area);
+//                customizationRepository.delete(customization);
+//            }
+//            area.removeProduct(sellerProduct);
+//            sellerAreaRepository.delete(area);
+//        }
+//        sellerProductRepository.delete(sellerProduct);
+//        }
 
 
     @Override
-    public SellerProductDto addStoreById(Long idProduct) {
+    public SellerProductDto addStoreById(Long idProduct, HttpServletRequest request) {
         SellerProduct sellerProduct = findEntityById(idProduct);
+        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
         if(sellerProduct.getStore()!=null) throw new BadRequestException(messageHandler.message("already.exists", sellerProduct.getBaseProduct().getName()));
         if(sellerProduct.getSeller().getStore()==null) throw new BadRequestException(messageHandler.message("store.not.found", sellerProduct.getSeller().getUser().getName()));
         sellerProduct.setStore(sellerProduct.getSeller().getStore());
         return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
     }
     @Override
-    public SellerProductDto removeStoreById(Long idProduct) {
+    public SellerProductDto removeStoreById(Long idProduct, HttpServletRequest request) {
         SellerProduct sellerProduct = findEntityById(idProduct);
+        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
         if(sellerProduct.getStore()==null) throw new BadRequestException(messageHandler.message("already.deleted", sellerProduct.getBaseProduct().getName()));
         sellerProduct.setStore(null);
         return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));

@@ -3,7 +3,7 @@ package com.LicuadoraProyectoEcommerce.serviceImpl.shoppingCart;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.ProductOrder;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.Items;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
 import com.LicuadoraProyectoEcommerce.repository.shoppingCart.ProductOrderRepository;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.ProductOrderService;
@@ -19,14 +19,14 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     @Autowired
     private MessageHandler messageHandler;
     @Override
-    public ProductOrder createNewOrderProduct(ShoppingCart shoppingCart, SellerProduct product, Integer amountProduct) {
-        ProductOrder productOrder = new ProductOrder(shoppingCart, product, amountProduct);
-        productOrderRepository.save(productOrder);
-        return productOrder;
+    public Items createNewOrderProduct(ShoppingCart shoppingCart, SellerProduct product, Integer amountProduct) {
+        Items items = new Items(shoppingCart, product, amountProduct);
+        productOrderRepository.save(items);
+        return items;
     }
 
     @Override
-    public ProductOrder findEntityById(Long id) {
+    public Items findEntityById(Long id) {
         return productOrderRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }
 
@@ -37,11 +37,11 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
     @Override
-    public ProductOrder updateEntityById(Long id, SellerProduct product, Integer amountProduct) {
-        ProductOrder productOrder = findEntityById(id);
-        if(amountProduct!=null) productOrder.setQuantityOfProducts(amountProduct);
-        if(product!=null) productOrder.setSellerProduct(product);
-        productOrderRepository.save(productOrder);
-        return productOrder;
+    public Items updateEntityById(Long id, SellerProduct product, Integer amountProduct) {
+        Items items = findEntityById(id);
+        if(amountProduct!=null) items.setQuantityOfProducts(amountProduct);
+        if(product!=null) items.setSellerProduct(product);
+        productOrderRepository.save(items);
+        return items;
     }
 }

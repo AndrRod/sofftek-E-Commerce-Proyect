@@ -20,8 +20,8 @@ import java.util.List;
 public class BaseProductDtoComplete {
     private Long id;
     private String name;
-    @JsonProperty("estimated price")
-    private Double estimatedPrice;
+    @JsonProperty("price")
+    private Double price;
     @JsonProperty("days to manufacture")
     private Integer daysToManufacture;
     private String manager;

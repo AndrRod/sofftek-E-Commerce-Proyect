@@ -26,10 +26,10 @@ public class SellerProductMapper {
     @Autowired
     private SellerAreaMapper sellerAreaMapper;
     public SellerProductCompleteDto getCompleteDtoFromEntity(SellerProduct sellerProduct){
-        return new SellerProductCompleteDto(sellerProduct.getId(), sellerProduct.getBaseProduct().getName(), sellerProduct.getDescription(), sellerProduct.getFinalPrice(), sellerAreaMapper.getListCompleteDtoFromEntityList(sellerProduct.getAreas()));
+        return new SellerProductCompleteDto(sellerProduct.getId(), sellerProduct.getBaseProduct().getName(), sellerProduct.getDescription(), sellerProduct.getBasePrice(), sellerProduct.getFinalPrice(), sellerAreaMapper.getListCompleteDtoFromEntityList(sellerProduct.getAreas()));
     }
     public SellerProductDto getDtoFromEntity(SellerProduct sellerProduct){
-        return new SellerProductDto(sellerProduct.getId(), sellerProduct.getBaseProduct().getName(), sellerProduct.getDescription(), sellerProduct.getFinalPrice());
+        return new SellerProductDto(sellerProduct.getId(), sellerProduct.getBaseProduct().getName(), sellerProduct.getDescription(), sellerProduct.getFinalPrice(), sellerProduct.getSeller().getUser().getEmail());
     }
     public List<SellerProductDto> getListDtoFromEntityList(List<SellerProduct> sellerProducts){
         return sellerProducts.stream().map(this::getDtoFromEntity).collect(Collectors.toList());

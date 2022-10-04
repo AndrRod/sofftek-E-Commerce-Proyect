@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/sellercustomization")
+@RequestMapping("/seller/customization")
 public class SellerCustomizationController {
     @Autowired
     private SellerCustomizationService sellerCustomizationService;
@@ -24,15 +25,11 @@ public class SellerCustomizationController {
         return ResponseEntity.ok(sellerCustomizationService.geDtoListPagination(Integer.valueOf(page)));
     }
     @PostMapping("/{id}")
-    ResponseEntity<SellerCustomizationCompleteDto> updateEntity(@PathVariable String id, @RequestBody SellerCustomizationDto customizationDto){
-        return ResponseEntity.ok(sellerCustomizationService.updateEntity(Long.valueOf(id), customizationDto));
+    ResponseEntity<SellerCustomizationCompleteDto> updateEntity(@PathVariable String id, @RequestBody SellerCustomizationDto customizationDto, HttpServletRequest request){
+        return ResponseEntity.ok(sellerCustomizationService.updateEntity(Long.valueOf(id), customizationDto, request));
     }
-    @DeleteMapping("params/{id}")
-    ResponseEntity<Map<String, String>> deleteEntityParams(@PathVariable String id){
-        return ResponseEntity.ok(sellerCustomizationService.deleteEntityParams(Long.valueOf(id)));
-    }
-    @DeleteMapping("/{id}")
-    ResponseEntity<Map<String, String>> deleteEntityById(@PathVariable String id){ //TODO AGREGADO PARA PRUEBA
-        return ResponseEntity.ok(sellerCustomizationService.deleteEntity(Long.valueOf(id)));
+    @DeleteMapping("/{id}/reset")
+    ResponseEntity<Map<String, String>> deleteEntityParams(@PathVariable String id, HttpServletRequest request){
+        return ResponseEntity.ok(sellerCustomizationService.deleteEntityParams(Long.valueOf(id), request));
     }
 }

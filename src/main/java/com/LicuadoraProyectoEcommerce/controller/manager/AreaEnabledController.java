@@ -27,7 +27,7 @@ public class AreaEnabledController {
     private CustomizationAllowedService customizationAllowedService;
 
     @GetMapping("/{id}")
-    ResponseEntity<EnabledAreaDto> findEntityById(@PathVariable String id){
+    ResponseEntity<EnabledAreaCompleteDto> findEntityById(@PathVariable String id){
         return ResponseEntity.ok(enabledAreaService.findById(Long.valueOf(id)));
     }
     @GetMapping

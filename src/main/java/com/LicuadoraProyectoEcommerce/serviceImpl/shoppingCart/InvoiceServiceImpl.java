@@ -7,11 +7,11 @@ import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.InvoiceForm;
 import com.LicuadoraProyectoEcommerce.mapper.shoppingCart.InvoiceMapper;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Invoice;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.Payment;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.Purchase;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.StatusPayment;
 import com.LicuadoraProyectoEcommerce.repository.shoppingCart.InvoiceRepository;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.InvoiceService;
-import com.LicuadoraProyectoEcommerce.service.shoppingCart.PaymentService;
+import com.LicuadoraProyectoEcommerce.service.shoppingCart.PurchaseService;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -30,21 +30,21 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Autowired
     private MessageHandler messageHandler;
     @Autowired
-    private PaymentService paymentService;
+    private PurchaseService purchaseService;
     @Override
     public InvoiceDto createEntity(Long idPayment, InvoiceForm invoiceForm) {
-        Payment payment = paymentService.findEntityById(idPayment);
+        Purchase purchase = purchaseService.findEntityById(idPayment);
         Try.of(()->StatusPayment.valueOf(invoiceForm.getStatus())).getOrElseThrow(()-> new NotFoundException("the "+ invoiceForm.getStatus() + " status doesn't exists"));
-        Invoice invoice = invoiceMapper.createFromForm(payment, invoiceForm);
+        Invoice invoice = invoiceMapper.createFromForm(purchase, invoiceForm);
         return invoiceMapper.getDtoFromEntity(invoiceRepository.save(invoice));
     }
     @Override
     public InvoiceDto updateEntity(Long id, Long idPayment, InvoiceForm invoiceForm) {
         Invoice invoice = findEntityById(id);
-        if(idPayment!=null && idPayment != invoice.getPayment().getId()){
-            Payment payment = paymentService.findEntityById(idPayment);
-            if(invoiceRepository.existsByPayment(payment)) throw new BadRequestException("the payment already have invoice");
-            invoice.setPayment(payment);
+        if(idPayment!=null && idPayment != invoice.getPurchase().getId()){
+            Purchase purchase = purchaseService.findEntityById(idPayment);
+            if(invoiceRepository.existsByPurchase(purchase)) throw new BadRequestException("the payment already have invoice");
+            invoice.setPurchase(purchase);
         }
         Try.of(()->StatusPayment.valueOf(invoiceForm.getStatus())).getOrElseThrow(()-> new NotFoundException("the "+ invoiceForm.getStatus() + " status doesn't exists"));
         Invoice invoiceUpdate = invoiceMapper.updateFromForm(invoice, invoiceForm);

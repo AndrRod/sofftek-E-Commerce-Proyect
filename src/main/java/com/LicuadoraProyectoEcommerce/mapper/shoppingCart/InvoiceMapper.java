@@ -3,7 +3,7 @@ package com.LicuadoraProyectoEcommerce.mapper.shoppingCart;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.InvoiceDto;
 import com.LicuadoraProyectoEcommerce.form.InvoiceForm;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Invoice;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.Payment;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.Purchase;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.StatusPayment;
 import org.springframework.stereotype.Component;
 
@@ -23,8 +23,8 @@ public class InvoiceMapper {
         });
         return invoice;
     }
-    public Invoice createFromForm(Payment payment, InvoiceForm invoiceForm){
-        return new Invoice(payment, invoiceForm.getInvoiceNumber(), StatusPayment.valueOf(invoiceForm.getStatus()));
+    public Invoice createFromForm(Purchase purchase, InvoiceForm invoiceForm){
+        return new Invoice(purchase, invoiceForm.getInvoiceNumber(), StatusPayment.valueOf(invoiceForm.getStatus()));
     }
     public List<InvoiceDto> getListDtoFromListEntity(List<Invoice> list ){
         return list.stream().map(this::getDtoFromEntity).collect(Collectors.toList());

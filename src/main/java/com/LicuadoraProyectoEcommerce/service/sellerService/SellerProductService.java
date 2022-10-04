@@ -15,12 +15,11 @@ public interface SellerProductService {
     SellerProduct findEntityById(Long id);
     SellerProductCompleteDto findById(Long id);
     List<SellerProductCompleteDto> listDtoPagination(Integer page);
-    Map<String, String> deleteById(Long id);
+    Map<String, String> deleteById(Long id, HttpServletRequest request);
     SellerProductDto createEntity(BaseProduct baseProduct, SellerProductForm sellerProductForm, HttpServletRequest request);
-    SellerProductDto updateEntity(Long id, SellerProductForm sellerProductForm);
-    void deleteByEntity(SellerProduct sellerProduct);
-    SellerProductDto addStoreById(Long idProduct);
-    SellerProductDto removeStoreById(Long idProduct);
+    SellerProductDto updateEntity(Long id, SellerProductForm sellerProductForm, HttpServletRequest request);
+    SellerProductDto addStoreById(Long idProduct, HttpServletRequest request);
+    SellerProductDto removeStoreById(Long idProduct, HttpServletRequest request);
 
     List<SellerProductDto> listPartDtoPagination(Integer page);
 }

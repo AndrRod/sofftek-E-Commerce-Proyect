@@ -2,7 +2,6 @@ package com.LicuadoraProyectoEcommerce.service.sellerService;
 
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreDto;
-import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
 import com.LicuadoraProyectoEcommerce.model.seller.Store;
 
 import javax.servlet.http.HttpServletRequest;

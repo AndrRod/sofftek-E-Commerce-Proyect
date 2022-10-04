@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/sellerProduct")
+@RequestMapping("/seller/product")
 public class SellerProductController {
     @Autowired
     private SellerProductService sellerProductService;
@@ -31,8 +31,8 @@ public class SellerProductController {
         return ResponseEntity.status(201).body(sellerProductService.createEntity(baseProduct,priceForm, request));
     }
     @PutMapping("/{id}")
-    public ResponseEntity<SellerProductDto> updateEntity(@PathVariable String id, @RequestBody SellerProductForm sellerProductForm){
-        return ResponseEntity.ok(sellerProductService.updateEntity(Long.valueOf(id), sellerProductForm));
+    public ResponseEntity<SellerProductDto> updateEntity(@PathVariable String id, @RequestBody SellerProductForm sellerProductForm, HttpServletRequest request){
+        return ResponseEntity.ok(sellerProductService.updateEntity(Long.valueOf(id), sellerProductForm, request));
     }
     @GetMapping
     public ResponseEntity<List<SellerProductCompleteDto>> getDtoListPagination(@RequestParam String page){
@@ -44,15 +44,14 @@ public class SellerProductController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteById(@PathVariable String id, HttpServletRequest request){
-        //        userAuthService.isSellerProductSellerCreator(request, sellerProductService.findEntityById(Long.valueOf(id))); //TODO PRUEBA DE FILTRO POR USUARIO CREADOR DEL PRODUCTO
-        return ResponseEntity.status(201).body(sellerProductService.deleteById(Long.valueOf(id)));
+        return ResponseEntity.status(201).body(sellerProductService.deleteById(Long.valueOf(id), request));
     }
-    @PostMapping("/{id}/addstore")
-    public ResponseEntity<SellerProductDto> addStore(@PathVariable String id){
-        return ResponseEntity.status(201).body(sellerProductService.addStoreById(Long.valueOf(id)));
+    @PostMapping("/{id}/store")
+    public ResponseEntity<SellerProductDto> addStore(@PathVariable String id, HttpServletRequest request){
+        return ResponseEntity.status(201).body(sellerProductService.addStoreById(Long.valueOf(id), request));
     }
-    @DeleteMapping("/{id}/removestore")
-    public ResponseEntity<SellerProductDto> removeStore(@PathVariable String id){
-        return ResponseEntity.status(201).body(sellerProductService.removeStoreById(Long.valueOf(id)));
+    @DeleteMapping("/{id}/store")
+    public ResponseEntity<SellerProductDto> removeStore(@PathVariable String id, HttpServletRequest request){
+        return ResponseEntity.status(201).body(sellerProductService.removeStoreById(Long.valueOf(id), request));
     }
 }

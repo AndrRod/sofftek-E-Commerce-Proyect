@@ -6,13 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity @AllArgsConstructor @NoArgsConstructor
-public class Payment {
+public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,16 +30,16 @@ public class Payment {
     @ElementCollection
     @CollectionTable(name = "products", joinColumns = @JoinColumn(name = "payment_id"))
     private List<String> products = new ArrayList<>();
-    public Payment(ShoppingCart shoppingCart, PaymentMethod paymentMethod, String numberOfTransaction){
+    public Purchase(ShoppingCart shoppingCart, PaymentMethod paymentMethod, String numberOfTransaction){
         this.shoppingCart= shoppingCart;
         this.paymentMethod = paymentMethod;
-        this.storeName= this.shoppingCart.getProductOrders().get(0).getSellerProduct().getStore().getName();
+        this.storeName= this.shoppingCart.getItems().get(0).getSellerProduct().getStore().getName();
         this.buyerDni= shoppingCart.getBuyerDni();
         this.buyerEmail=shoppingCart.getBuyerEmail();
         this.buyerName= shoppingCart.getBuyerName();
         this.numberOfTransaction = numberOfTransaction;
         this.totalPurchase= shoppingCart.getFinalPrice();
-        shoppingCart.getProductOrders().stream().forEach(p->{
+        shoppingCart.getItems().stream().forEach(p->{
             this.products.add("Name: "+ p.getSellerProduct().getBaseProduct().getName()+
                     ", Description: " + p.getSellerProduct().getDescription() +
                     ", Amount: " + p.getQuantityOfProducts() +

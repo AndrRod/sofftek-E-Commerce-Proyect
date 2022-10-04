@@ -1,6 +1,7 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.ProductOrder;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.Items;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.Publication;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -32,6 +33,11 @@ public class SellerProduct {
     private Store store;
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @OneToOne
+    @JoinColumn(name = "publication_id", referencedColumnName = "id")
+    private Publication publication;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH} )
     @JoinTable(name = "sellerProduct_area",
             joinColumns = @JoinColumn(name = "product_seller_id"),
@@ -40,7 +46,7 @@ public class SellerProduct {
 
 
     @OneToMany(mappedBy = "sellerProduct", cascade = CascadeType.ALL)
-    private List<ProductOrder> productOrders;
+    private List<Items> items;
     public SellerProduct(Double basePrice, BaseProduct baseProduct, String description){
         this.basePrice = basePrice;
         this.baseProduct=baseProduct;
@@ -48,7 +54,7 @@ public class SellerProduct {
     }
     public SellerProduct(){
         this.finalPrice = 0d;
-        this.productOrders = new ArrayList<>();
+        this.items = new ArrayList<>();
     }
     public void addAreaToSellerProduct(SellerArea sellerArea) {
         areas.add(sellerArea);

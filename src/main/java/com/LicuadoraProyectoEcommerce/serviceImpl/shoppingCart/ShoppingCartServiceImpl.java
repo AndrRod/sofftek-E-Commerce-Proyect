@@ -8,7 +8,7 @@ import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.productOrderForm;
 import com.LicuadoraProyectoEcommerce.mapper.shoppingCart.ShoppingCartMapper;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.ProductOrder;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.Items;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
 import com.LicuadoraProyectoEcommerce.repository.shoppingCart.ShoppingCartRepository;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
@@ -16,7 +16,6 @@ import com.LicuadoraProyectoEcommerce.service.shoppingCart.ProductOrderService;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -75,20 +74,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         SellerProduct product  = sellerProductService.findEntityById(idProduct);
         ShoppingCart shoppingCart = findEntityById(id);
         isTheSameStore(product, shoppingCart);
-        ProductOrder productOrder = productOrderService.createNewOrderProduct(shoppingCart, product, amountProduct);
-        return shoppingCartMapper.getCompleteDtoFromEntity(productOrder.getShoppingCart());
+        Items items = productOrderService.createNewOrderProduct(shoppingCart, product, amountProduct);
+        return shoppingCartMapper.getCompleteDtoFromEntity(items.getShoppingCart());
     }
     @Override //TODO ver si no es mejorar mandar un mensaje
     public ShoppingCartCompleteDto updateProductToCart(Long id, Long idOrderProduct, Long idProduct, productOrderForm form) {
         SellerProduct product  = (idProduct==null) ? null:sellerProductService.findEntityById(idProduct);
         ShoppingCart shoppingCart = findEntityById(id);
         isTheSameStore(product, shoppingCart);
-        ProductOrder productOrder = productOrderService.updateEntityById(idOrderProduct, product, form.getQuantityOfProducts());
-        return shoppingCartMapper.getCompleteDtoFromEntity(productOrder.getShoppingCart());
+        Items items = productOrderService.updateEntityById(idOrderProduct, product, form.getQuantityOfProducts());
+        return shoppingCartMapper.getCompleteDtoFromEntity(items.getShoppingCart());
     }
     void isTheSameStore(SellerProduct product, ShoppingCart shoppingCart){
-        List<ProductOrder> productOrderList = shoppingCart.getProductOrders();
-        Boolean isTrue = product==null || productOrderList.isEmpty() || productOrderList.stream().anyMatch(p->
+        List<Items> itemsList = shoppingCart.getItems();
+        Boolean isTrue = product==null || itemsList.isEmpty() || itemsList.stream().anyMatch(p->
                         p.getSellerProduct().getSeller().getStore().getSellerProducts().contains(product));
         if(!isTrue) throw new BadRequestException("you cant add to the cart products from another store or products that do not have a store");
     }
