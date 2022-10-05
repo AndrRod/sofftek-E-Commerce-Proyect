@@ -18,7 +18,6 @@ public class Purchase {
     @OneToOne
     @JoinColumn(name = "shoppingCart_id", referencedColumnName = "id")
     private ShoppingCart shoppingCart;
-
     private String storeName;
     private String buyerName;
     private String buyerEmail;
@@ -33,7 +32,7 @@ public class Purchase {
     public Purchase(ShoppingCart shoppingCart, PaymentMethod paymentMethod, String numberOfTransaction){
         this.shoppingCart= shoppingCart;
         this.paymentMethod = paymentMethod;
-        this.storeName= this.shoppingCart.getItems().get(0).getSellerProduct().getStore().getName();
+        this.storeName= this.shoppingCart.getItems().get(0).getSellerProduct().getPublication().getStore().getName();
         this.buyerDni= shoppingCart.getBuyerDni();
         this.buyerEmail=shoppingCart.getBuyerEmail();
         this.buyerName= shoppingCart.getBuyerName();

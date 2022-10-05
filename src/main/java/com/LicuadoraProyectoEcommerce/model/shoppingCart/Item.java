@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @AllArgsConstructor
-public class Items {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,11 +34,11 @@ public class Items {
     @Column(name = "orderDate",updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime orderDate;
-    public Items(){
+    public Item(){
         this.finalPricePerQuantity = 0d;
         this.quantityOfProducts = 1;
     }
-    public Items(ShoppingCart shoppingCart, SellerProduct sellerProduct, Integer quantityOfProducts){
+    public Item(ShoppingCart shoppingCart, SellerProduct sellerProduct, Integer quantityOfProducts){
         this.shoppingCart = shoppingCart;
         this.sellerProduct = sellerProduct;
         this.quantityOfProducts = quantityOfProducts;

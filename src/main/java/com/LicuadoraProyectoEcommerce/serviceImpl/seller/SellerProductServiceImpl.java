@@ -3,7 +3,6 @@ package com.LicuadoraProyectoEcommerce.serviceImpl.seller;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerProductCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerProductDto;
-import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreDto;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.mapper.seller.SellerProductMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
@@ -11,13 +10,9 @@ import com.LicuadoraProyectoEcommerce.form.SellerProductForm;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.seller.*;
 import com.LicuadoraProyectoEcommerce.repository.manager.EnableAreaRepository;
-import com.LicuadoraProyectoEcommerce.repository.seller.SellerAreaRepository;
-import com.LicuadoraProyectoEcommerce.repository.seller.SellerCustomizationRepository;
-import com.LicuadoraProyectoEcommerce.repository.seller.SellerProductRepository;
-import com.LicuadoraProyectoEcommerce.repository.seller.SellerRepository;
+import com.LicuadoraProyectoEcommerce.repository.seller.*;
 import com.LicuadoraProyectoEcommerce.service.UserAuth.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
-import com.LicuadoraProyectoEcommerce.service.sellerService.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -48,6 +43,8 @@ public class SellerProductServiceImpl implements SellerProductService {
     private UserAuthService userAuthService;
     @Autowired
     private SellerRepository sellerRepository;
+    @Autowired
+    private PublicationRepository publicationRepository;
 
     @Override
     public SellerProduct findEntityById(Long id) {
@@ -67,9 +64,10 @@ public class SellerProductServiceImpl implements SellerProductService {
 
     @Override
     public List<SellerProductDto> listPartDtoPagination(Integer page) {
-        List<SellerProduct> products = sellerProductRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent();
+        List<SellerProduct> products = sellerProductRepository.findProductsByPublication(PublicationSate.valueOf("CANCELLED"), PageRequest.of(page, SIZE_TEN));
         return sellerProductMapper.getListDtoFromEntityList(products);
     }
+
     @Override
     public Map<String, String> deleteById(Long id, HttpServletRequest request) {
         SellerProduct sellerProduct = findEntityById(id);
@@ -85,6 +83,7 @@ public class SellerProductServiceImpl implements SellerProductService {
             area.removeProduct(sellerProduct);
             sellerAreaRepository.delete(area);
         }
+        if(sellerProduct.getPublication()!= null)publicationRepository.delete(sellerProduct.getPublication());
         sellerProductRepository.delete(sellerProduct);
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
@@ -117,41 +116,23 @@ public class SellerProductServiceImpl implements SellerProductService {
         return sellerProductMapper.getDtoFromEntity(sellerProductSaved);
     }
 
-    //TODO VER SI FUNCIONA EL DELETE ANTES DE SACAR
+
 //    @Override
-//    public void deleteByEntity(SellerProduct sellerProduct, HttpServletRequest request) {
-//        userAuthService.isSellerProductSellerCreator(request, sellerProduct); //TODO SACAR PARA PRUEBAS - verifica usuario
-//        List<SellerArea> areas = new ArrayList<>(sellerProduct.getAreas());
-//        for(SellerArea area : areas){
-//            int size = area.getCustomizations().size();
-//            for(int i= 0; i< size; i+=1){
-//                SellerCustomization customization = area.getCustomizations().get(0);
-//                customization.removeArea(area);
-//                customizationRepository.delete(customization);
-//            }
-//            area.removeProduct(sellerProduct);
-//            sellerAreaRepository.delete(area);
-//        }
-//        sellerProductRepository.delete(sellerProduct);
-//        }
-
-
-    @Override
-    public SellerProductDto addStoreById(Long idProduct, HttpServletRequest request) {
-        SellerProduct sellerProduct = findEntityById(idProduct);
-        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
-        if(sellerProduct.getStore()!=null) throw new BadRequestException(messageHandler.message("already.exists", sellerProduct.getBaseProduct().getName()));
-        if(sellerProduct.getSeller().getStore()==null) throw new BadRequestException(messageHandler.message("store.not.found", sellerProduct.getSeller().getUser().getName()));
-        sellerProduct.setStore(sellerProduct.getSeller().getStore());
-        return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
-    }
-    @Override
-    public SellerProductDto removeStoreById(Long idProduct, HttpServletRequest request) {
-        SellerProduct sellerProduct = findEntityById(idProduct);
-        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
-        if(sellerProduct.getStore()==null) throw new BadRequestException(messageHandler.message("already.deleted", sellerProduct.getBaseProduct().getName()));
-        sellerProduct.setStore(null);
-        return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
-    }
+//    public SellerProductDto addStoreById(Long idProduct, HttpServletRequest request) {
+//        SellerProduct sellerProduct = findEntityById(idProduct);
+//        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
+//        if(sellerProduct.getStore()!=null) throw new BadRequestException(messageHandler.message("already.exists", sellerProduct.getBaseProduct().getName()));
+//        if(sellerProduct.getSeller().getStore()==null) throw new BadRequestException(messageHandler.message("store.not.found", sellerProduct.getSeller().getUser().getName()));
+//        sellerProduct.setStore(sellerProduct.getSeller().getStore());
+//        return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
+//    }
+//    @Override
+//    public SellerProductDto removeStoreById(Long idProduct, HttpServletRequest request) {
+//        SellerProduct sellerProduct = findEntityById(idProduct);
+//        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
+//        if(sellerProduct.getStore()==null) throw new BadRequestException(messageHandler.message("already.deleted", sellerProduct.getBaseProduct().getName()));
+//        sellerProduct.setStore(null);
+//        return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
+//    }
 
 }

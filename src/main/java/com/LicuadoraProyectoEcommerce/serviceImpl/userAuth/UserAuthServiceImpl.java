@@ -180,7 +180,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     public void isSellerProductSellerCreator(HttpServletRequest request, SellerProduct sellerProduct){
         User  sellerUser = findUserLogedByEmail(request);
         Seller seller = sellerRepository.findByUser(sellerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.authorizate", "seller")));
-        if(!sellerUser.getRole().equals(Role.SELLER) || !seller.getSellerProducts().contains(sellerProduct)) throw new BadRequestException(messageHandler.message("not.creator", "seller"));
+        if(!sellerUser.getRole().equals(Role.SELLER) || !sellerProduct.getSeller().equals(seller)) throw new BadRequestException(messageHandler.message("not.creator", "seller"));
     }
     @Override
     public void isTheSameUserLogged(User user, HttpServletRequest request){
@@ -189,10 +189,16 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
                 "This user does not have permission to do this action");
     }
     @Override
+    public boolean isTheSameUser(User user, HttpServletRequest request){
+        User userLogged = findUserLogedByEmail(request);
+        if(user!= userLogged || userLogged.getRole().equals("ROLE_ADMIN")) return false;
+        return true;
+    }
+    @Override
     public void isManagerProductCreator(HttpServletRequest request, BaseProduct baseProduct){
         User  managerUser = findUserLogedByEmail(request);
         Manager manager = managerRepository.findByUser(managerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.authorizate", "manager")));
-        if(!managerUser.getRole().equals(Role.MANAGER) || !manager.getBaseProducts().contains(baseProduct)) throw new BadRequestException(messageHandler.message("not.creator", "manager"));
+        if(!managerUser.getRole().equals(Role.MANAGER) || !baseProduct.getManagerCreator().equals(manager)) throw new BadRequestException(messageHandler.message("not.creator", "manager"));
     }
     @Override
     public User getUserLoged(HttpServletRequest request) {

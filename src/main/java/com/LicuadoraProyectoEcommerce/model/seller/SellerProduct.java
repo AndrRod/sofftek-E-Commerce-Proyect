@@ -1,7 +1,6 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.Items;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.Item;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.Publication;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -28,14 +27,10 @@ public class SellerProduct {
     @ManyToOne
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private Seller seller;
-    @ManyToOne
-    @JoinColumn(name = "store_id", referencedColumnName = "id")
-    private Store store;
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToOne
-    @JoinColumn(name = "publication_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "sellerProduct", cascade = CascadeType.ALL)
     private Publication publication;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH} )
@@ -43,10 +38,8 @@ public class SellerProduct {
             joinColumns = @JoinColumn(name = "product_seller_id"),
             inverseJoinColumns = @JoinColumn(name = "seller_area_id"))
     private List<SellerArea> areas = new ArrayList<>();
-
-
     @OneToMany(mappedBy = "sellerProduct", cascade = CascadeType.ALL)
-    private List<Items> items;
+    private List<Item> items;
     public SellerProduct(Double basePrice, BaseProduct baseProduct, String description){
         this.basePrice = basePrice;
         this.baseProduct=baseProduct;

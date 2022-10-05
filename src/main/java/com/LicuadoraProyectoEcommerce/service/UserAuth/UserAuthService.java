@@ -36,4 +36,5 @@ public interface UserAuthService {
     Manager findManagerLogged(HttpServletRequest request);
 
     void isTheSameUserLogged(User user, HttpServletRequest request);
+    boolean isTheSameUser(User user, HttpServletRequest request);
 }

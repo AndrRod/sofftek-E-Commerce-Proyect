@@ -63,5 +63,4 @@ public class ExceptHandler {
     public ResponseEntity<MessageInfo> jWTDecodeException(JWTDecodeException ex, HttpServletRequest request){
         return ResponseEntity.badRequest().body(new MessageInfo("the token is incomplete or don't have a valid format", HttpStatus.BAD_REQUEST.value(), request.getRequestURL().toString()));
     }
-
 }

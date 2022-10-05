@@ -12,17 +12,20 @@ import java.util.List;
 public class ShoppingCart {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "buyerName")
     @Pattern(regexp = "([A-Z]{1}[a-zØ-öø-ÿ]{2,})(\\s[A-Z]{1}[a-zØ-öø-ÿ]{2,})?(\\s[A-Z]{1}[a-zØ-öø-ÿ]{2,})?", message = "the name format is incorrect, and remember the names have to start with capital letters") //TODO PROBAR
     private String buyerName;
+    @Column(name = "buyerEmail", unique = true)
     @Pattern(regexp = "(?=.*[a-zA-Z_])(?!.*(\\s))(?!.*(\\_|@|\\-|\\.){2}).{4,25}@(gmail?|hotmail?|outlook?|yahoo?).(com{1})", message = "the email format is incorrect" +
             ", the only mail accounts allowed are: gmail, hotmail, outlook or yahoo.") //TODO PROBAR
     private String buyerEmail;
-    @Pattern(regexp = "\\d{1,2}\\.\\d{3}\\.\\d{3}", message = "the dni format is incorrect dont forget to put the dots (example 33.064.279)")
+    @Column(name = "buyerDni", unique = true)
+    @Pattern(regexp = "\\d{1,2}\\.\\d{3}\\.\\d{3}", message = "the dni format is incorrect don't forget to put the dots (example 33.064.279)")
     private String buyerDni;
     @Transient
     private Double finalPrice;
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
-    private List<Items> items;
+    private List<Item> items;
     public ShoppingCart(){
         this.items = new ArrayList<>();
         this.finalPrice =  0d;

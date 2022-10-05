@@ -10,11 +10,11 @@ import java.util.Map;
 
 public interface StoreService {
     SellerStoreCompleteDto createEntity(SellerStoreDto sellerStoreDto, HttpServletRequest request);
-    SellerStoreCompleteDto updateEntity(Long id, SellerStoreDto sellerStoreDto);
-    SellerStoreCompleteDto findById(Long id, Integer pagePruductList);
+    SellerStoreCompleteDto updateEntity(Long idStore, SellerStoreDto sellerStoreDto, HttpServletRequest request);
+    SellerStoreCompleteDto findById(Long id, Integer pagePublications, String state);
     Store findEntityById(Long id);
-    Map<String, String> deleteById(Long id);
-    SellerStoreCompleteDto addNewPaymentMethod(Long id, String newPayMethod);
-    SellerStoreCompleteDto removePaymentMethod(Long id, String newPayMethod);
+    Map<String, String> deleteById(Long id, HttpServletRequest request);
+    SellerStoreCompleteDto addNewPaymentMethod(Long id, String newPayMethod, HttpServletRequest request);
+    SellerStoreCompleteDto removePaymentMethod(Long id, String newPayMethod, HttpServletRequest request);
     List<SellerStoreDto> listDtoPagination(Integer page);
 }

@@ -21,7 +21,7 @@ public class ShoppingCartCompleteDto {
     private String buyerEmail;
     @JsonProperty("buyer dni")
     private String buyerDni;
-    @JsonProperty("final price")
+    @JsonProperty("final purchase price")
     private Double finalPrice;
     @JsonProperty("products ordered")
     private List<ProductDto> productsOrdered;

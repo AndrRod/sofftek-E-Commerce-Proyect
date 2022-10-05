@@ -1,13 +1,13 @@
 package com.LicuadoraProyectoEcommerce.mapper.seller;
 
-import com.LicuadoraProyectoEcommerce.dto.seller.SellerProductDto;
+import com.LicuadoraProyectoEcommerce.dto.seller.PublicationDto;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreDto;
+import com.LicuadoraProyectoEcommerce.model.seller.Publication;
 import com.LicuadoraProyectoEcommerce.model.seller.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,13 +16,15 @@ import java.util.stream.Stream;
 public class StoreMapper {
     @Autowired
     private SellerProductMapper sellerProductMapper;
+    @Autowired
+    private PublicationMapper publicationMapper;
     public Store createEntityFromDto(SellerStoreDto sellerStoreDto){
          return new Store(sellerStoreDto.getName(), sellerStoreDto.getDescription());
      }
-    public SellerStoreCompleteDto getCompleteDtoFromEntity(Store store){
+    public SellerStoreCompleteDto getCompleteDtoFromEntity(Store store, List<PublicationDto> publicationsDto){
          return new SellerStoreCompleteDto(store.getId(), store.getName(), store.getDescription(), store.getPaymentMethods(),
-                 (store.getSellerProducts()==null) ? new ArrayList<>() :sellerProductMapper.getListDtoFromEntityList(store.getSellerProducts()));
-     }
+                 (publicationsDto!=null)? publicationsDto :null);
+    }
      public SellerStoreDto getDtoFromEntity(Store store){
         return new SellerStoreDto(store.getId(), store.getName(), store.getDescription());
      }
@@ -37,7 +39,4 @@ public class StoreMapper {
          return store;
      }
 
-    public SellerStoreCompleteDto getCompleteDtoAndProductPageFromEntity(Store store, List<SellerProductDto> listDto) {
-        return new SellerStoreCompleteDto(store.getId(), store.getName(), store.getDescription(), store.getPaymentMethods(),listDto);
-    }
 }

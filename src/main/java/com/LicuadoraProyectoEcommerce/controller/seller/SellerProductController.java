@@ -44,14 +44,6 @@ public class SellerProductController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteById(@PathVariable String id, HttpServletRequest request){
-        return ResponseEntity.status(201).body(sellerProductService.deleteById(Long.valueOf(id), request));
-    }
-    @PostMapping("/{id}/store")
-    public ResponseEntity<SellerProductDto> addStore(@PathVariable String id, HttpServletRequest request){
-        return ResponseEntity.status(201).body(sellerProductService.addStoreById(Long.valueOf(id), request));
-    }
-    @DeleteMapping("/{id}/store")
-    public ResponseEntity<SellerProductDto> removeStore(@PathVariable String id, HttpServletRequest request){
-        return ResponseEntity.status(201).body(sellerProductService.removeStoreById(Long.valueOf(id), request));
+        return ResponseEntity.ok(sellerProductService.deleteById(Long.valueOf(id), request));
     }
 }
