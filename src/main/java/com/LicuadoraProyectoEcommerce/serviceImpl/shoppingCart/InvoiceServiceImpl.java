@@ -34,7 +34,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public InvoiceDto createEntity(Long idPayment, InvoiceForm invoiceForm) {
         Purchase purchase = purchaseService.findEntityById(idPayment);
-        Try.of(()->StatusPayment.valueOf(invoiceForm.getStatus())).getOrElseThrow(()-> new NotFoundException("the "+ invoiceForm.getStatus() + " status doesn't exists"));
         Invoice invoice = invoiceMapper.createFromForm(purchase, invoiceForm);
         return invoiceMapper.getDtoFromEntity(invoiceRepository.save(invoice));
     }
@@ -46,7 +45,6 @@ public class InvoiceServiceImpl implements InvoiceService {
             if(invoiceRepository.existsByPurchase(purchase)) throw new BadRequestException("the payment already have invoice");
             invoice.setPurchase(purchase);
         }
-        Try.of(()->StatusPayment.valueOf(invoiceForm.getStatus())).getOrElseThrow(()-> new NotFoundException("the "+ invoiceForm.getStatus() + " status doesn't exists"));
         Invoice invoiceUpdate = invoiceMapper.updateFromForm(invoice, invoiceForm);
         return invoiceMapper.getDtoFromEntity(invoiceUpdate);
     }

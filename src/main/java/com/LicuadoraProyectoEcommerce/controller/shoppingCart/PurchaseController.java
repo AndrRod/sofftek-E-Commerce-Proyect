@@ -8,12 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/purchase")
 public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
@@ -36,5 +37,9 @@ public class PurchaseController {
     @PutMapping("/{id}/cart/{idShoppingCart}")
     public ResponseEntity<PurchaseDto> updateEntity(@PathVariable String id, @PathVariable(required = false) Long idShoppingCart, @RequestBody PaymentForm paymentForm){
         return ResponseEntity.ok(purchaseService.updateEntity(Long.valueOf(id), idShoppingCart, paymentForm));
+    }
+    @PostMapping("/{id}")
+    public ResponseEntity<Map<String, String>> updatePurchaseStatus(@PathVariable String id, @RequestParam String payment, HttpServletRequest request){
+        return ResponseEntity.ok(purchaseService.updateStatePurchase(Long.valueOf(id), payment, request));
     }
 }

@@ -25,8 +25,8 @@ public class ShoppingCartMapper {
     public ShoppingCartDto getDtoFromEntity(ShoppingCart shoppingCart){
         return new ShoppingCartDto(shoppingCart.getId(), shoppingCart.getBuyerName(), shoppingCart.getBuyerEmail(), shoppingCart.getBuyerDni(), shoppingCart.getFinalPrice());}
 
-    public List<ShoppingCartCompleteDto> getListDtoFromListEntity(List<ShoppingCart> shoppingCartList){
-        return shoppingCartList.stream().map(c->getCompleteDtoFromEntity(c, false)).collect(Collectors.toList());
+    public List<ShoppingCartDto> getListDtoFromListEntity(List<ShoppingCart> shoppingCartList){
+        return shoppingCartList.stream().map(this::getDtoFromEntity).collect(Collectors.toList());
     }
     public ShoppingCart updateEntityFromDto(ShoppingCart shoppingCart, ShoppingCartForm shoppingCartDto){
         Stream.of(shoppingCartDto).forEach((dto)->{
@@ -37,9 +37,10 @@ public class ShoppingCartMapper {
         return shoppingCart;
     }
 
-    public ShoppingCartCompleteDto getCompleteDtoFromEntity(ShoppingCart shoppingCart, boolean showProducts){
-        return new ShoppingCartCompleteDto(shoppingCart.getId(), shoppingCart.getBuyerName(), shoppingCart.getBuyerEmail(), shoppingCart.getBuyerDni(), shoppingCart.getFinalPrice()
-                , (showProducts)?getProductDtoFromShoppingCart(shoppingCart): null);
+    public ShoppingCartCompleteDto getCompleteDtoFromEntity(ShoppingCart shoppingCart){
+        return new ShoppingCartCompleteDto(shoppingCart.getId(), shoppingCart.getBuyerName(), shoppingCart.getBuyerEmail(), shoppingCart.getBuyerDni()
+                ,shoppingCart.getFinalPrice()
+                ,getProductDtoFromShoppingCart(shoppingCart));
     }
     public List<ProductDto> getProductDtoFromShoppingCart(ShoppingCart shoppingCart){
         List<ProductDto> productsDto = new ArrayList<>();

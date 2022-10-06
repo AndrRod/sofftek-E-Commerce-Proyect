@@ -28,4 +28,6 @@ public class PurchaseDto {
     private String buyerEmail;
     @JsonProperty("buyer dni")
     private String buyerDni;
+    @JsonProperty("payment status")
+    private String status;
 }

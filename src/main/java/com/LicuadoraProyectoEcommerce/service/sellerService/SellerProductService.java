@@ -18,8 +18,5 @@ public interface SellerProductService {
     Map<String, String> deleteById(Long id, HttpServletRequest request);
     SellerProductDto createEntity(BaseProduct baseProduct, SellerProductForm sellerProductForm, HttpServletRequest request);
     SellerProductDto updateEntity(Long id, SellerProductForm sellerProductForm, HttpServletRequest request);
-//    SellerProductDto addStoreById(Long idProduct, HttpServletRequest request);
-//    SellerProductDto removeStoreById(Long idProduct, HttpServletRequest request);
-
     List<SellerProductDto> listPartDtoPagination(Integer page);
 }

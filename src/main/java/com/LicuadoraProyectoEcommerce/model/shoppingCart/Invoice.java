@@ -33,10 +33,10 @@ public class Invoice {
     private String buyerEmail;
     private String buyerDni;
 
-    public Invoice(Purchase purchase, String invoiceNumber, StatusPayment status){
+    public Invoice(Purchase purchase, String invoiceNumber){
         this.purchase = purchase;
         this.invoiceNumber = invoiceNumber;
-        this.status= status;
+        this.status= this.purchase.getStatus();
         this.storeName= this.purchase.getStoreName();
         this.buyerDni= this.purchase.getBuyerDni();
         this.buyerEmail=this.purchase.getBuyerEmail();

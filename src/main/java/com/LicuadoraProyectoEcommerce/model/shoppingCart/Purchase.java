@@ -26,17 +26,21 @@ public class Purchase {
     private PaymentMethod paymentMethod;
     private String numberOfTransaction;
     private Double totalPurchase;
+
+    @Enumerated(value = EnumType.STRING)
+    private StatusPayment status;
     @ElementCollection
-    @CollectionTable(name = "products", joinColumns = @JoinColumn(name = "payment_id"))
+    @CollectionTable(name = "products_purchase", joinColumns = @JoinColumn(name = "payment_id"))
     private List<String> products = new ArrayList<>();
     public Purchase(ShoppingCart shoppingCart, PaymentMethod paymentMethod, String numberOfTransaction){
         this.shoppingCart= shoppingCart;
         this.paymentMethod = paymentMethod;
+        this.numberOfTransaction = numberOfTransaction;
         this.storeName= this.shoppingCart.getItems().get(0).getSellerProduct().getPublication().getStore().getName();
         this.buyerDni= shoppingCart.getBuyerDni();
         this.buyerEmail=shoppingCart.getBuyerEmail();
         this.buyerName= shoppingCart.getBuyerName();
-        this.numberOfTransaction = numberOfTransaction;
+
         this.totalPurchase= shoppingCart.getFinalPrice();
         shoppingCart.getItems().stream().forEach(p->{
             this.products.add("Name: "+ p.getSellerProduct().getBaseProduct().getName()+
@@ -44,5 +48,6 @@ public class Purchase {
                     ", Amount: " + p.getQuantityOfProducts() +
                     ", Final price: " + p.getFinalPricePerQuantity());
         });
+        this.status = StatusPayment.PENDING;
     }
 }

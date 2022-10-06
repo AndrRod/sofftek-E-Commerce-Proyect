@@ -45,7 +45,8 @@ public class PublicationServiceImpl implements PublicationService {
         getPublicationStateFromStringOrThrowException(publicationForm.getPublicationSate());
         Publication publicationSave = publicationMapper.createEntityFromForm(sellerProduct, publicationForm);
         publicationSave.setStore(store);
-        return publicationMapper.getDtoFromEntity(publicationRepository.save(publicationSave));
+        publicationRepository.save(publicationSave);
+        return publicationMapper.getDtoFromEntity(publicationSave);
     }
     @Override
     public PublicationDto updateEntity(Long id, Long idSellerProduct, PublicationForm publicationForm, HttpServletRequest request) {

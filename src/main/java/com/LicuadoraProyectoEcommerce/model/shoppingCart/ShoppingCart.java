@@ -1,6 +1,8 @@
 package com.LicuadoraProyectoEcommerce.model.shoppingCart;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -26,6 +28,7 @@ public class ShoppingCart {
     private Double finalPrice;
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
     private List<Item> items;
+    private Boolean showEntity;
     public ShoppingCart(){
         this.items = new ArrayList<>();
         this.finalPrice =  0d;
@@ -34,6 +37,7 @@ public class ShoppingCart {
         this.buyerName = buyerName;
         this.buyerEmail = buyerEmail;
         this.buyerDni = buyerDni;
+        this.showEntity= true;
     }
 
     public Double getFinalPrice() {

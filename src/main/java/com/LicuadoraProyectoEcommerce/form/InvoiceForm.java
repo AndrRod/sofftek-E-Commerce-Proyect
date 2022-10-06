@@ -17,6 +17,4 @@ public class InvoiceForm {
     @JsonProperty("invoice number")
     @Pattern(regexp = "[0-9]{10}", message = "only accepts 10 numbers")
     private String invoiceNumber;
-    @NotBlank(message = "can't be null or empty")
-    private String status;
 }

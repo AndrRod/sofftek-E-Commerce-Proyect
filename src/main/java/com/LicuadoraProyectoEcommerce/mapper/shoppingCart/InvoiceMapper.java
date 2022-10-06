@@ -19,12 +19,11 @@ public class InvoiceMapper {
     public Invoice updateFromForm(Invoice invoice, InvoiceForm invoiceForm){
         Stream.of(invoiceForm).forEach(f-> {
             if(f.getInvoiceNumber()!= null) invoice.setInvoiceNumber(f.getInvoiceNumber());
-            if(f.getStatus() != null) invoice.setStatus(StatusPayment.valueOf(f.getStatus()));
         });
         return invoice;
     }
     public Invoice createFromForm(Purchase purchase, InvoiceForm invoiceForm){
-        return new Invoice(purchase, invoiceForm.getInvoiceNumber(), StatusPayment.valueOf(invoiceForm.getStatus()));
+        return new Invoice(purchase, invoiceForm.getInvoiceNumber());
     }
     public List<InvoiceDto> getListDtoFromListEntity(List<Invoice> list ){
         return list.stream().map(this::getDtoFromEntity).collect(Collectors.toList());
