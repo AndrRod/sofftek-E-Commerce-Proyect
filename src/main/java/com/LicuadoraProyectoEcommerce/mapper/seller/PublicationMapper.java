@@ -26,7 +26,7 @@ public class PublicationMapper {
     }
 
     public PublicationDto getDtoFromEntity(Publication publication) {
-        return new PublicationDto(publication.getId(), publication.getSellerProduct().getBaseProduct().getName(), publication.getSellerProduct().getDescription(), publication.getDescription(), publication.getStore().getName(), publication.getPublicationSate(), publication.getUpdateDate());
+        return new PublicationDto(publication.getId(), publication.getStore().getName(),publication.getSellerProduct().getBaseProduct().getName(), publication.getSellerProduct().getDescription(), publication.getSellerProduct().getFinalPrice(), publication.getDescription(), publication.getPublicationSate(), publication.getUpdateDate());
     }
 
     public List<PublicationDto> getListDtoFromListEntity(List<Publication> publications) {

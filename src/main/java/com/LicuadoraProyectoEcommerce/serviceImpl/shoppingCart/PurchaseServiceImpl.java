@@ -44,9 +44,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     public PurchaseDto createEntity(Long idShoppingCart, PaymentForm paymentForm) {
         ShoppingCart shoppingCart = shoppingCartService.findEntityById(idShoppingCart);
         if(purchaseRepository.existsByShoppingCart(shoppingCart)) throw new BadRequestException("the shopping cart is already paid");
-        paymentMethodExist(paymentForm, shoppingCart);
+        validShoppingCartConditions(paymentForm, shoppingCart);
         Purchase purchase = purchaseMapper.createFromForm(shoppingCart, paymentForm);
-        purchase.getShoppingCart().setShowEntity(false);
         return purchaseMapper.getDtoFromEntity(purchaseRepository.save(purchase));
     }
 
@@ -56,15 +55,13 @@ public class PurchaseServiceImpl implements PurchaseService {
         if(idShoppingCart!=null && idShoppingCart != purchase.getShoppingCart().getId()){
         ShoppingCart shoppingCart = shoppingCartService.findEntityById(idShoppingCart);
         if(purchaseRepository.existsByShoppingCart(shoppingCart)) throw new BadRequestException("the shopping cart is already paid");
-        shoppingCart.setShowEntity(false);
-        purchase.getShoppingCart().setShowEntity(true);
         purchase.setShoppingCart(shoppingCart);
         }
-        paymentMethodExist(paymentForm, purchase.getShoppingCart());
+        validShoppingCartConditions(paymentForm, purchase.getShoppingCart());
         Purchase updateEntity = purchaseMapper.updateFromForm(purchase, paymentForm);
         return purchaseMapper.getDtoFromEntity(purchaseRepository.save(updateEntity));
     }
-    void paymentMethodExist(PaymentForm paymentForm, ShoppingCart shoppingCart){
+    void validShoppingCartConditions(PaymentForm paymentForm, ShoppingCart shoppingCart){
         if(shoppingCart.getItems().isEmpty()) throw new BadRequestException("before to pay you have to add products to shopping cart");
         Store store = shoppingCart.getItems().get(0).getSellerProduct().getPublication().getStore();
         if (!store.getPaymentMethods().stream().anyMatch(m-> m.toString().equals(paymentForm.getPaymentMethod()))){
@@ -74,7 +71,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public Map<String, String> deleteById(Long id) {
         Purchase purchase = findEntityById(id);
-        purchase.getShoppingCart().setShowEntity(true);
+//        purchase.getShoppingCart().setShowEntity(true);
         purchaseRepository.delete(purchase);
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }

@@ -14,9 +14,12 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SellerStoreCompleteDto {
     private Long id;
+    @JsonProperty("store name")
     private String name;
+    @JsonProperty("store description")
     private String description;
     @JsonProperty("payment methods")
     private List<PaymentMethod> paymentMethods;
+    @JsonProperty("publications")
     private List<PublicationDto> publications;
 }

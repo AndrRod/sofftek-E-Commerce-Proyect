@@ -12,7 +12,6 @@ import com.LicuadoraProyectoEcommerce.model.shoppingCart.StatusPayment;
 import com.LicuadoraProyectoEcommerce.repository.shoppingCart.InvoiceRepository;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.InvoiceService;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.PurchaseService;
-import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -34,6 +33,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public InvoiceDto createEntity(Long idPayment, InvoiceForm invoiceForm) {
         Purchase purchase = purchaseService.findEntityById(idPayment);
+        validPurchaseConditions(purchase);
         Invoice invoice = invoiceMapper.createFromForm(purchase, invoiceForm);
         return invoiceMapper.getDtoFromEntity(invoiceRepository.save(invoice));
     }
@@ -42,11 +42,15 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice invoice = findEntityById(id);
         if(idPayment!=null && idPayment != invoice.getPurchase().getId()){
             Purchase purchase = purchaseService.findEntityById(idPayment);
-            if(invoiceRepository.existsByPurchase(purchase)) throw new BadRequestException("the payment already have invoice");
+            validPurchaseConditions(purchase);
             invoice.setPurchase(purchase);
         }
         Invoice invoiceUpdate = invoiceMapper.updateFromForm(invoice, invoiceForm);
         return invoiceMapper.getDtoFromEntity(invoiceUpdate);
+    }
+    void validPurchaseConditions(Purchase purchase){
+        if(invoiceRepository.existsByPurchase(purchase)) throw new BadRequestException("the payment already have invoice");
+        if(purchase.getStatus()!= StatusPayment.ACCEPTED) throw new BadRequestException("the payment its no already ACCEPTED, turn the purchase state to trigger the invoice");
     }
 
     @Override

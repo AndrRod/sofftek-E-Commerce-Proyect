@@ -28,12 +28,12 @@ public class InvoiceController {
     public ResponseEntity<List<InvoiceDto>> getDtoListPagination(@RequestParam String page){
         return ResponseEntity.ok(invoiceService.geDtoListPagination(Integer.valueOf(page)));
     }
-    @PostMapping("/payment/{idPayment}")
-    public ResponseEntity<InvoiceDto> createEntity(@PathVariable String idPayment, @RequestBody @Valid InvoiceForm invoiceForm){
-        return ResponseEntity.status(201).body(invoiceService.createEntity(Long.valueOf(idPayment), invoiceForm));
+    @PostMapping("/purchase/{idPurchase}")
+    public ResponseEntity<InvoiceDto> createEntity(@PathVariable String idPurchase, @RequestBody @Valid InvoiceForm invoiceForm){
+        return ResponseEntity.status(201).body(invoiceService.createEntity(Long.valueOf(idPurchase), invoiceForm));
     }
-    @PutMapping("/{id}/payment/{idPayment}")
-    public ResponseEntity<InvoiceDto> updateEntity(@PathVariable String id, @PathVariable(required = false) Long idPayment, @RequestBody @Valid InvoiceForm invoiceForm){
-        return ResponseEntity.ok(invoiceService.updateEntity(Long.valueOf(id), idPayment, invoiceForm));
+    @PutMapping("/{id}/purchase/{idPurchase}")
+    public ResponseEntity<InvoiceDto> updateEntity(@PathVariable String id, @PathVariable(required = false) Long idPurchase, @RequestBody @Valid InvoiceForm invoiceForm){
+        return ResponseEntity.ok(invoiceService.updateEntity(Long.valueOf(id), idPurchase, invoiceForm));
     }
 }

@@ -69,8 +69,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         SellerProduct product  = sellerProductService.findEntityById(idProduct);
         ShoppingCart shoppingCart = findEntityById(id);
         isTheSameStore(product, shoppingCart);
-        Item item = itemService.createNewOrderProduct(shoppingCart, product, (amountProduct==0)?1:amountProduct);
-        return shoppingCartMapper.getCompleteDtoFromEntity(item.getShoppingCart()); //TODO ver porque no trae entidad actualizada con el producto agregado
+        shoppingCart.getItems().add(itemService.createNewOrderProduct(shoppingCart, product, (amountProduct==0)?1:amountProduct));
+        return shoppingCartMapper.getCompleteDtoFromEntity(shoppingCart); //TODO ver porque no trae entidad actualizada con el producto agregado
     }
     public ShoppingCartCompleteDto updateProductToCart(Long id, Long idItem, Long idProduct, Integer amountProduct) {
         SellerProduct product  = (idProduct==null) ? null:sellerProductService.findEntityById(idProduct);

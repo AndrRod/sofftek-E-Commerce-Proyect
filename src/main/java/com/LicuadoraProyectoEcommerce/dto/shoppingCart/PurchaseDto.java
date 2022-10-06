@@ -1,6 +1,8 @@
 package com.LicuadoraProyectoEcommerce.dto.shoppingCart;
 
 import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.StatusPayment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,4 +32,22 @@ public class PurchaseDto {
     private String buyerDni;
     @JsonProperty("payment status")
     private String status;
+    public PurchaseDto(Long id, ShoppingCart shoppingCart, PaymentMethod paymentMethod, String numberOfTransaction, String status){
+        this.id = id;
+        this.paymentMethod = paymentMethod;
+        this.numberOfTransaction = numberOfTransaction;
+        this.storeName= shoppingCart.getItems().get(0).getSellerProduct().getPublication().getStore().getName();
+        this.buyerDni= shoppingCart.getBuyerDni();
+        this.buyerEmail=shoppingCart.getBuyerEmail();
+        this.buyerName= shoppingCart.getBuyerName();
+
+        this.totalPurchase= shoppingCart.getFinalPrice();
+        shoppingCart.getItems().stream().forEach(p->{
+        this.products.add("Name: "+ p.getSellerProduct().getBaseProduct().getName()+
+                    ", Description: " + p.getSellerProduct().getDescription() +
+                    ", Amount: " + p.getQuantityOfProducts() +
+                    ", Final price: " + p.getFinalPricePerQuantity());
+        });
+        this.status = status;
+    }
 }

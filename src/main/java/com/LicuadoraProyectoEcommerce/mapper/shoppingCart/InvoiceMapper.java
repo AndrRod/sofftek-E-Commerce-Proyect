@@ -5,6 +5,7 @@ import com.LicuadoraProyectoEcommerce.form.InvoiceForm;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Invoice;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Purchase;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.StatusPayment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,8 +14,10 @@ import java.util.stream.Stream;
 
 @Component
 public class InvoiceMapper {
+    @Autowired
+    private PurchaseMapper purchaseMapper;
     public InvoiceDto getDtoFromEntity(Invoice invoice){
-        return new InvoiceDto(invoice.getId(), invoice.getStoreName(), invoice.getBuyerName(), invoice.getBuyerEmail(), invoice.getBuyerDni(), invoice.getNumberOfTransaction(), invoice.getTotalPurchase(), invoice.getBuyerProducts(), invoice.getStatus(), invoice.getInvoiceNumber());
+        return new InvoiceDto(invoice.getId(), purchaseMapper.getDtoFromEntity(invoice.getPurchase()), invoice.getInvoiceNumber());
     }
     public Invoice updateFromForm(Invoice invoice, InvoiceForm invoiceForm){
         Stream.of(invoiceForm).forEach(f-> {
