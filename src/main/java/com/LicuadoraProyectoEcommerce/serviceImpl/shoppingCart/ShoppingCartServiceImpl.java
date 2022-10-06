@@ -15,12 +15,20 @@ import com.LicuadoraProyectoEcommerce.repository.shoppingCart.ShoppingCartReposi
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.ItemService;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.ShoppingCartService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -35,16 +43,34 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private SellerProductService sellerProductService;
     @Autowired
     private ItemService itemService;
-    public ShoppingCartDto createEntity(ShoppingCartForm shoppingCartDto) {
+    public ShoppingCartDto createEntity(ShoppingCartForm shoppingCartDto, HttpServletResponse response) throws IOException {
         ShoppingCart entity = shoppingCartMapper.createEntityFromForm(shoppingCartDto);
+        createBuyerCookies(response, entity);
         return shoppingCartMapper.getDtoFromEntity(shoppingCartRepository.save(entity));
     }
 
     @Override
-    public ShoppingCartDto updateEntityById(Long id, ShoppingCartForm shoppingCartDto) {
-        ShoppingCart entity = shoppingCartMapper.updateEntityFromDto(findEntityById(id), shoppingCartDto);
+    public ShoppingCartDto updateEntityById(Long id, ShoppingCartForm shoppingCartDto, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ShoppingCart shoppingCart = findEntityById(id);
+        validBuyerCookies(request, shoppingCart);
+        ShoppingCart entity = shoppingCartMapper.updateEntityFromDto(shoppingCart, shoppingCartDto);
+        createBuyerCookies(response, entity);
         return shoppingCartMapper.getDtoFromEntity(shoppingCartRepository.save(entity));
     }
+    public void validBuyerCookies(HttpServletRequest request, ShoppingCart shoppingCart){
+            String buyerDni = Arrays.stream(request.getCookies())
+                .filter(cookie -> (shoppingCart.getBuyerName()+shoppingCart.getBuyerDni()).equals(cookie.getName()))
+                .map(Cookie::getValue)
+                .findAny().get();
+            if(buyerDni!= shoppingCart.getBuyerDni())throw new BadRequestException("you don't have authorizations");
+    }
+    void createBuyerCookies(HttpServletResponse response, ShoppingCart shoppingCart) throws IOException {
+        Cookie buyerCookie= new Cookie(shoppingCart.getBuyerName()+shoppingCart.getBuyerDni(), shoppingCart.getBuyerDni());
+        buyerCookie.setMaxAge(60*60);
+        response.addCookie(buyerCookie);
+        response.getOutputStream();
+    }
+
     @Override
     public ShoppingCartCompleteDto findById(Long id) {
         return shoppingCartMapper.getCompleteDtoFromEntity(findEntityById(id));
@@ -61,8 +87,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartMapper.getListDtoFromListEntity(listEntities);
     }
     @Override
-    public Map<String, String> deleteById(Long id) {
-        shoppingCartRepository.delete(findEntityById(id));
+    public Map<String, String> deleteById(Long id, HttpServletResponse response) {
+        ShoppingCart shoppingCart = findEntityById(id);
+        Cookie userNameCookieRemove = new Cookie("user_"+shoppingCart.getBuyerName(), "");
+        userNameCookieRemove.setMaxAge(0);
+        response.addCookie(userNameCookieRemove);
+        shoppingCartRepository.delete(shoppingCart);
         return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
     public ShoppingCartCompleteDto addProductToCart(Long id, Long idProduct, Integer amountProduct) {
@@ -70,7 +100,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = findEntityById(id);
         isTheSameStore(product, shoppingCart);
         shoppingCart.getItems().add(itemService.createNewOrderProduct(shoppingCart, product, (amountProduct==0)?1:amountProduct));
-        return shoppingCartMapper.getCompleteDtoFromEntity(shoppingCart); //TODO ver porque no trae entidad actualizada con el producto agregado
+        return shoppingCartMapper.getCompleteDtoFromEntity(shoppingCart);
     }
     public ShoppingCartCompleteDto updateProductToCart(Long id, Long idItem, Long idProduct, Integer amountProduct) {
         SellerProduct product  = (idProduct==null) ? null:sellerProductService.findEntityById(idProduct);

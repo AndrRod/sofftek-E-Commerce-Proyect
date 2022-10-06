@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -25,20 +28,20 @@ public class ShoppingCartController {
         return ResponseEntity.ok(shoppingCartService.findById(Long.valueOf(id)));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>> deletedById(@PathVariable String id){
-        return ResponseEntity.ok(shoppingCartService.deleteById(Long.valueOf(id)));
+    public ResponseEntity<Map<String, String>> deletedById(@PathVariable String id, HttpServletResponse response){
+        return ResponseEntity.ok(shoppingCartService.deleteById(Long.valueOf(id), response));
     }
     @GetMapping
     public ResponseEntity<List<ShoppingCartDto>> getDtoListPagination(@RequestParam String page){
         return ResponseEntity.ok(shoppingCartService.geDtoListPagination(Integer.valueOf(page)));
     }
     @PostMapping
-    public ResponseEntity<ShoppingCartDto> createEntity(@RequestBody @Valid ShoppingCartForm shoppingCartDto){
-        return ResponseEntity.status(201).body(shoppingCartService.createEntity(shoppingCartDto));
+    public ResponseEntity<ShoppingCartDto> createEntity(@RequestBody @Valid ShoppingCartForm shoppingCartDto, HttpServletResponse response) throws IOException {
+        return ResponseEntity.status(201).body(shoppingCartService.createEntity(shoppingCartDto, response));
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ShoppingCartDto> updateEntity(@PathVariable String id, @RequestBody ShoppingCartForm shoppingCartDto){
-        return ResponseEntity.ok(shoppingCartService.updateEntityById(Long.valueOf(id), shoppingCartDto));
+    public ResponseEntity<ShoppingCartDto> updateEntity(@PathVariable String id, @RequestBody ShoppingCartForm shoppingCartDto, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return ResponseEntity.ok(shoppingCartService.updateEntityById(Long.valueOf(id), shoppingCartDto, request, response));
     }
     @PostMapping("/{id}/product/{idProduct}")
     public ResponseEntity<ShoppingCartCompleteDto> addNewProductToCart(@PathVariable String id, @PathVariable String idProduct, @RequestParam(required = false) String amount){
