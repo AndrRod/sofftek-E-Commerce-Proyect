@@ -116,23 +116,4 @@ public class SellerProductServiceImpl implements SellerProductService {
         return sellerProductMapper.getDtoFromEntity(sellerProductSaved);
     }
 
-
-//    @Override
-//    public SellerProductDto addStoreById(Long idProduct, HttpServletRequest request) {
-//        SellerProduct sellerProduct = findEntityById(idProduct);
-//        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
-//        if(sellerProduct.getStore()!=null) throw new BadRequestException(messageHandler.message("already.exists", sellerProduct.getBaseProduct().getName()));
-//        if(sellerProduct.getSeller().getStore()==null) throw new BadRequestException(messageHandler.message("store.not.found", sellerProduct.getSeller().getUser().getName()));
-//        sellerProduct.setStore(sellerProduct.getSeller().getStore());
-//        return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
-//    }
-//    @Override
-//    public SellerProductDto removeStoreById(Long idProduct, HttpServletRequest request) {
-//        SellerProduct sellerProduct = findEntityById(idProduct);
-//        sellerProduct.setSeller(userAuthService.findSellerLogged(request)); //TODO VERIFICAR QUE ESTE TOMANDO USUARIO - HARCODEAR AQUI PARA PRUEBAS
-//        if(sellerProduct.getStore()==null) throw new BadRequestException(messageHandler.message("already.deleted", sellerProduct.getBaseProduct().getName()));
-//        sellerProduct.setStore(null);
-//        return sellerProductMapper.getDtoFromEntity(sellerProductRepository.save(sellerProduct));
-//    }
-
 }

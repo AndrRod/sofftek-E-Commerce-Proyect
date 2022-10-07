@@ -80,7 +80,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public SellerStoreCompleteDto addNewPaymentMethod(Long id, String newPayMethod, HttpServletRequest request) {
         Store store = findEntityById(id);
-        userAuthService.isTheSameUserLogged(store.getSeller().getUser(), request); //TODO VER MEJORAR
+        userAuthService.isTheSameUserLogged(store.getSeller().getUser(), request); //TODO  SACAR PARA PRUEBAS - verifica usuario
         PaymentMethod paymentMethod = getPaymentMethodFromStringOrThrowException(newPayMethod);
         if(store.getPaymentMethods().contains(paymentMethod)) throw new BadRequestException(messageHandler.message("already.exists", newPayMethod.toUpperCase(Locale.ROOT)));
         store.getPaymentMethods().add(paymentMethod);

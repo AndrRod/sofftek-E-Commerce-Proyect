@@ -1,6 +1,4 @@
 package com.LicuadoraProyectoEcommerce.dto.shoppingCart;
-
-import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

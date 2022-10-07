@@ -32,7 +32,7 @@ public class CustomizationAllowedController {
         return ResponseEntity.ok(customizationAllowedService.createEntity(customizationAllowedDto));
     }
     @PutMapping("/{id}")
-    ResponseEntity<CustomizationAllowedDto> updateteentity(@PathVariable String id, @RequestBody @Valid CustomizationAllowedDto customizationAllowedDto){
+    ResponseEntity<CustomizationAllowedDto> updateteentity(@PathVariable String id, @RequestBody CustomizationAllowedDto customizationAllowedDto){
         return ResponseEntity.ok(customizationAllowedService.updateEntity(Long.valueOf(id), customizationAllowedDto));
     }
 }

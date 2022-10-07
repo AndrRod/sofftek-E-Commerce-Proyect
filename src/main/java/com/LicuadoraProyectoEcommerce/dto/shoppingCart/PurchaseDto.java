@@ -4,6 +4,7 @@ import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.ShoppingCart;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.StatusPayment;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +25,13 @@ public class PurchaseDto {
     @JsonProperty("total purchase")
     private Double totalPurchase;
     private List<String> products = new ArrayList<>();
+    @Schema(name = "buyer name", example = "andres comprador")
     @JsonProperty("buyer name")
     private String buyerName;
+    @Schema(name = "buyer name", example = "andres@gmail.com")
     @JsonProperty("buyer email")
     private String buyerEmail;
+    @Schema(name = "buyer name", example = "33.064.279")
     @JsonProperty("buyer dni")
     private String buyerDni;
     @JsonProperty("payment status")
