@@ -40,5 +40,5 @@ Factura Electrónica a partir de un Servicio Externo.
 - Implementacion del filtro creado para que solo el Gestor que crea el producto_base pueda realizar CRUD
 - Implementacion del filtro creado para que solo el Vendedor que crea el producto_vendedor pueda realizar CRUD
 
-### MODELADO DE BASE DE DATOS:
-![](modeladoE-comerce.png)
+### MODELADO DE BASE DE DATOS: 
+![](sofftek-ecomerce.png)
