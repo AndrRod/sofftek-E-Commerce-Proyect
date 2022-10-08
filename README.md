@@ -36,9 +36,10 @@ Cada vendedor define los Medios de Pago de acepta. Una vez aceptado el pago, se 
 Factura Electrónica a partir de un Servicio Externo.
 
 #### **Pendientes**
-- Mejorar representacion de clases Gestor y Vendedor
-- Implementacion del filtro creado para que solo el Gestor que crea el producto_base pueda realizar CRUD
-- Implementacion del filtro creado para que solo el Vendedor que crea el producto_vendedor pueda realizar CRUD
+- Verificar funcionamiento del todo el proyecto.-
+- Mejorar comportamiento cuando se elimina un Usuario (quen no se elimine el manager que tiene creado productos o solo los productos, 
+ni tampoco sellers que tienen pendiente la factura de compras realizadas)
+- Falta Tests Unitarios.
 
 ### MODELADO DE BASE DE DATOS: 
 ![](sofftek-ecomerce.png)
