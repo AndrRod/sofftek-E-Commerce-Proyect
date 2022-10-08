@@ -16,4 +16,5 @@ public interface UserService {
    Map<String, String> deleteById(Long id);
    UserDto updateEntity(Long idUserEntity, UserRegisterForm userDto);
 
+    UserDto getUserDtoById(Long id);
 }

@@ -18,10 +18,10 @@ import javax.validation.constraints.NotBlank;
 public class ShoppingCartDto {
     @Schema(name = "id", example = "32", hidden = true)
     private Long id;
-    @Schema(name = "buyer name", example = "andres comprador")
+    @Schema(name = "buyer name", example = "Juan")
     @JsonProperty("buyer name")
     private String buyerName;
-    @Schema(name = "buyer name", example = "andres@gmail.com")
+    @Schema(name = "buyer email", example = "juan@gmail.com")
     @JsonProperty("buyer email")
     private String buyerEmail;
     @Schema(name = "buyer name", example = "33.064.279")

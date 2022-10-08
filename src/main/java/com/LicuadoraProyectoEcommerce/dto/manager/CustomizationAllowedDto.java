@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CustomizationAllowedDto {
+    @Schema(name = "id", example = "1")
     private Long id;
     @Schema(name = "type", example = "color", description = "type: cannot allow null")
     private String type;

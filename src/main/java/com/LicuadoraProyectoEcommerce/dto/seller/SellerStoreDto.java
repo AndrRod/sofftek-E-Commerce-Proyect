@@ -13,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SellerStoreDto {
+    @Schema(name = "id", example = "1", hidden = true)
     private Long id;
     @Schema(name = "name", example = "Andres Show Sport", type = "String", description = "cannot allow null")
     @NotBlank(message = "cant be empty or null")

@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @AllArgsConstructor
 public class BaseProductDto {
+    @Schema(name = "id", hidden = true)
     private Long id;
     @Schema(name = "name", example = "zapatilla de futbol")
     @NotBlank(message = "can't be null or empty")

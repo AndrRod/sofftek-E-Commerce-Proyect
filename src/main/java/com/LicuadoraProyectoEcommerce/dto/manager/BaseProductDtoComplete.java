@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.dto.manager;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,21 +19,28 @@ import java.util.List;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BaseProductDtoComplete {
+    @Schema(name = "id", example = "1")
     private Long id;
+    @Schema(name = "name", example = "zapatilla de futbol")
     private String name;
+    @Schema(name = "price", example = "12000")
     @JsonProperty("price")
     private Double price;
+    @Schema(name = "days to manufacture", example = "12")
     @JsonProperty("days to manufacture")
     private Integer daysToManufacture;
     private String manager;
     @JsonProperty("enabled areas")
     private List<EnabledAreaCompleteDto> enabledAreas;
+    @Schema(name = "creation date", example = "2022-05-12")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @JsonProperty("creation date")
     private LocalDate creationDate;
+    @Schema(name = "update date", example = "2022-05-12 22:05:33")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     @JsonProperty("update date")
     private LocalDateTime updateDate;
+    @Schema(name = "manager email of the last update", example = "andresManager@gmail.com")
     @JsonProperty("manager email of the last update")
     private String managerLastUpdate;
 }

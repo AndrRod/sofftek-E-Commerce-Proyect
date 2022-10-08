@@ -3,6 +3,12 @@ package com.LicuadoraProyectoEcommerce.controller.seller;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerStoreDto;
 import com.LicuadoraProyectoEcommerce.service.sellerService.StoreService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,37 +18,49 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELETE;
+
+@Tag(name = "Store")
 @RestController
 @RequestMapping("store")
 public class StoreController {
     @Autowired
     private StoreService storeService;
+    @Operation(summary = "find by id and the possibility to find by state (PUBLISHED, PAUSED, CANCELLED, FINISHED")
     @GetMapping("/{id}/publications")
-    public ResponseEntity<SellerStoreCompleteDto> findEntityById(@PathVariable String id, @RequestParam(required = false, defaultValue = "0") Integer page, @RequestParam(required = false) String state){
+    public ResponseEntity<SellerStoreCompleteDto> findEntityById(@Parameter(description = "find by id", example = "1") @PathVariable String id,@Parameter(description = "find by state", example = "PUBLISHED") @RequestParam(required = false, defaultValue = "0") Integer page, @RequestParam(required = false) String state){
         return ResponseEntity.ok(storeService.findById(Long.valueOf(id), page, state));
     }
+    @Operation(summary = "get a store list of ten by page")
     @GetMapping
-    public ResponseEntity<List<SellerStoreDto>> getListStorePagination(@RequestParam String page){
+    public ResponseEntity<List<SellerStoreDto>> getListStorePagination(@Parameter(description = "insert the number page", example = "0")@RequestParam String page){
         return  ResponseEntity.ok(storeService.listDtoPagination(Integer.valueOf(page)));
     }
+    @Operation(summary = "delete store by id")
+    @ApiResponse(responseCode = "200", description = "store deleted",
+            content = { @Content(mediaType = "application/json",examples = {@ExampleObject(value = MESSAGE_DELETE)}) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteById(@PathVariable String id, HttpServletRequest request){
         return ResponseEntity.ok(storeService.deleteById(Long.valueOf(id), request));
     }
+    @Operation(summary = "create store")
     @PostMapping
     public ResponseEntity<SellerStoreCompleteDto> createEntity(@RequestBody @Valid SellerStoreDto sellerStoreDto, HttpServletRequest request){
         return ResponseEntity.status(201).body(storeService.createEntity(sellerStoreDto, request));
     }
+    @Operation(summary = "update store by id")
     @PutMapping("/{id}")
-    public ResponseEntity<SellerStoreCompleteDto> updateEntity(@PathVariable String id, @RequestBody SellerStoreDto sellerStoreDto, HttpServletRequest request){
+    public ResponseEntity<SellerStoreCompleteDto> updateEntity(@Parameter(description = "find store by id", example = "1")@PathVariable String id, @RequestBody SellerStoreDto sellerStoreDto, HttpServletRequest request){
         return ResponseEntity.ok(storeService.updateEntity(Long.valueOf(id),sellerStoreDto, request));
     }
+    @Operation(summary = "add a payment method to the store found by id")
     @PostMapping("/{id}/payment")
-    public ResponseEntity<SellerStoreCompleteDto> addNewPaymentMethod(@PathVariable String id, @RequestParam String method, HttpServletRequest request){
+    public ResponseEntity<SellerStoreCompleteDto> addNewPaymentMethod(@Parameter(description = "find store by id", example = "1")@PathVariable String id, @Parameter(description = "inserted payment method name")@RequestParam String method, HttpServletRequest request){
         return ResponseEntity.status(201).body(storeService.addNewPaymentMethod(Long.valueOf(id), method,request));
     }
+    @Operation(summary = "remove a payment method to the store found by id")
     @DeleteMapping("/{id}/payment")
-    public ResponseEntity<SellerStoreCompleteDto> removePaymentMethod(@PathVariable String id, @RequestParam String method, HttpServletRequest request){
+    public ResponseEntity<SellerStoreCompleteDto> removePaymentMethod(@Parameter(description = "find store by id", example = "1")@PathVariable String id, @Parameter(description = "inserted payment method name")@RequestParam String method, HttpServletRequest request){
         return ResponseEntity.status(200).body(storeService.removePaymentMethod(Long.valueOf(id), method, request));
     }
 

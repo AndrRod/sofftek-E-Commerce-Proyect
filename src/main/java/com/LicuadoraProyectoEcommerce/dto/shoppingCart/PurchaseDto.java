@@ -15,25 +15,35 @@ import java.util.List;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class PurchaseDto {
+    @Schema(name = "id", example = "1")
     private Long id;
+    @Schema(name = "store name", example = "Andres Show Sport", type = "String", description = "cannot allow null")
     @JsonProperty("store name")
     private String storeName;
+    @Schema(name = "payment method", example = "DEBIT_CARD")
     @JsonProperty("payment method")
     private PaymentMethod paymentMethod;
+    @Schema(name = "number of transaction", example = "3234567892")
     @JsonProperty("number of transaction")
     private String numberOfTransaction;
+    @Schema(name = "total purchase", example = "152000")
     @JsonProperty("total purchase")
     private Double totalPurchase;
+    @Schema(name = "products", example = "[\n" +
+            "        \"Name: zapatilla, Description: pelota con publicacion, Amount: 4, Final price: 8000.0\",\n" +
+            "        \"Name: zapatilla, Description: zapatilla rosada para mujer, Amount: 1, Final price: 20000.0\"\n" +
+            "    ]")
     private List<String> products = new ArrayList<>();
     @Schema(name = "buyer name", example = "andres comprador")
     @JsonProperty("buyer name")
     private String buyerName;
-    @Schema(name = "buyer name", example = "andres@gmail.com")
+    @Schema(name = "buyer email", example = "andres@gmail.com")
     @JsonProperty("buyer email")
     private String buyerEmail;
     @Schema(name = "buyer name", example = "33.064.279")
     @JsonProperty("buyer dni")
     private String buyerDni;
+    @Schema(name = "payment status", example = "ACCEPTED")
     @JsonProperty("payment status")
     private String status;
     public PurchaseDto(Long id, ShoppingCart shoppingCart, PaymentMethod paymentMethod, String numberOfTransaction, String status){

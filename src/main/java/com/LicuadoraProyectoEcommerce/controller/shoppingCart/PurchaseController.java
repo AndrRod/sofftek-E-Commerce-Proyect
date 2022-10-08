@@ -3,6 +3,12 @@ package com.LicuadoraProyectoEcommerce.controller.shoppingCart;
 import com.LicuadoraProyectoEcommerce.dto.shoppingCart.PurchaseDto;
 import com.LicuadoraProyectoEcommerce.form.PaymentForm;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.PurchaseService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,33 +19,47 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELETE;
+import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.PURCHASE_MESSAGE_UPDATE_STATE;
+
+@Tag(name = "Purchase")
 @RestController
 @RequestMapping("/purchase")
 public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
+    @Operation(summary = "find purchase by id")
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseDto> findEntityById(@PathVariable String id){
+    public ResponseEntity<PurchaseDto> findEntityById(@Parameter(description = "find purchase by id", example = "1")@PathVariable String id){
         return ResponseEntity.ok(purchaseService.findById(Long.valueOf(id)));
     }
+    @Operation(summary = "delete purchase by id")
+    @ApiResponse(responseCode = "200", description = "purchase deleted",
+            content = { @Content(mediaType = "application/json",examples = {@ExampleObject(value = MESSAGE_DELETE)}) })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>> deleteById(@PathVariable String id){
+    public ResponseEntity<Map<String, String>> deleteById(@Parameter(description = "delete purchase by id", example = "1") @PathVariable String id){
         return ResponseEntity.ok(purchaseService.deleteById(Long.valueOf(id)));
     }
+    @Operation(summary = "get a purchase list of ten by page")
     @GetMapping
-    public ResponseEntity<List<PurchaseDto>> getDtoListPagination(@RequestParam String page){
+    public ResponseEntity<List<PurchaseDto>> getDtoListPagination(@Parameter(description = "get a list by page", example = "0") @RequestParam String page){
         return ResponseEntity.ok(purchaseService.geDtoListPagination(Integer.valueOf(page)));
     }
+    @Operation(summary = "create purchase for a shopping cart")
     @PostMapping("/cart/{idShoppingCart}")
-    public ResponseEntity<PurchaseDto> createEntity(@PathVariable String idShoppingCart, @RequestBody @Valid PaymentForm paymentForm){
+    public ResponseEntity<PurchaseDto> createEntity(@Parameter(description = "find a shopping cart by id", example = "1") @PathVariable String idShoppingCart, @RequestBody @Valid PaymentForm paymentForm){
         return new ResponseEntity<>(purchaseService.createEntity(Long.valueOf(idShoppingCart), paymentForm), HttpStatus.CREATED);
     }
+    @Operation(summary = "update purchase by id, and possibility to change with another shopping cart")
     @PutMapping("/{id}/cart/{idShoppingCart}")
-    public ResponseEntity<PurchaseDto> updateEntity(@PathVariable String id, @PathVariable(required = false) Long idShoppingCart, @RequestBody PaymentForm paymentForm){
+    public ResponseEntity<PurchaseDto> updateEntity(@Parameter(description = "find purchase by id", example = "1") @PathVariable String id, @Parameter(description = "find a shopping cart by id", example = "1") @PathVariable(required = false) Long idShoppingCart, @RequestBody PaymentForm paymentForm){
         return ResponseEntity.ok(purchaseService.updateEntity(Long.valueOf(id), idShoppingCart, paymentForm));
     }
-    @PostMapping("/{id}")
-    public ResponseEntity<Map<String, String>> updatePurchaseStatus(@PathVariable String id, @RequestParam String payment, HttpServletRequest request){
+    @Operation(summary = "update the purchase state by id")
+    @ApiResponse(responseCode = "200", description = "purchase updated",
+            content = { @Content(mediaType = "application/json",examples = {@ExampleObject(value = PURCHASE_MESSAGE_UPDATE_STATE)}) })
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, String>> updatePurchaseStatus(@Parameter(description = "find purchase by id", example = "1") @PathVariable String id, @Parameter(description = "insert a payment method", example = "ACCEPTED") @RequestParam String payment, HttpServletRequest request){
         return ResponseEntity.ok(purchaseService.updateStatePurchase(Long.valueOf(id), payment, request));
     }
 }
