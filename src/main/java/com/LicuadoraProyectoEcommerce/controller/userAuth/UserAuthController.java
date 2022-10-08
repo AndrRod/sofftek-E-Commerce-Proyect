@@ -24,7 +24,7 @@ import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.*;
 
-@Tag(name = "User - Authentication")
+@Tag(name = "Auth User")
 @RestController
 @RequestMapping("/auth")
 public class UserAuthController {
@@ -41,7 +41,7 @@ public class UserAuthController {
     }
     @Operation(summary = "update a user by id")
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@Parameter(description = "find user by id", example = "1") @PathVariable String id, @RequestBody @Valid  UserRegisterForm userDto, HttpServletRequest request){
+    public ResponseEntity<UserDto> updateUser(@Parameter(description = "insert user id", example = "1") @PathVariable String id, @RequestBody @Valid  UserRegisterForm userDto, HttpServletRequest request){
         userAuthService.isTheSameUserLogged(userService.findEntityById(Long.valueOf(id)), request);
         return ResponseEntity.status(201).body(userAuthService.updateUser(Long.valueOf(id), userDto));
     }
@@ -70,7 +70,7 @@ public class UserAuthController {
 
     @Operation(summary = "find user by id")
     @GetMapping("/{id}")
-    ResponseEntity<UserDto> getById(@Parameter(description = "find user by id", example = "1") @PathVariable String id){
+    ResponseEntity<UserDto> getById(@Parameter(description = "insert user id", example = "1") @PathVariable String id){
         return ResponseEntity.ok(userService.getUserDtoById(Long.valueOf(id)));
     }
 }

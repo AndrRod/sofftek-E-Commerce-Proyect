@@ -26,4 +26,8 @@ public class MessagesSwagger {
     public static final String PURCHASE_MESSAGE_UPDATE_STATE = "{\n" +
             "    \"Message\": \"the purchase state was update to ACCEPTED\"\n" +
             "}";
+
+    public static final String CUSTOMIZATION_MESSAGE_RESET_PARAMTERS = "{\n" +
+            "    \"Message\": \"the parameter was reset successfully\"\n" +
+            "}";;
 }

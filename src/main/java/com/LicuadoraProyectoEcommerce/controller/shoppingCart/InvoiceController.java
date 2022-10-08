@@ -27,7 +27,7 @@ public class InvoiceController {
     private InvoiceService invoiceService;
     @Operation(summary = "find invoice by id")
     @GetMapping("/{id}")
-    public ResponseEntity<InvoiceDto> findEntityById(@Parameter(description = "find invoice by id", example = "1") @PathVariable String id){
+    public ResponseEntity<InvoiceDto> findEntityById(@Parameter(description = "insert invoice id", example = "1") @PathVariable String id){
         return ResponseEntity.ok(invoiceService.findById(Long.valueOf(id)));
     }
     @Operation(summary = "delete invoice by id")
@@ -49,7 +49,7 @@ public class InvoiceController {
     }
     @Operation(summary = "update a invoice by id, and the possibility tu change the purchase by id")
     @PutMapping("/{id}/purchase/{idPurchase}")
-    public ResponseEntity<InvoiceDto> updateEntity(@Parameter(description = "find invoice by id", example = "1")@PathVariable String id, @Parameter(description = "find purchase by id to update the invoice",example = "1")@PathVariable(required = false) Long idPurchase, @RequestBody @Valid InvoiceForm invoiceForm){
+    public ResponseEntity<InvoiceDto> updateEntity(@Parameter(description = "insert invoice id", example = "1")@PathVariable String id, @Parameter(description = "find purchase by id to update the invoice",example = "1")@PathVariable(required = false) Long idPurchase, @RequestBody @Valid InvoiceForm invoiceForm){
         return ResponseEntity.ok(invoiceService.updateEntity(Long.valueOf(id), idPurchase, invoiceForm));
     }
 }

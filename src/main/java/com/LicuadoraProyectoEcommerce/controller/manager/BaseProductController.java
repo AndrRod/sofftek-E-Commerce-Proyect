@@ -24,7 +24,7 @@ import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.*;
 
-@Tag(name = "Manager - Product")
+@Tag(name = "Manager product")
 @RestController
 @RequestMapping("/manager/product")
 public class BaseProductController {
@@ -37,36 +37,28 @@ public class BaseProductController {
     private UserAuthService userAuthService;
 
     @Operation(summary = "create a new product")
-//    @ApiResponse(responseCode = "201", description = "product created",
-//            content = { @Content(mediaType = "application/json", examples = {@ExampleObject(value = MANAGER_MESSAGE_PRODUCT)}) })
     @PostMapping
     ResponseEntity<BaseProductDtoComplete> createProduct(@RequestBody @Valid BaseProductDto productDto, HttpServletRequest request){
         return ResponseEntity.status(201).body(baseProductService.createBaseProduct(productDto, request));
     }
     @Operation(summary = "find product by id")
-//    @ApiResponse(responseCode = "200", description = "product found",
-//            content = { @Content(mediaType = "application/json", examples = {@ExampleObject(value = MANAGER_MESSAGE_PRODUCT)}) })
     @GetMapping("/{id}")
-    ResponseEntity<BaseProductDtoComplete> getProductById(@Parameter(example = "1", description = "find by id") @PathVariable String id){
+    ResponseEntity<BaseProductDtoComplete> getProductById(@Parameter(example = "1", description = "insert product id") @PathVariable String id){
         return ResponseEntity.ok(baseProductService.getBaseProductById(Long.valueOf(id)));
     }
     @Operation(summary = "get a list of product paginated")
-//    @ApiResponse(responseCode = "200", description = "get product list",
-//            content = { @Content(mediaType = "application/json", examples = {@ExampleObject(value = MANAGER_MESSAGE_PRODUCT_PAGE)}) })
     @GetMapping
     ResponseEntity<List<BaseProductDtoComplete>> getProductPage(@RequestParam String page){
         return ResponseEntity.ok(baseProductService.getBaseProductListPage(Integer.valueOf(page)));
     }
-    @Operation(summary = "delete by id")
-//    @ApiResponse(responseCode = "200", description = "deleted entity by id",
-//            content = { @Content(mediaType = "application/json", examples = {@ExampleObject(value = MESSAGE_DELETE)}) })
+    @Operation(summary = "delete product by id")
+    @ApiResponse(responseCode = "200", description = "Product deleted",
+            content = { @Content(mediaType = "application/json", examples = {@ExampleObject(value = MESSAGE_DELETE),}) })
     @DeleteMapping("/{id}")
     ResponseEntity<Map<String, String>> deleteProductById(@Parameter(example = "1", description = "insert a id")@PathVariable String id){
         return ResponseEntity.ok(baseProductService.deleteBaseProductById(Long.valueOf(id)));
     }
-    @Operation(summary = "update by id")
-//    @ApiResponse(responseCode = "200", description = "update entity by id",
-//            content = { @Content(mediaType = "application/json", examples = {@ExampleObject(value = MANAGER_MESSAGE_PRODUCT)}) })
+    @Operation(summary = "update product by id")
     @PutMapping("/{id}")
     ResponseEntity<BaseProductDtoComplete> updateProduct(@Parameter(example = "1", description = "insert a id") @PathVariable String id, @RequestBody BaseProductDto baseProductDto, HttpServletRequest request){
         return ResponseEntity.ok(baseProductService.updateBaseProduct(Long.valueOf(id), baseProductDto, request));

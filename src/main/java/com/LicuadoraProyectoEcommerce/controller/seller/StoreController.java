@@ -20,15 +20,15 @@ import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELETE;
 
-@Tag(name = "Store")
+@Tag(name = "Seller Store")
 @RestController
 @RequestMapping("store")
 public class StoreController {
     @Autowired
     private StoreService storeService;
-    @Operation(summary = "find by id and the possibility to find by state (PUBLISHED, PAUSED, CANCELLED, FINISHED")
+    @Operation(summary = "find by id and by list product list by page and the possibility to find by state (PUBLISHED, PAUSED, CANCELLED, FINISHED)")
     @GetMapping("/{id}/publications")
-    public ResponseEntity<SellerStoreCompleteDto> findEntityById(@Parameter(description = "find by id", example = "1") @PathVariable String id,@Parameter(description = "find by state", example = "PUBLISHED") @RequestParam(required = false, defaultValue = "0") Integer page, @RequestParam(required = false) String state){
+    public ResponseEntity<SellerStoreCompleteDto> findEntityById(@Parameter(description = "insert store id", example = "1") @PathVariable String id,@Parameter(description = "insert page", example = "0") @RequestParam(required = false, defaultValue = "0") Integer page,@Parameter(description = "insert state", example = "PUBLISHED") @RequestParam(required = false) String state){
         return ResponseEntity.ok(storeService.findById(Long.valueOf(id), page, state));
     }
     @Operation(summary = "get a store list of ten by page")
@@ -50,17 +50,17 @@ public class StoreController {
     }
     @Operation(summary = "update store by id")
     @PutMapping("/{id}")
-    public ResponseEntity<SellerStoreCompleteDto> updateEntity(@Parameter(description = "find store by id", example = "1")@PathVariable String id, @RequestBody SellerStoreDto sellerStoreDto, HttpServletRequest request){
+    public ResponseEntity<SellerStoreCompleteDto> updateEntity(@Parameter(description = "insert store id", example = "1")@PathVariable String id, @RequestBody SellerStoreDto sellerStoreDto, HttpServletRequest request){
         return ResponseEntity.ok(storeService.updateEntity(Long.valueOf(id),sellerStoreDto, request));
     }
     @Operation(summary = "add a payment method to the store found by id")
     @PostMapping("/{id}/payment")
-    public ResponseEntity<SellerStoreCompleteDto> addNewPaymentMethod(@Parameter(description = "find store by id", example = "1")@PathVariable String id, @Parameter(description = "inserted payment method name")@RequestParam String method, HttpServletRequest request){
+    public ResponseEntity<SellerStoreCompleteDto> addNewPaymentMethod(@Parameter(description = "insert store id id", example = "1")@PathVariable String id, @Parameter(description = "inserted payment method name")@RequestParam String method, HttpServletRequest request){
         return ResponseEntity.status(201).body(storeService.addNewPaymentMethod(Long.valueOf(id), method,request));
     }
     @Operation(summary = "remove a payment method to the store found by id")
     @DeleteMapping("/{id}/payment")
-    public ResponseEntity<SellerStoreCompleteDto> removePaymentMethod(@Parameter(description = "find store by id", example = "1")@PathVariable String id, @Parameter(description = "inserted payment method name")@RequestParam String method, HttpServletRequest request){
+    public ResponseEntity<SellerStoreCompleteDto> removePaymentMethod(@Parameter(description = "insert sotre id", example = "1")@PathVariable String id, @Parameter(description = "inserted payment method name")@RequestParam String method, HttpServletRequest request){
         return ResponseEntity.status(200).body(storeService.removePaymentMethod(Long.valueOf(id), method, request));
     }
 
