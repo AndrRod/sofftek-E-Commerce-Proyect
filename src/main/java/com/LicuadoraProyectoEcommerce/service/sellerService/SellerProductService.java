@@ -14,9 +14,8 @@ import java.util.Map;
 public interface SellerProductService {
     SellerProduct findEntityById(Long id);
     SellerProductCompleteDto findById(Long id);
-    List<SellerProductCompleteDto> listDtoPagination(Integer page);
+    List<SellerProductDto> listDtoPagination(Integer page, String state);
     Map<String, String> deleteById(Long id, HttpServletRequest request);
     SellerProductDto createEntity(BaseProduct baseProduct, SellerProductForm sellerProductForm, HttpServletRequest request);
     SellerProductDto updateEntity(Long id, SellerProductForm sellerProductForm, HttpServletRequest request);
-    List<SellerProductDto> listPartDtoPagination(Integer page);
 }

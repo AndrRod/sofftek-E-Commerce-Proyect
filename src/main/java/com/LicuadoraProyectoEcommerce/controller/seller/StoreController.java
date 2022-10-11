@@ -22,7 +22,7 @@ import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELE
 
 @Tag(name = "Seller Store")
 @RestController
-@RequestMapping("store")
+@RequestMapping("/seller/store")
 public class StoreController {
     @Autowired
     private StoreService storeService;

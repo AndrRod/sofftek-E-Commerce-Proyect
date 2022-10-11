@@ -1,6 +1,7 @@
-package com.LicuadoraProyectoEcommerce.model.shoppingCart;
+package com.LicuadoraProyectoEcommerce.model.seller;
 
 import com.LicuadoraProyectoEcommerce.model.seller.PaymentMethod;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.Purchase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

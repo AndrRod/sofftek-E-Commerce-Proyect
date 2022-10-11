@@ -2,6 +2,7 @@ package com.LicuadoraProyectoEcommerce.model.manager;
 
 import com.LicuadoraProyectoEcommerce.model.userAuth.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data @Entity
-@AllArgsConstructor
+@AllArgsConstructor @Builder
 public class Manager{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

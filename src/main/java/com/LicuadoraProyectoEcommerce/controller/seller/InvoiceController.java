@@ -1,8 +1,8 @@
-package com.LicuadoraProyectoEcommerce.controller.shoppingCart;
+package com.LicuadoraProyectoEcommerce.controller.seller;
 
-import com.LicuadoraProyectoEcommerce.dto.shoppingCart.InvoiceDto;
+import com.LicuadoraProyectoEcommerce.dto.seller.InvoiceDto;
 import com.LicuadoraProyectoEcommerce.form.InvoiceForm;
-import com.LicuadoraProyectoEcommerce.service.shoppingCart.InvoiceService;
+import com.LicuadoraProyectoEcommerce.service.sellerService.InvoiceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,9 +19,9 @@ import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELETE;
 
-@Tag(name = "Invoice")
+@Tag(name = "Seller invoice")
 @RestController
-@RequestMapping("/invoice")
+@RequestMapping("/seller/invoice")
 public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;

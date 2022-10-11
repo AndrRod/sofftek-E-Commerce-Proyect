@@ -39,12 +39,12 @@ public class BaseProductServiceImpl implements BaseProductService {
     @Autowired
     private SellerCustomizationRepository sellerCustomizationRepository;
     @Autowired
-    private UserAuthService userAuthService;
+        private UserAuthService userAuthService;
+
     @Override
     public BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto, HttpServletRequest request) {
         BaseProduct baseProduct = baseProductMapper.getEntityCreateFromDto(baseProductDto);
         baseProduct.setManagerCreator(userAuthService.findManagerLogged(request)); //TODO USAR HARCODEADO PARA PRUEBAS
-//        baseProduct.setManager(managerRepository.findById(1L).get());
         return baseProductMapper.getDtoFromEntity(baseProductRepository.save(baseProduct));
     }
 

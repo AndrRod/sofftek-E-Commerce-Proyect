@@ -45,10 +45,10 @@ public class SellerProductController {
     public ResponseEntity<SellerProductDto> updateEntity(@Parameter(description = "insert product id", example = "1")@PathVariable String id, @RequestBody SellerProductForm sellerProductForm, HttpServletRequest request){
         return ResponseEntity.ok(sellerProductService.updateEntity(Long.valueOf(id), sellerProductForm, request));
     }
-    @Operation(summary = "get 10 seller products list by page")
+    @Operation(summary = "get 10 seller products list by page and optionally by state (PUBLISHED, PAUSED, CANCELLED, FINISHED)")
     @GetMapping
-    public ResponseEntity<List<SellerProductCompleteDto>> getDtoListPagination(@Parameter(description = "insert page number", example = "1")@RequestParam String page){
-        return ResponseEntity.ok(sellerProductService.listDtoPagination(Integer.valueOf(page)));
+    public ResponseEntity<List<SellerProductDto>> getDtoListPagination(@Parameter(description = "insert page number", example = "1")@RequestParam String page, @Parameter(description = "find by state", example = "PUBLISHED")@RequestParam(required = false) String state){
+        return ResponseEntity.ok(sellerProductService.listDtoPagination(Integer.valueOf(page), state));
     }
     @Operation(summary = "find seller product by id")
     @GetMapping("/{id}")

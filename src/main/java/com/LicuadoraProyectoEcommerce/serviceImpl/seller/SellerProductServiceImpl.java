@@ -3,7 +3,6 @@ package com.LicuadoraProyectoEcommerce.serviceImpl.seller;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerProductCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.seller.SellerProductDto;
-import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.mapper.seller.SellerProductMapper;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.SellerProductForm;
@@ -13,6 +12,7 @@ import com.LicuadoraProyectoEcommerce.repository.manager.EnableAreaRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.*;
 import com.LicuadoraProyectoEcommerce.service.UserAuth.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.SellerProductService;
+import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -57,17 +57,15 @@ public class SellerProductServiceImpl implements SellerProductService {
     }
 
     @Override
-    public List<SellerProductCompleteDto> listDtoPagination(Integer page) {
+    public List<SellerProductDto> listDtoPagination(Integer page, String state) {
+        if(state!= null) {
+            PublicationSate publicationSate = Try.of(() -> PublicationSate.valueOf(state)).getOrElseThrow(() -> new NotFoundException("there is not a " + state + " state"));
+            List<SellerProduct> products = sellerProductRepository.findProductsByPublication(publicationSate, PageRequest.of(page, SIZE_TEN));
+            return sellerProductMapper.getListDtoFromEntityList(products);
+        }
         List<SellerProduct> products = sellerProductRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent();
-        return sellerProductMapper.getListCompleteDtoFromEntityList(products);
-    }
-
-    @Override
-    public List<SellerProductDto> listPartDtoPagination(Integer page) {
-        List<SellerProduct> products = sellerProductRepository.findProductsByPublication(PublicationSate.valueOf("CANCELLED"), PageRequest.of(page, SIZE_TEN));
         return sellerProductMapper.getListDtoFromEntityList(products);
     }
-
     @Override
     public Map<String, String> deleteById(Long id, HttpServletRequest request) {
         SellerProduct sellerProduct = findEntityById(id);

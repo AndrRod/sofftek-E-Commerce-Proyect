@@ -1,10 +1,10 @@
-package com.LicuadoraProyectoEcommerce.mapper.shoppingCart;
+package com.LicuadoraProyectoEcommerce.mapper.seller;
 
-import com.LicuadoraProyectoEcommerce.dto.shoppingCart.InvoiceDto;
+import com.LicuadoraProyectoEcommerce.dto.seller.InvoiceDto;
 import com.LicuadoraProyectoEcommerce.form.InvoiceForm;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.Invoice;
+import com.LicuadoraProyectoEcommerce.mapper.shoppingCart.PurchaseMapper;
+import com.LicuadoraProyectoEcommerce.model.seller.Invoice;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Purchase;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.StatusPayment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

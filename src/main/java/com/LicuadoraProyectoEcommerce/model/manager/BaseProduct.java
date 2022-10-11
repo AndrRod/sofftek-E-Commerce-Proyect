@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.model.manager;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data @AllArgsConstructor
+@Data @AllArgsConstructor @Builder
 public class BaseProduct {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,16 +1,16 @@
 package com.LicuadoraProyectoEcommerce.serviceImpl.shoppingCart;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
-import com.LicuadoraProyectoEcommerce.dto.shoppingCart.InvoiceDto;
+import com.LicuadoraProyectoEcommerce.dto.seller.InvoiceDto;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.InvoiceForm;
-import com.LicuadoraProyectoEcommerce.mapper.shoppingCart.InvoiceMapper;
-import com.LicuadoraProyectoEcommerce.model.shoppingCart.Invoice;
+import com.LicuadoraProyectoEcommerce.mapper.seller.InvoiceMapper;
+import com.LicuadoraProyectoEcommerce.model.seller.Invoice;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Purchase;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.StatusPayment;
-import com.LicuadoraProyectoEcommerce.repository.shoppingCart.InvoiceRepository;
-import com.LicuadoraProyectoEcommerce.service.shoppingCart.InvoiceService;
+import com.LicuadoraProyectoEcommerce.repository.seller.InvoiceRepository;
+import com.LicuadoraProyectoEcommerce.service.sellerService.InvoiceService;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

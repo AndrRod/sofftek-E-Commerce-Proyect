@@ -1,5 +1,6 @@
-package com.LicuadoraProyectoEcommerce.dto.shoppingCart;
+package com.LicuadoraProyectoEcommerce.dto.seller;
 
+import com.LicuadoraProyectoEcommerce.dto.shoppingCart.PurchaseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
