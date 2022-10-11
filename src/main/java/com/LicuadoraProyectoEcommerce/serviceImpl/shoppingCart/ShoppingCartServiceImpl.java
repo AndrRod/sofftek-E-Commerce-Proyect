@@ -45,32 +45,37 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ItemService itemService;
     public ShoppingCartDto createEntity(ShoppingCartForm shoppingCartDto, HttpServletResponse response) throws IOException {
         ShoppingCart entity = shoppingCartMapper.createEntityFromForm(shoppingCartDto);
-        createBuyerCookies(response, entity);
+//        createBuyerCookies(response, entity);
         return shoppingCartMapper.getDtoFromEntity(shoppingCartRepository.save(entity));
     }
 
     @Override
     public ShoppingCartDto updateEntityById(Long id, ShoppingCartForm shoppingCartDto, HttpServletRequest request, HttpServletResponse response) throws IOException {
         ShoppingCart shoppingCart = findEntityById(id);
-        validBuyerCookies(request, shoppingCart);
+//        validBuyerCookies(request, shoppingCart);
         ShoppingCart entity = shoppingCartMapper.updateEntityFromDto(shoppingCart, shoppingCartDto);
-        createBuyerCookies(response, entity);
+//        createBuyerCookies(response, entity);
         return shoppingCartMapper.getDtoFromEntity(shoppingCartRepository.save(entity));
     }
-    public void validBuyerCookies(HttpServletRequest request, ShoppingCart shoppingCart){
-            String buyerDni = Arrays.stream(request.getCookies())
-                .filter(cookie -> (shoppingCart.getBuyerName()+shoppingCart.getBuyerDni()).equals(cookie.getName()))
-                .map(Cookie::getValue)
-                .findAny().get();
-            if(buyerDni!= shoppingCart.getBuyerDni())throw new BadRequestException("you don't have authorizations");
-    }
-    void createBuyerCookies(HttpServletResponse response, ShoppingCart shoppingCart) throws IOException {
-        Cookie buyerCookie= new Cookie(shoppingCart.getBuyerName()+shoppingCart.getBuyerDni(), shoppingCart.getBuyerDni());
-        buyerCookie.setMaxAge(60*60);
-        response.addCookie(buyerCookie);
-        response.getOutputStream();
-    }
+//    public void validBuyerCookies(HttpServletRequest request, ShoppingCart shoppingCart){
+//            String buyerDni = Arrays.stream(request.getCookies())
+//                .filter(cookie -> ("email_"+shoppingCart.getBuyerEmail()).equals(cookie.getName()))
+//                .map(Cookie::getValue)
+//                .findAny().get();
+//            if(buyerDni!= shoppingCart.getBuyerDni())throw new BadRequestException("you don't have authorizations");
+//    }
+//    void createBuyerCookies(HttpServletResponse response, ShoppingCart shoppingCart) throws IOException {
+//        Cookie buyerCookie= new Cookie("email_"+shoppingCart.getBuyerEmail(), "email_"+shoppingCart.getBuyerEmail());
+//        buyerCookie.setMaxAge(60*60);
+//        response.addCookie(buyerCookie);
+//        response.getOutputStream();
+//    }
 
+//    @Id
+//    @GeneratedValue(generator = "uuid")
+//    @GenericGenerator(name= "uuid", strategy = "uuid2")
+//    @Column(name = "id", nullable = false)
+//    private String id;
     @Override
     public ShoppingCartCompleteDto findById(Long id) {
         return shoppingCartMapper.getCompleteDtoFromEntity(findEntityById(id));

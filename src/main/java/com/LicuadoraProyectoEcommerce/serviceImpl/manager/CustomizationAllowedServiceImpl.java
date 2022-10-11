@@ -29,7 +29,8 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     private CustomizationAllowedMapper mapper;
     @Autowired
     private EnableAreaRepository enableAreaRepository;
-    @Autowired
+
+    @Override
     public CustomizationAllowed findEntityById(Long id){
         return customizationAllowedRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }

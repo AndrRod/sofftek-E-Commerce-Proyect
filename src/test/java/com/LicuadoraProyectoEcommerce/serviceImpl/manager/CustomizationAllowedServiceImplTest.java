@@ -12,10 +12,12 @@ import com.LicuadoraProyectoEcommerce.mapper.manager.ManagerMapper;
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
 import com.LicuadoraProyectoEcommerce.model.manager.Manager;
+import com.LicuadoraProyectoEcommerce.model.seller.Seller;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import com.LicuadoraProyectoEcommerce.model.userAuth.User;
 import com.LicuadoraProyectoEcommerce.repository.manager.CustomizationAllowedRepository;
 import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -37,7 +39,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.class)
 
-class CustomizationAllowedServiceImplTest { //TODO FALTA COMPLETAR TEST
+class CustomizationAllowedServiceImplTest {
     @Mock
     private CustomizationAllowedRepository repository;
     @InjectMocks
@@ -49,12 +51,10 @@ class CustomizationAllowedServiceImplTest { //TODO FALTA COMPLETAR TEST
 
     SellerProduct sellerProductTest = SellerProduct.builder().build();
     EnabledArea areaTest = EnabledArea.builder().sellerProducts(List.of(sellerProductTest)).build();
-    EnabledArea areaLackSellerProduct;
-//            EnabledArea.builder().sellerProducts(new ArrayList<>()).customizationsAllowed(List.of(custTestAviodIllegalRef)).build();
     CustomizationAllowed custTest = CustomizationAllowed.builder().id(1L).type("color").enabledAreas(List.of(areaTest)).build();
-    CustomizationAllowed custTestLackSellerProduct = CustomizationAllowed.builder().id(1L).type("color").enabledAreas(List.of(areaLackSellerProduct)).build();
+    CustomizationAllowed custTestLackSellerProduct = CustomizationAllowed.builder().id(1L).type("color").enabledAreas(new ArrayList<>()).build();
     CustomizationAllowedDto custDtoTest =  CustomizationAllowedDto.builder().id(1L).type("color").build();
-    CustomizationAllowedCompleteDto custCompleteDtoTest = CustomizationAllowedCompleteDto.builder().id(1L).type("color").build();
+
 
     @Test
     void findEntityById() {
@@ -84,19 +84,21 @@ class CustomizationAllowedServiceImplTest { //TODO FALTA COMPLETAR TEST
         assert underTest.findDtoById(1L).equals(custDtoTest);
     }
 
-    @Test
-    void deleteEntityById() {
-        when(ms.message("delete.success", String.valueOf(1L))).thenReturn("message");
-        when(repository.findById(anyLong())).thenReturn(Optional.of(custTestLackSellerProduct));
-        doNothing().when(repository).delete(any());
-        assertThat(underTest.deleteEntityById(1L)).isEqualTo(new HashMap<String, String>(){{put("Message", "message");}});
-    }
+
     @Test
     void deleteExceptIsUsingBySellerProductEntityById() {
         when(repository.findById(anyLong())).thenReturn(Optional.of(custTest));
         when(ms.message("cant.delete", null)).thenReturn("message");
         assertThrows(BadRequestException.class, () ->  Optional
                 .ofNullable(underTest.deleteEntityById(1L)));
+    }
+
+    @Test
+    void deleteEntityById() {
+        when(ms.message("delete.success", String.valueOf(1L))).thenReturn("message");
+        when(repository.findById(anyLong())).thenReturn(Optional.of(custTestLackSellerProduct));
+        doNothing().when(repository).delete(any());
+        assertThat(underTest.deleteEntityById(1L)).isEqualTo(new HashMap<String, String>(){{put("Message", "message");}});
     }
 
     @Test
@@ -117,7 +119,14 @@ class CustomizationAllowedServiceImplTest { //TODO FALTA COMPLETAR TEST
         CustomizationAllowedDto productService = underTest.updateEntity(1L, custDtoTest);
         assertThat(productService).usingRecursiveComparison().isEqualTo(custTest);
     }
-
+    @Test
+    void updateEntityException() {
+        when(repository.findById(anyLong())).thenReturn(Optional.of(custTest));
+        when(mp.updateEntityFromDto(custTest, custDtoTest)).thenReturn(custTest);
+        when(repository.existsByType("color")).thenReturn(true);
+        assertThrows(BadRequestException.class, () ->  Optional
+                .ofNullable(underTest.updateEntity(1L, custDtoTest)));
+    }
     @Test
     void findByType() {
         when(repository.findByType("color")).thenReturn(Optional.of(custTest));
