@@ -2,6 +2,7 @@ package com.LicuadoraProyectoEcommerce.model.seller;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Item;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Data
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor @Builder
 public class SellerProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

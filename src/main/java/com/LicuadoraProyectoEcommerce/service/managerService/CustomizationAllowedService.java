@@ -12,5 +12,6 @@ public interface CustomizationAllowedService {
     Map<String, String> deleteEntityById(Long id);
     List<CustomizationAllowedDto> findDtoListPagination(Integer page);
     CustomizationAllowedDto updateEntity(Long id, CustomizationAllowedDto customizationAllowedDto);
-    CustomizationAllowed findByTypeAndName(String type);
+    CustomizationAllowed findByType(String type);
+    CustomizationAllowed findEntityById(Long id);
 }

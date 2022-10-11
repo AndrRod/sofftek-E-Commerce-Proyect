@@ -2,6 +2,7 @@ package com.LicuadoraProyectoEcommerce.model.manager;
 
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data @Entity @AllArgsConstructor
+@Data @Entity @AllArgsConstructor @Builder
 public class CustomizationAllowed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

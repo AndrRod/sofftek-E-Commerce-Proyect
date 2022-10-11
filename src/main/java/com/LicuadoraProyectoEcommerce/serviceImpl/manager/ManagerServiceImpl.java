@@ -34,7 +34,7 @@ public class ManagerServiceImpl implements ManagerService{
     private ManagerMapper managerMapper;
 
     @Override
-    public ManagerDto getById(Long id) {
+    public ManagerDto findById(Long id) {
         return managerMapper.getDtoFromEntity(findEntityById(id));
     }
 

@@ -64,13 +64,13 @@ public class AreaEnabledController {
     @Operation(summary = "find area by id and add a new customization")
     @PostMapping("/{id}/customization")
     ResponseEntity<EnabledAreaCompleteDto> addAreaToProduct(@Parameter(description = "insert area id", example = "1")@PathVariable String id, @RequestBody @Valid CustomizationAllowedDto dto){
-        CustomizationAllowed  customizationAllowed = customizationAllowedService.findByTypeAndName(dto.getType());
+        CustomizationAllowed  customizationAllowed = customizationAllowedService.findByType(dto.getType());
         return ResponseEntity.ok(enabledAreaService.addCustomizationAllowedToEntity(Long.valueOf(id), customizationAllowed));
     }
     @Operation(summary = "find area by id and remove a customization")
     @DeleteMapping("/{id}/customization")
     ResponseEntity<EnabledAreaCompleteDto> removeAreaToProduct(@Parameter(description = "insert area id", example = "1")@PathVariable String id, @RequestBody @Valid CustomizationAllowedDto dto){
-        CustomizationAllowed  customizationAllowed = customizationAllowedService.findByTypeAndName(dto.getType());
+        CustomizationAllowed  customizationAllowed = customizationAllowedService.findByType(dto.getType());
         return ResponseEntity.ok(enabledAreaService.removeCustomizationAllowedToEntity(Long.valueOf(id), customizationAllowed));
     }
 }

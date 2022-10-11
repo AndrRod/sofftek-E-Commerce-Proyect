@@ -29,8 +29,8 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     private CustomizationAllowedMapper mapper;
     @Autowired
     private EnableAreaRepository enableAreaRepository;
-
-    private CustomizationAllowed findEntityById(Long id){
+    @Autowired
+    public CustomizationAllowed findEntityById(Long id){
         return customizationAllowedRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf(id))));
     }
     @Override
@@ -49,16 +49,17 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     public Map<String, String> deleteEntityById(Long id) { //TODO falta borrar peronalizacion sin errores
         CustomizationAllowed entity = findEntityById(id);
         List<EnabledArea> enabledAreaList = new ArrayList<>(entity.getEnabledAreas());
-        if(enabledAreaList.stream().anyMatch(e-> !e.getSellerProducts().isEmpty())) throw new BadRequestException(messageHandler.message("cant.delete", null));
         if(!enabledAreaList.isEmpty()) {
-            int size = enabledAreaList.size();
+        if(enabledAreaList.stream().anyMatch(e-> !e.getSellerProducts().isEmpty()))
+            throw new BadRequestException(messageHandler.message("cant.delete", null));
+        int size = enabledAreaList.size();
             for (int i = 0; i < size; i++);{
                 enabledAreaList.get(0).removeCustomizationAllowedToEnabledArea(entity);
                 enableAreaRepository.save(enabledAreaList.get(0));
             }
         }
         customizationAllowedRepository.delete(entity);
-        return Map.of("message", messageHandler.message("delete.success", String.valueOf(id)));
+        return Map.of("Message", messageHandler.message("delete.success", String.valueOf(id)));
     }
 
     @Override
@@ -70,12 +71,14 @@ public class CustomizationAllowedServiceImpl implements CustomizationAllowedServ
     @Override
     public CustomizationAllowedDto updateEntity(Long id, CustomizationAllowedDto customizationAllowedDto) {
         CustomizationAllowed entity = mapper.updateEntityFromDto(findEntityById(id), customizationAllowedDto);
-        if(customizationAllowedRepository.existsByType(customizationAllowedDto.getType())) throw new BadRequestException("the " + customizationAllowedDto.getType() + " type already exists in the database!!!");
+        if(customizationAllowedRepository.existsByType(customizationAllowedDto.getType()))
+            throw new BadRequestException("the " + customizationAllowedDto.getType() + " type already exists in the database!!!");
         return mapper.getDtoFromEntity(customizationAllowedRepository.save(entity));
     }
 
     @Override
-    public CustomizationAllowed findByTypeAndName(String type) {
-        return customizationAllowedRepository.findByType(type).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found.name", type)));
+    public CustomizationAllowed findByType(String type) {
+        return customizationAllowedRepository.findByType(type)
+                .orElseThrow(()-> new NotFoundException(messageHandler.message("not.found.name", type)));
     }
 }

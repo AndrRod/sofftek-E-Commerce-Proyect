@@ -2,13 +2,14 @@ package com.LicuadoraProyectoEcommerce.model.manager;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerCustomization;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data @AllArgsConstructor @Entity
+@Data @AllArgsConstructor @Entity @Builder
 public class EnabledArea {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

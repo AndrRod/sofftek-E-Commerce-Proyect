@@ -1,6 +1,4 @@
 package com.LicuadoraProyectoEcommerce.serviceImpl.manager;
-
-
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.manager.BaseProductDto;
 import com.LicuadoraProyectoEcommerce.dto.manager.BaseProductDtoComplete;
@@ -54,12 +52,10 @@ class BaseProductServiceImplTest {
     User userTest = User.builder().id(1L).name("Andres").email("andres@gmail.com").build();
     Manager managerTest = Manager.builder().user(userTest).build();
     private MockHttpServletRequest request;
-    private MockHttpServletResponse response;
 
     @Before
     public void setUp() {
         request = new MockHttpServletRequest();
-        response = new MockHttpServletResponse();
     }
     @DisplayName("excepcion not found por producto encontrado")
     @Test

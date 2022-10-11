@@ -20,7 +20,7 @@ public class ManagerController {
     @Operation(summary = "find manager by id")
     @GetMapping("/{id}")
     ResponseEntity<ManagerDto> getEntityById(@Parameter(description = "insert manager id", example = "1") @PathVariable String id){
-        return ResponseEntity.ok(managerService.getById(Long.valueOf(id)));
+        return ResponseEntity.ok(managerService.findById(Long.valueOf(id)));
     }
     @Operation(summary = "get 10 manager list by page")
     @GetMapping

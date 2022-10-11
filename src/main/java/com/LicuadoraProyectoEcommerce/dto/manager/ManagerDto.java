@@ -3,6 +3,7 @@ package com.LicuadoraProyectoEcommerce.dto.manager;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor @Builder
 public class ManagerDto {
     @Schema(name = "id", example = "1", hidden = true)
     private Long id;
