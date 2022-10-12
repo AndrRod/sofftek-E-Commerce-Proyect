@@ -9,9 +9,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -34,12 +36,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.cors();
-//            http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority("ROLE_MANAGER");
-        http.authorizeRequests().antMatchers("/auth/**").permitAll().
-                anyRequest().permitAll();
+        http.authorizeRequests().antMatchers("/swagger-ui/**", "/api/docs/**").permitAll();
+        http.authorizeRequests().antMatchers("/auth/**", "/seller/store/**", "/cart/**", "/purchase/**").permitAll();
+        http.authorizeRequests().antMatchers("/user/**", "/manager/**").hasAnyAuthority("ROLE_MANAGER", "ROLE_ADMIN");
+        http.authorizeRequests().antMatchers("/seller/**").hasAnyAuthority("ROLE_SELLER", "ROLE_ADMIN").
+                anyRequest().authenticated();
         http.headers().frameOptions().sameOrigin();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-//        http.addFilterBefore(new ConfigAutorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new ConfigAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     @Bean

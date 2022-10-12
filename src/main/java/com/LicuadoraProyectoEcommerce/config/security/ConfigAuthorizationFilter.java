@@ -30,20 +30,22 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
-public class ConfigAutorizationFilter extends OncePerRequestFilter {
+public class ConfigAuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private MessageHandler messageHandler;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        List listPaths = List.of("/auth/login", "/auth/register", "/auth/refresh");
-        if(listPaths.contains(request.getServletPath())){
+        List<String> pathsFilterList = List.of("/auth", "/cart", "/purchase", "/seller/store", "/swagger-ui/", "/api/docs");
+        String requestPath = request.getServletPath();
+        System.out.println(requestPath);
+        if(pathsFilterList.stream().anyMatch(p-> requestPath.startsWith(p))){
             filterChain.doFilter(request, response);
         }else{
-            String autorizacionHeader = request.getHeader(AUTHORIZATION);
-            if(autorizacionHeader != null && autorizacionHeader.startsWith("Bearer ")) {
+            String authorizationHeader = request.getHeader(AUTHORIZATION);
+            if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
-                    String token = autorizacionHeader.substring("Bearer ".length());
+                    String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);

@@ -16,7 +16,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Arrays;
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
     private static final String TITLE = "SOFFTEK: Proyecto Licuadora. E-COMMERCE";
     private static final String DESCRIPTION = "Nos han solicitado diseñar y desarrollar una plataforma de E-Commerce para la\n" +

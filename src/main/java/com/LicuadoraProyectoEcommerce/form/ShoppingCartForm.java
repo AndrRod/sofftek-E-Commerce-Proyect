@@ -13,7 +13,7 @@ public class ShoppingCartForm {
     @NotBlank(message = "cant be empty or null")
     @JsonProperty("buyer name")
     private String buyerName;
-    @Schema(name = "buyer email", type = "String", example = "vs@gmail.com")
+    @Schema(name = "buyer email", type = "String", example = "victorS@gmail.com")
     @NotBlank(message = "cant be empty or null")
     @JsonProperty("buyer email")
     private String buyerEmail;

@@ -9,6 +9,7 @@ import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
+import com.LicuadoraProyectoEcommerce.message.UserRefreshTokenResponse;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.manager.Manager;
 import com.LicuadoraProyectoEcommerce.model.seller.Seller;
@@ -114,22 +115,22 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
 
     @Override
     public void refreshToken(RefreshTokenForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(form.getRefresh_token() == null || !form.getRefresh_token().startsWith("Bearer ")) throw new BadRequestException(messageHandler.message("token.error", null));
+        if(form.getRefresh_token() == null) throw new BadRequestException(messageHandler.message("token.error", null));
         try {
-            String refresh_token = form.getRefresh_token().substring("Bearer ".length());
+            String refresh_token = form.getRefresh_token();
             Algorithm algorithm = securityConfig.algorithmFromSecretWord();
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT decodedJWT = verifier.verify(refresh_token);
             String email = decodedJWT.getSubject();
             User user = findUserByEmail(email);
-            String acceso_token = JWT.create()
+            String access_token = JWT.create()
                     .withSubject(user.getEmail())
                     .withExpiresAt(new Date(System.currentTimeMillis() + 20 * 60 * 1000))
                     .withIssuer(request.getRequestURL().toString())
                     .withClaim("role", Optional.ofNullable(user.getRole().getAuthority()).stream().collect(Collectors.toList()))
                     .sign(algorithm);
             response.setContentType(APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(),  new HashMap<>(){{put("message", "the user " + user.getEmail()+ " refresh the token succesfully"); put("access_token", acceso_token); put("update_token", refresh_token);}});
+            new ObjectMapper().writeValue(response.getOutputStream(),  new UserRefreshTokenResponse("the user " + user.getEmail()+ " refresh the token successfully", access_token, refresh_token));
         }catch (Exception exception){
             response.setStatus(FORBIDDEN.value());
             response.setContentType(APPLICATION_JSON_VALUE);
