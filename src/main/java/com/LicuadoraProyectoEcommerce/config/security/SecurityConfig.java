@@ -39,7 +39,8 @@ public class SecurityConfig {
         http.authorizeRequests().antMatchers("/swagger-ui/**", "/api/docs/**").permitAll();
         http.authorizeRequests().antMatchers("/auth/**", "/seller/store/**", "/cart/**", "/purchase/**").permitAll();
         http.authorizeRequests().antMatchers("/seller/**").hasAnyAuthority("ROLE_SELLER", "ROLE_ADMIN");
-        http.authorizeRequests().antMatchers("/user/**", "/manager/**").hasAnyAuthority("ROLE_MANAGER", "ROLE_ADMIN").
+        http.authorizeRequests().antMatchers("/manager/**").hasAnyAuthority("ROLE_MANAGER", "ROLE_ADMIN");
+        http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN").
                 anyRequest().authenticated();
         http.headers().frameOptions().sameOrigin();
         http.sessionManagement().sessionCreationPolicy(STATELESS);

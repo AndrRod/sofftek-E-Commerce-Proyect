@@ -32,6 +32,8 @@ public class UserSeeder implements CommandLineRunner {
             ));
             managerRepository.save(new Manager(userList.get(0)));
             sellerRepository.save(new Seller(userList.get(1)));
+            managerRepository.save(new Manager(userList.get(2)));
+            sellerRepository.save(new Seller(userList.get(2)));
         }
     }
 }

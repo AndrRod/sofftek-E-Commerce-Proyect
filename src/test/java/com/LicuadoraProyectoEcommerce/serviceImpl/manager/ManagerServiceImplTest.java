@@ -49,12 +49,6 @@ class ManagerServiceImplTest {
     User userTest = User.builder().id(1L).name("Andres").email("andres@gmail.com").build();
     Manager managerTest = Manager.builder().id(1L).user(userTest).build();
     ManagerDto managerDtoTest = ManagerDto.builder().id(1l).name("Andres").email("andres@gmail.com").build();
-    private MockHttpServletRequest request;
-
-    @Before
-    public void setUp() {
-        request = new MockHttpServletRequest();
-    }
     @Test
     void findById() {
         when(mp.getDtoFromEntity(managerTest)).thenReturn(managerDtoTest);
