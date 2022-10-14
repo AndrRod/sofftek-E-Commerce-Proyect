@@ -3,6 +3,7 @@ import com.LicuadoraProyectoEcommerce.form.UserRegisterForm;
 import com.LicuadoraProyectoEcommerce.dto.userAuth.UserDto;
 import com.LicuadoraProyectoEcommerce.form.RefreshTokenForm;
 import com.LicuadoraProyectoEcommerce.form.UserLoginForm;
+import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.message.UserLoginResponse;
 import com.LicuadoraProyectoEcommerce.service.UserAuth.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.UserAuth.UserService;
@@ -72,5 +73,9 @@ public class UserAuthController {
     @GetMapping("/{id}")
     ResponseEntity<UserDto> getById(@Parameter(description = "insert user id", example = "1") @PathVariable String id){
         return ResponseEntity.ok(userService.getUserDtoById(Long.valueOf(id)));
+    }
+    @GetMapping("/accessDenied")
+    ResponseEntity<MessageInfo> accessDenied(HttpServletRequest request){
+        return ResponseEntity.status(403).body( new MessageInfo("You are haven't authorization for access this path", 403, request.getRequestURI()));
     }
 }

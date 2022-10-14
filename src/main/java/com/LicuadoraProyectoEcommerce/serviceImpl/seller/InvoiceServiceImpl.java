@@ -1,4 +1,4 @@
-package com.LicuadoraProyectoEcommerce.serviceImpl.shoppingCart;
+package com.LicuadoraProyectoEcommerce.serviceImpl.seller;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
