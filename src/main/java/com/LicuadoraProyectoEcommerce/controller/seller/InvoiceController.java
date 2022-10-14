@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -45,12 +46,12 @@ public class InvoiceController {
     }
     @Operation(summary = "create a invoice for a purchase that find by id")
     @PostMapping("/purchase/{idPurchase}")
-    public ResponseEntity<InvoiceDto> createEntity(@Parameter(description = "find purchase by id to add to the invoice", example = "1") @PathVariable String idPurchase, @RequestBody @Valid InvoiceForm invoiceForm, HttpServletRequest request){
+    public ResponseEntity<InvoiceDto> createEntity(@Parameter(description = "find purchase by id to add to the invoice", example = "1") @PathVariable String idPurchase, @RequestBody @Valid InvoiceForm invoiceForm, HttpServletRequest request) throws IOException {
         return ResponseEntity.status(201).body(invoiceService.createEntity(Long.valueOf(idPurchase), invoiceForm, request));
     }
     @Operation(summary = "update a invoice by id, and the possibility tu change the purchase by id")
     @PutMapping("/{id}/purchase/{idPurchase}")
-    public ResponseEntity<InvoiceDto> updateEntity(@Parameter(description = "insert invoice id", example = "1")@PathVariable String id, @Parameter(description = "find purchase by id to update the invoice",example = "1")@PathVariable(required = false) Long idPurchase, @RequestBody @Valid InvoiceForm invoiceForm, HttpServletRequest request){
+    public ResponseEntity<InvoiceDto> updateEntity(@Parameter(description = "insert invoice id", example = "1")@PathVariable String id, @Parameter(description = "find purchase by id to update the invoice",example = "1")@PathVariable(required = false) Long idPurchase, @RequestBody @Valid InvoiceForm invoiceForm, HttpServletRequest request) throws IOException {
         return ResponseEntity.ok(invoiceService.updateEntity(Long.valueOf(id), idPurchase, invoiceForm, request));
     }
 }

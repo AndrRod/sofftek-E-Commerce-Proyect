@@ -181,7 +181,8 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     public void isSellerProductSellerCreator(HttpServletRequest request, SellerProduct sellerProduct){
         User  sellerUser = findUserLogedByEmail(request);
         Seller seller = sellerRepository.findByUser(sellerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.authorizate", "seller")));
-        if(!sellerUser.getRole().equals(Role.SELLER) || !sellerProduct.getSeller().equals(seller)) throw new BadRequestException(messageHandler.message("not.creator", "seller"));
+        if(!sellerUser.getRole().equals(Role.ADMIN) && !sellerProduct.getSeller().equals(seller))
+                throw new BadRequestException(messageHandler.message("not.creator", "seller"));
     }
     @Override
     public void isTheSameUserLogged(User user, HttpServletRequest request){
@@ -199,7 +200,7 @@ public class UserAuthServiceImpl implements UserAuthService, UserDetailsService 
     public void isManagerProductCreator(HttpServletRequest request, BaseProduct baseProduct){
         User  managerUser = findUserLogedByEmail(request);
         Manager manager = managerRepository.findByUser(managerUser).orElseThrow(()-> new NotFoundException(messageHandler.message("not.authorizate", "manager")));
-        if(!managerUser.getRole().equals(Role.MANAGER) || !baseProduct.getManagerCreator().equals(manager)) throw new BadRequestException(messageHandler.message("not.creator", "manager"));
+        if(!managerUser.getRole().equals(Role.ADMIN) && !baseProduct.getManagerCreator().equals(manager)) throw new BadRequestException(messageHandler.message("not.creator", "manager"));
     }
     @Override
     public User getUserLoged(HttpServletRequest request) {

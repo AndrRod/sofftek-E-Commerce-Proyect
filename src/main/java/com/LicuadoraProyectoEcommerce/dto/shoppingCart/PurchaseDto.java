@@ -59,6 +59,7 @@ public class PurchaseDto {
         shoppingCart.getItems().stream().forEach(p->{
         this.products.add("Name: "+ p.getSellerProduct().getBaseProduct().getName()+
                     ", Description: " + p.getSellerProduct().getDescription() +
+                    ", Unit Price : " + p.getSellerProduct().getFinalPrice() +
                     ", Amount: " + p.getQuantityOfProducts() +
                     ", Final price: " + p.getFinalPricePerQuantity());
         });

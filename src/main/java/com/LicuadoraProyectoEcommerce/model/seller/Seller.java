@@ -10,6 +10,7 @@ import java.util.List;
 @Data @Entity
 @AllArgsConstructor @NoArgsConstructor
 public class Seller {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

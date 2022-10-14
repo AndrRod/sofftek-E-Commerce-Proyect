@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     boolean existsByShoppingCart(ShoppingCart shoppingCart);
+    Purchase findByShoppingCart(ShoppingCart shoppingCart);
 }

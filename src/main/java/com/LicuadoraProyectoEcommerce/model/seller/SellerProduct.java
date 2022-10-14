@@ -1,11 +1,16 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
+import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Item;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
+import com.LicuadoraProyectoEcommerce.model.shoppingCart.Purchase;
+import com.LicuadoraProyectoEcommerce.repository.seller.InvoiceRepository;
+import com.LicuadoraProyectoEcommerce.repository.shoppingCart.PurchaseRepository;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -56,9 +61,23 @@ public class SellerProduct {
     public Double getFinalPrice() {
         if(this.finalPrice==null) return this.basePrice;
         this.finalPrice = 0d;
-        areas.stream().forEach(areas -> {
+        areas.forEach(areas -> {
             this.finalPrice += areas.getCustomizations().stream().mapToDouble(SellerCustomization::getCustomizationPrice).sum();
         });
         return finalPrice + this.basePrice;
+    }
+    @Autowired  @Transient
+    private PurchaseRepository purchaseRepository;
+    @Autowired  @Transient
+    private InvoiceRepository invoiceRepository;
+    @PreUpdate @PreRemove //TODO CONTROLAR FUCIONAMIENTO deberia borrar producto solo si no hay compra pendiente de aprobarcion y factura
+    public void preUpdateOrDeletePausedOrDeletedThePublication(){
+        this.getPublication().setPublicationSate(PublicationSate.PAUSED);
+        this.getItems().forEach(item->{
+            Purchase purchaseOverProduct = purchaseRepository.findByShoppingCart(item.getShoppingCart());
+            if(purchaseOverProduct!= null && !invoiceRepository.existsByPurchase(purchaseOverProduct)){
+                throw new BadRequestException("the publication of this product was paused, but this product cannot be deleted or update, because a purchase was made on it and it is pending approval and invoice");
+            }
+        });
     }
 }
