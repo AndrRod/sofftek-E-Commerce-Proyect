@@ -30,7 +30,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
-public class ConfigAuthorizationFilter extends OncePerRequestFilter {
+public class AuthorizationFilterConfig extends OncePerRequestFilter {
     @Autowired
     private MessageHandler messageHandler;
 

@@ -1,8 +1,6 @@
 package com.LicuadoraProyectoEcommerce.config.security;
 
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.servlet.ServletException;
@@ -17,9 +15,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
             HttpServletRequest request,
             HttpServletResponse response,
             AccessDeniedException exc) throws IOException, ServletException {
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        response.sendRedirect(request.getContextPath() + "/auth/accessDenied");
+          response.sendRedirect(request.getContextPath() + "/auth/accessDenied");
     }
 }

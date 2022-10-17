@@ -10,7 +10,6 @@ import com.itextpdf.layout.element.LineSeparator;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
-import org.apache.logging.log4j.Logger;
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.seller.InvoiceDto;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
@@ -24,14 +23,15 @@ import com.LicuadoraProyectoEcommerce.repository.seller.InvoiceRepository;
 import com.LicuadoraProyectoEcommerce.service.UserAuth.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.sellerService.InvoiceService;
 import com.LicuadoraProyectoEcommerce.service.shoppingCart.PurchaseService;
+import com.itextpdf.layout.properties.UnitValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -106,6 +106,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     void createInvoicePdf(InvoiceDto invoiceDto) throws IOException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String path = "invoice"+ invoiceDto.getInvoiceNumber() +".pdf";
         PdfWriter pdfWriter = new PdfWriter(path);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
@@ -116,11 +117,12 @@ public class InvoiceServiceImpl implements InvoiceService {
         SolidLine line = new SolidLine(1f);
         Paragraph storeName = new Paragraph().add(invoiceDto.getSellerStoreName()).setFont(bold);
         Table table = new Table(new float[]{850});
+        table.setWidth(UnitValue.createPercentValue(100));
         invoiceDto.getPurchaseList().forEach(p->{
-           table.addCell(p).setFontSize(10).setTextAlignment(TextAlignment.JUSTIFIED);
+           table.addCell(p).setTextAlignment(TextAlignment.JUSTIFIED);
         });
         table.addCell(new Paragraph("Total Price: " + invoiceDto.getTotalPurchase()).setTextAlignment(TextAlignment.RIGHT));
-        document.add(new Paragraph().add(storeName).add(" -  INVOICE NUMBER: ").add(invoiceDto.getInvoiceNumber()).setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph().add(storeName).add(" -  INVOICE NUMBER: ").add(invoiceDto.getInvoiceNumber()).add(" - DATE: " + LocalDateTime.now().format(formatter)).setTextAlignment(TextAlignment.CENTER));
         document.add(new LineSeparator(line));
         document.add(new Paragraph().add("BUYER INFORMATION: ").setFont(bold));
         document.add(new Paragraph().add("Name: ").add(invoiceDto.getBuyerName()).add(", DNI: ").add(invoiceDto.getBuyerDni()).add(", Email: ").add(invoiceDto.getBuyerEmail()).setFont(font));
