@@ -4,7 +4,10 @@ import com.LicuadoraProyectoEcommerce.dto.shoppingCart.PurchaseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import net.bytebuddy.asm.Advice;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,10 @@ public class InvoiceDto {
     @Schema(name = "invoice number", example = "1234567891")
     @JsonProperty("invoice number")
     private String invoiceNumber;
+
+    @Schema(name = "invoice date", example = "2022-05-02")
+    @JsonProperty("invoice date")
+    private String invoiceDate;
     @Schema(name = "buyer name", example = "Federico Romero")
     @JsonProperty("buyer name")
     private String buyerName;
@@ -59,5 +66,7 @@ public class InvoiceDto {
         this.numberOfTransaction = purchase.getNumberOfTransaction();
         this.totalPurchase= purchase.getTotalPurchase();
         this.purchaseList.addAll(purchase.getProducts());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        this.invoiceDate = LocalDateTime.now().format(formatter);
     }
 }

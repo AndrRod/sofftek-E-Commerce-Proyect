@@ -66,13 +66,11 @@ public class BaseProductController {
     @Operation(summary = "find a product by id and add a new area by id")
     @PostMapping("/{id}/area/{idArea}")
     ResponseEntity<BaseProductDtoComplete> addAreaToProduct(@PathVariable String id, @PathVariable String idArea, HttpServletRequest request){
-        EnabledArea enabledArea = enabledAreaService.findEntityById(Long.valueOf(idArea));
-        return ResponseEntity.ok(baseProductService.addEnabledAreaToEntity(Long.valueOf(id), enabledArea, request));
+        return ResponseEntity.ok(baseProductService.addEnabledAreaToEntity(Long.valueOf(id), Long.valueOf(idArea), request));
     }
     @Operation(summary = "find a product by id and remove a area by id")
     @DeleteMapping("/{id}/area/{idArea}")
     ResponseEntity<BaseProductDtoComplete> removeAreaToProduct(@PathVariable String id, @PathVariable String idArea, HttpServletRequest request){
-        EnabledArea enabledArea = enabledAreaService.findEntityById(Long.valueOf(idArea));
-        return new ResponseEntity<>(baseProductService.removeEnabledAreaToEntity(Long.valueOf(id), enabledArea, request), HttpStatus.OK);
+        return new ResponseEntity<>(baseProductService.removeEnabledAreaToEntity(Long.valueOf(id), Long.valueOf(idArea), request), HttpStatus.OK);
     }
 }

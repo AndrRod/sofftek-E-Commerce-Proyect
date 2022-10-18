@@ -2,6 +2,7 @@ package com.LicuadoraProyectoEcommerce.service.sellerService;
 
 import com.LicuadoraProyectoEcommerce.dto.seller.InvoiceDto;
 import com.LicuadoraProyectoEcommerce.form.InvoiceForm;
+import com.LicuadoraProyectoEcommerce.form.InvoicePdfPrintForm;
 import com.LicuadoraProyectoEcommerce.model.seller.Invoice;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,4 +17,5 @@ public interface InvoiceService {
     InvoiceDto findById(Long id);
     Invoice findEntityById(Long id);
     List<InvoiceDto> geDtoListPagination(Integer page);
+    void printInvoiceById(Long id, InvoicePdfPrintForm invoiceForm, HttpServletRequest request) throws IOException;
 }

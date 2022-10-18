@@ -13,6 +13,7 @@ import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
 import com.LicuadoraProyectoEcommerce.repository.seller.SellerCustomizationRepository;
 import com.LicuadoraProyectoEcommerce.service.UserAuth.UserAuthService;
 import com.LicuadoraProyectoEcommerce.service.managerService.BaseProductService;
+import com.LicuadoraProyectoEcommerce.service.managerService.EnabledAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,9 @@ public class BaseProductServiceImpl implements BaseProductService {
     @Autowired
     private SellerCustomizationRepository sellerCustomizationRepository;
     @Autowired
-        private UserAuthService userAuthService;
+    private UserAuthService userAuthService;
+    @Autowired
+    EnabledAreaService enabledAreaService;
 
     @Override
     public BaseProductDtoComplete createBaseProduct(BaseProductDto baseProductDto, HttpServletRequest request) {
@@ -84,7 +87,8 @@ public class BaseProductServiceImpl implements BaseProductService {
         return baseProductRepository.findById(id).orElseThrow(()-> new NotFoundException(messageHandler.message("not.found", String.valueOf((id)))));
     }
     @Override
-    public BaseProductDtoComplete addEnabledAreaToEntity(Long id, EnabledArea enabledArea, HttpServletRequest request) {
+    public BaseProductDtoComplete addEnabledAreaToEntity(Long id, Long idArea, HttpServletRequest request) {
+        EnabledArea enabledArea = enabledAreaService.findEntityById(idArea);
         BaseProduct baseProduct = findEntityById(id);
         if(baseProduct.getEnabledAreas().contains(enabledArea)) throw new BadRequestException(messageHandler.message("entity.exists", enabledArea.getName()));
         baseProduct.setManagerLastUpdate(userAuthService.findManagerLogged(request).getUser().getEmail()); //TODO USAR HARCODEADO PARA PRUEBAS
@@ -97,7 +101,8 @@ public class BaseProductServiceImpl implements BaseProductService {
     }
 
     @Override
-    public BaseProductDtoComplete removeEnabledAreaToEntity(Long id, EnabledArea enabledArea, HttpServletRequest request) {
+    public BaseProductDtoComplete removeEnabledAreaToEntity(Long id, Long idArea, HttpServletRequest request) {
+        EnabledArea enabledArea = enabledAreaService.findEntityById(idArea);
         BaseProduct baseProduct = findEntityById(id);
         if(!baseProduct.getEnabledAreas().contains(enabledArea)) throw new BadRequestException(messageHandler.message("not.entity.exists", enabledArea.getName()));
         baseProduct.setManagerLastUpdate(userAuthService.findManagerLogged(request).getUser().getEmail()); //TODO USAR HARCODEADO PARA PRUEBAS

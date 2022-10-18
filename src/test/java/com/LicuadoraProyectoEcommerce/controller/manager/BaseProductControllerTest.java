@@ -5,7 +5,6 @@ import com.LicuadoraProyectoEcommerce.dto.manager.BaseProductDto;
 import com.LicuadoraProyectoEcommerce.dto.manager.BaseProductDtoComplete;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
-import com.LicuadoraProyectoEcommerce.mapper.manager.BaseProductMapper;
 import com.LicuadoraProyectoEcommerce.serviceImpl.manager.BaseProductServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Map;
@@ -29,12 +25,12 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-@EnableWebMvc
 class BaseProductControllerTest {
     protected MockMvc mockMvc;
     @Mock
@@ -47,7 +43,8 @@ class BaseProductControllerTest {
     private ObjectMapper objectMapper;
     BaseProductDtoComplete baseProductDtoTest = BaseProductDtoComplete.builder().id(1L).name("zapato").price(100d).daysToManufacture(12).build();
     BaseProductDto baseProductCreateDtoTest = BaseProductDto.builder().id(1L).name("zapato").price(100d).daysToManufacture(12).build();
-    private MockHttpServletRequest request;
+    @Mock
+    HttpServletRequest request;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -58,8 +55,9 @@ class BaseProductControllerTest {
     void createProduct()throws Exception {
         when(baseProductService.createBaseProduct(baseProductCreateDtoTest, request)).thenReturn(baseProductDtoTest);
         mockMvc.perform(post("/manager/product")
-                        .content(objectMapper.writeValueAsString(baseProductCreateDtoTest))
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .content(new ObjectMapper().writeValueAsString(baseProductCreateDtoTest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                         .andExpect(status().isCreated())
                         .andDo(print());
     }
@@ -130,10 +128,22 @@ class BaseProductControllerTest {
     }
 
     @Test
-    void addAreaToProduct() {
+    void addAreaToProduct() throws Exception {
+        when(baseProductService.addEnabledAreaToEntity(1l, 1l, request)).thenReturn(baseProductDtoTest);
+        mockMvc.perform(post("/manager/product/{id}/area/{idArea}", 1l, 1l)
+                        .content(new ObjectMapper().writeValueAsString(baseProductCreateDtoTest))
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                        .andDo(print());
     }
 
     @Test
-    void removeAreaToProduct() {
+    void removeAreaToProduct() throws Exception {
+        when(baseProductService.addEnabledAreaToEntity(1l, 1l, request)).thenReturn(baseProductDtoTest);
+        mockMvc.perform(delete("/manager/product/{id}/area/{idArea}", 1l, 1l)
+                        .content(new ObjectMapper().writeValueAsString(baseProductCreateDtoTest))
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                        .andDo(print());
     }
 }

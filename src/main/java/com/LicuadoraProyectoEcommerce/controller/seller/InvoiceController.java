@@ -1,7 +1,10 @@
 package com.LicuadoraProyectoEcommerce.controller.seller;
 
+import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.seller.InvoiceDto;
 import com.LicuadoraProyectoEcommerce.form.InvoiceForm;
+import com.LicuadoraProyectoEcommerce.form.InvoicePdfPrintForm;
+import com.LicuadoraProyectoEcommerce.message.MessageInfo;
 import com.LicuadoraProyectoEcommerce.service.sellerService.InvoiceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -53,5 +57,11 @@ public class InvoiceController {
     @PutMapping("/{id}/purchase/{idPurchase}")
     public ResponseEntity<InvoiceDto> updateEntity(@Parameter(description = "insert invoice id", example = "1")@PathVariable String id, @Parameter(description = "find purchase by id to update the invoice",example = "1")@PathVariable(required = false) Long idPurchase, @RequestBody @Valid InvoiceForm invoiceForm, HttpServletRequest request) throws IOException {
         return ResponseEntity.ok(invoiceService.updateEntity(Long.valueOf(id), idPurchase, invoiceForm, request));
+    }
+    @Operation(summary = "print invoice by id")
+    @PostMapping("/{id}/print")
+    public ResponseEntity<MessageInfo> createPrintInvoiceById(@Parameter(description = "insert invoice id", example = "1") @PathVariable String id, @RequestBody @Valid InvoicePdfPrintForm invoiceForm, HttpServletRequest request) throws IOException {
+        invoiceService.printInvoiceById(Long.valueOf(id), invoiceForm, request);
+        return ResponseEntity.ok(new MessageInfo("the invoice pdf was create successfully", 201, request.getRequestURI()));
     }
 }

@@ -1,4 +1,5 @@
 package com.LicuadoraProyectoEcommerce.serviceImpl.seller;
+import com.LicuadoraProyectoEcommerce.form.InvoicePdfPrintForm;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
@@ -29,6 +30,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -59,7 +62,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         userAuthService.isSellerProductSellerCreator(request, purchase.getShoppingCart().getItems().get(0).getSellerProduct());
         Invoice invoice = invoiceMapper.createFromForm(purchase, invoiceForm);
         InvoiceDto invoiceDto = invoiceMapper.getDtoFromEntity(invoiceRepository.save(invoice));
-        createInvoicePdf(invoiceDto);
+        createInvoicePdf(invoiceDto, invoiceForm.getSelectDiskToSave());
         return invoiceDto;
     }
     @Override
@@ -73,7 +76,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         userAuthService.isSellerProductSellerCreator(request, invoice.getPurchase().getShoppingCart().getItems().get(0).getSellerProduct());
         Invoice invoiceUpdate = invoiceMapper.updateFromForm(invoice, invoiceForm);
         InvoiceDto invoiceDto = invoiceMapper.getDtoFromEntity(invoiceUpdate);
-        createInvoicePdf(invoiceDto);
+        createInvoicePdf(invoiceDto, invoiceForm.getSelectDiskToSave());
         return invoiceDto;
     }
     void validPurchaseConditions(Purchase purchase){
@@ -104,10 +107,17 @@ public class InvoiceServiceImpl implements InvoiceService {
         List<Invoice> listEntities = invoiceRepository.findAll(PageRequest.of(page, SIZE_TEN)).getContent();
         return invoiceMapper.getListDtoFromListEntity(listEntities);
     }
+    @Override
+    public void printInvoiceById(Long id, InvoicePdfPrintForm invoiceForm, HttpServletRequest request) throws IOException {
+        Invoice invoice = findEntityById(id);
+        userAuthService.isSellerProductSellerCreator(request, invoice.getPurchase().getShoppingCart().getItems().get(0).getSellerProduct());
+        InvoiceDto invoiceDto = invoiceMapper.getDtoFromEntity(invoice);
+        createInvoicePdf(invoiceDto, invoiceForm.getSelectDiskToSave());
+    }
 
-    void createInvoicePdf(InvoiceDto invoiceDto) throws IOException {
+    void createInvoicePdf(InvoiceDto invoiceDto, String inWhichDiskSave) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String path = "invoice"+ invoiceDto.getInvoiceNumber() +".pdf";
+        String path = inWhichDiskSave + ":\\"+invoiceDto.getSellerStoreName()+"_invoice_"+ invoiceDto.getInvoiceNumber() +".pdf";
         PdfWriter pdfWriter = new PdfWriter(path);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         pdfDocument.setDefaultPageSize(PageSize.A4);
@@ -133,5 +143,4 @@ public class InvoiceServiceImpl implements InvoiceService {
         document.add(table);
         document.close();
     }
-
 }
