@@ -41,7 +41,7 @@ public class AreaEnabledController {
     }
     @Operation(summary = "get 10 areas list by page")
     @GetMapping
-    ResponseEntity<List<EnabledAreaCompleteDto>> findEntitiesListPage(@Parameter(description = "insert page number", example = "0")@RequestParam String page){
+    ResponseEntity<List<EnabledAreaCompleteDto>> findEntitiesListPage(@Parameter(description = "insert page number", example = "0")@RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(enabledAreaService.findDtoListPagination(Integer.valueOf(page)));
     }
     @Operation(summary = "create area")

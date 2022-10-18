@@ -48,7 +48,7 @@ public class BaseProductController {
     }
     @Operation(summary = "get a list of product paginated")
     @GetMapping
-    ResponseEntity<List<BaseProductDtoComplete>> getProductPage(@RequestParam String page){
+    ResponseEntity<List<BaseProductDtoComplete>> getProductPage(@RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(baseProductService.getBaseProductListPage(Integer.valueOf(page)));
     }
     @Operation(summary = "delete product by id")

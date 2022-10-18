@@ -47,7 +47,7 @@ public class SellerProductController {
     }
     @Operation(summary = "get 10 seller products list by page and optionally by state (PUBLISHED, PAUSED, CANCELLED, FINISHED)")
     @GetMapping
-    public ResponseEntity<List<SellerProductDto>> getDtoListPagination(@Parameter(description = "insert page number", example = "1")@RequestParam String page, @Parameter(description = "find by state", example = "PUBLISHED")@RequestParam(required = false) String state){
+    public ResponseEntity<List<SellerProductDto>> getDtoListPagination(@Parameter(description = "insert page number", example = "1")@RequestParam(defaultValue = "0", required = false) String page, @Parameter(description = "find by state", example = "PUBLISHED")@RequestParam(required = false) String state){
         return ResponseEntity.ok(sellerProductService.listDtoPagination(Integer.valueOf(page), state));
     }
     @Operation(summary = "find seller product by id")

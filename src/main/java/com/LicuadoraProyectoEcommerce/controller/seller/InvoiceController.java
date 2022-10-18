@@ -41,7 +41,7 @@ public class InvoiceController {
     }
     @Operation(summary = "get a invoice list of ten entities")
     @GetMapping
-    public ResponseEntity<List<InvoiceDto>> getDtoListPagination(@Parameter(description = "insert a number page", example = "0") @RequestParam String page){
+    public ResponseEntity<List<InvoiceDto>> getDtoListPagination(@Parameter(description = "insert a number page", example = "0") @RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(invoiceService.geDtoListPagination(Integer.valueOf(page)));
     }
     @Operation(summary = "create a invoice for a purchase that find by id")

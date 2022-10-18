@@ -19,7 +19,7 @@ public class SellerAreaController {
     private SellerAreaService sellerAreaService;
     @Operation(summary = "get 10 areas list by page")
     @GetMapping
-    public ResponseEntity<List<SellerAreaCompleteDto>> getListDtoPagination(@Parameter(description = "insert the page number", example = "0") @RequestParam String page){
+    public ResponseEntity<List<SellerAreaCompleteDto>> getListDtoPagination(@Parameter(description = "insert the page number", example = "0") @RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(sellerAreaService.geDtoListPagination(Integer.valueOf(page)));
     }
     @Operation(summary = "find area by id")

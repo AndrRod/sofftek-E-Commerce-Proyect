@@ -42,7 +42,7 @@ public class PurchaseController {
     }
     @Operation(summary = "get a purchase list of ten by page")
     @GetMapping
-    public ResponseEntity<List<PurchaseDto>> getDtoListPagination(@Parameter(description = "get a list by page", example = "0") @RequestParam String page){
+    public ResponseEntity<List<PurchaseDto>> getDtoListPagination(@Parameter(description = "get a list by page", example = "0") @RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(purchaseService.geDtoListPagination(Integer.valueOf(page)));
     }
     @Operation(summary = "create purchase for a shopping cart")

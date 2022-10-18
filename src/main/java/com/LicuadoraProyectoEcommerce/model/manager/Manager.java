@@ -1,19 +1,14 @@
 package com.LicuadoraProyectoEcommerce.model.manager;
 
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
-import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
 import com.LicuadoraProyectoEcommerce.model.userAuth.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data @Entity
 @AllArgsConstructor @Builder

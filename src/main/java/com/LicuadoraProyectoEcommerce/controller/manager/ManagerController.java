@@ -19,12 +19,12 @@ public class ManagerController {
     private ManagerService managerService;
     @Operation(summary = "find manager by id")
     @GetMapping("/{id}")
-    ResponseEntity<ManagerDto> getEntityById(@Parameter(description = "insert manager id", example = "1") @PathVariable String id){
+    ResponseEntity<ManagerDto> getDtoById(@Parameter(description = "insert manager id", example = "1") @PathVariable String id){
         return ResponseEntity.ok(managerService.findById(Long.valueOf(id)));
     }
     @Operation(summary = "get 10 manager list by page")
     @GetMapping
-    ResponseEntity<List<ManagerDto>> getEntityListPage(@Parameter(description = "insert a page number", example = "0") @RequestParam String page){
+    ResponseEntity<List<ManagerDto>> getDtoListPage(@Parameter(description = "insert a page number", example = "0") @RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(managerService.getListEntityPage(Integer.valueOf(page)));
     }
 }

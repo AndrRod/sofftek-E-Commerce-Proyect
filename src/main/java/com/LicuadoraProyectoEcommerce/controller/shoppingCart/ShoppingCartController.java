@@ -46,7 +46,7 @@ public class ShoppingCartController {
     }
     @Operation(summary = "get a cart list of ten by page")
     @GetMapping
-    public ResponseEntity<List<ShoppingCartDto>> getDtoListPagination(@Parameter(description = "get a list by page", example = "0") @RequestParam String page){
+    public ResponseEntity<List<ShoppingCartDto>> getDtoListPagination(@Parameter(description = "get a list by page", example = "0") @RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(shoppingCartService.geDtoListPagination(Integer.valueOf(page)));
     }
     @Operation(summary = "create cart")

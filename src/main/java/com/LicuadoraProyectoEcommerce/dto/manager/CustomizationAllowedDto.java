@@ -1,14 +1,10 @@
 package com.LicuadoraProyectoEcommerce.dto.manager;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor @Builder
+@Data
+@AllArgsConstructor @Builder @NoArgsConstructor
 public class CustomizationAllowedDto {
     @Schema(name = "id", example = "1")
     private Long id;

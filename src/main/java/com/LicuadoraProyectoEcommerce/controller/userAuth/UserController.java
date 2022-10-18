@@ -48,7 +48,7 @@ public class UserController {
     }
     @Operation(summary = "get a user list of ten by page")
     @GetMapping
-    ResponseEntity<List<UserDto>> getEntityListPagination(@Parameter(description = "get a list by page", example = "0") @RequestParam String page){
+    ResponseEntity<List<UserDto>> getEntityListPagination(@Parameter(description = "get a list by page", example = "0") @RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(userService.getUserListPagination(Integer.valueOf(page)));
     }
     @Operation(summary = "user update by id")

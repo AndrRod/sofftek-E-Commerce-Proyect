@@ -31,7 +31,7 @@ public class CustomizationAllowedController {
     }
     @Operation(summary = "get 10 customization list by page")
     @GetMapping
-    ResponseEntity<List<CustomizationAllowedDto>> getListEntityPagination(@Parameter(description = "insert a page number", example = "0")@RequestParam String page){
+    ResponseEntity<List<CustomizationAllowedDto>> getListEntityPagination(@Parameter(description = "insert a page number", example = "0")@RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(customizationAllowedService.findDtoListPagination(Integer.valueOf(page)));
     }
     @Operation(summary = "delete customization by id")
@@ -44,7 +44,7 @@ public class CustomizationAllowedController {
     @Operation(summary = "create a customization")
     @PostMapping
     ResponseEntity<CustomizationAllowedDto> createEntity(@RequestBody @Valid CustomizationAllowedDto customizationAllowedDto){
-        return ResponseEntity.ok(customizationAllowedService.createEntity(customizationAllowedDto));
+        return ResponseEntity.status(201).body(customizationAllowedService.createEntity(customizationAllowedDto));
     }
     @Operation(summary = "update customization by id")
     @PutMapping("/{id}")

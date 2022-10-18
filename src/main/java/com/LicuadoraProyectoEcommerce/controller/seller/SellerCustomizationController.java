@@ -34,7 +34,7 @@ public class SellerCustomizationController {
     }
     @Operation(summary = "get 10 customization list by page")
     @GetMapping
-    ResponseEntity<List<SellerCustomizationCompleteDto>> getListPagination(@Parameter(description = "insert page number", example = "0")@RequestParam String page){
+    ResponseEntity<List<SellerCustomizationCompleteDto>> getListPagination(@Parameter(description = "insert page number", example = "0")@RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(sellerCustomizationService.geDtoListPagination(Integer.valueOf(page)));
     }
     @Operation(summary = "update customization by id")

@@ -40,7 +40,7 @@ public class PublicationController {
     }
     @Operation(summary = "get 10 publication list by page and optionally by state")
     @GetMapping
-    public ResponseEntity<List<PublicationDto>> getDtoListPagination(@Parameter(description = "insert a page number", example = "1")@RequestParam String page, @Parameter(description = "insert a state", example = "PUBLISHED") @RequestParam(required = false) String state){
+    public ResponseEntity<List<PublicationDto>> getDtoListPagination(@Parameter(description = "insert a page number", example = "1")@RequestParam(defaultValue = "0", required = false) String page, @Parameter(description = "insert a state", example = "PUBLISHED") @RequestParam(defaultValue = "0", required = false) String state){
         return ResponseEntity.ok(publicationService.getListEntityPage(Integer.valueOf(page), state));
     }
     @Operation(summary = "create a publication by product id")

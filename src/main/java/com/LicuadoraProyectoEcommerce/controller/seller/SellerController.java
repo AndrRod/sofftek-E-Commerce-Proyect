@@ -23,7 +23,7 @@ public class SellerController {
     }
     @Operation(summary = "get 10 seller list by page")
     @GetMapping
-    ResponseEntity<List<SellerDto>> getEntityListPage(@Parameter(description = "insert the page number", example = "0") @RequestParam String page){
+    ResponseEntity<List<SellerDto>> getEntityListPage(@Parameter(description = "insert the page number", example = "0") @RequestParam(defaultValue = "0", required = false) String page){
         return ResponseEntity.ok(sellerService.getListEntityPage(Integer.valueOf(page)));
     }
 

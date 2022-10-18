@@ -33,7 +33,7 @@ public class StoreController {
     }
     @Operation(summary = "get a store list of ten by page")
     @GetMapping
-    public ResponseEntity<List<SellerStoreDto>> getListStorePagination(@Parameter(description = "insert the number page", example = "0")@RequestParam String page){
+    public ResponseEntity<List<SellerStoreDto>> getListStorePagination(@Parameter(description = "insert the number page", example = "0")@RequestParam(defaultValue = "0", required = false) String page){
         return  ResponseEntity.ok(storeService.listDtoPagination(Integer.valueOf(page)));
     }
     @Operation(summary = "delete store by id")
