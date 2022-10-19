@@ -30,4 +30,9 @@ public class MessagesSwagger {
     public static final String CUSTOMIZATION_MESSAGE_RESET_PARAMTERS = "{\n" +
             "    \"Message\": \"the parameter was reset successfully\"\n" +
             "}";;
+    public static final String INVOICE_MESSAGE_PDF_CREATED = "{\n" +
+            "  \"message\": \"the invoice pdf was create successfully\",\n" +
+            "  \"status_code\": 201,\n" +
+            "  \"path\": \"/seller/invoice/45/print\"\n" +
+            "}";
 }

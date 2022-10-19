@@ -1,5 +1,6 @@
 package com.LicuadoraProyectoEcommerce.model.seller;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
+import com.LicuadoraProyectoEcommerce.model.listener.SellerProductListener;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Item;
 import com.LicuadoraProyectoEcommerce.model.manager.BaseProduct;
 import com.LicuadoraProyectoEcommerce.model.shoppingCart.Purchase;
@@ -19,6 +20,7 @@ import java.util.List;
 @Data
 @Entity
 @AllArgsConstructor @Builder
+@EntityListeners(SellerProductListener.class)
 public class SellerProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,18 +68,5 @@ public class SellerProduct {
         });
         return finalPrice + this.basePrice;
     }
-    @Autowired  @Transient
-    private PurchaseRepository purchaseRepository;
-    @Autowired  @Transient
-    private InvoiceRepository invoiceRepository;
-    @PreUpdate @PreRemove //TODO CONTROLAR FUCIONAMIENTO deberia borrar producto solo si no hay compra pendiente de aprobarcion y factura
-    public void preUpdateOrDeletePausedOrDeletedThePublication(){
-        this.getPublication().setPublicationSate(PublicationSate.PAUSED);
-        this.getItems().forEach(item->{
-            Purchase purchaseOverProduct = purchaseRepository.findByShoppingCart(item.getShoppingCart());
-            if(purchaseOverProduct!= null && !invoiceRepository.existsByPurchase(purchaseOverProduct)){
-                throw new BadRequestException("the publication of this product was paused, but this product cannot be deleted or update, because a purchase was made on it and it is pending approval and invoice");
-            }
-        });
-    }
+
 }

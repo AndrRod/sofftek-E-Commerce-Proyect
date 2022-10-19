@@ -32,12 +32,12 @@ public class Manager{
     @PreRemove //TODO VER COMPORTAMIENTO no debe poder borrarse el producto si un vendedor lo esta usando
     public void deleteIfNotUsedBySeller(){
         if(!baseProducts.stream().anyMatch(p-> p.getSellerProducts().isEmpty()))
-            throw new BadRequestException("this base product cant be delete or update because already is used by a Seller");
+            throw new BadRequestException("this user cant cant be delete or update because there is almost a producto already is used by a Seller");
     }
     @PreUpdate //TODO no debe poder actualizarse si un comprador lo agrego a un carrito
     public void updateIfNotWasAddToAShoppingCart(){
         baseProducts.stream().map(p-> p.getSellerProducts()).forEach(sellerProducts -> {
-            if(sellerProducts.stream().anyMatch(sellerProduct -> !sellerProduct.getItems().isEmpty())) throw new BadRequestException("this product cant be update because a buyer added it to a shopping cart");
+            if(sellerProducts.stream().anyMatch(sellerProduct -> !sellerProduct.getItems().isEmpty())) throw new BadRequestException("this user cant be update because a buyer added a product to a shopping cart");
         });
     }
 }

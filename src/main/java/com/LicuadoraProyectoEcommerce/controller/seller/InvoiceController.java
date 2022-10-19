@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.INVOICE_MESSAGE_PDF_CREATED;
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELETE;
 
 @Tag(name = "Seller invoice")
@@ -59,9 +60,11 @@ public class InvoiceController {
         return ResponseEntity.ok(invoiceService.updateEntity(Long.valueOf(id), idPurchase, invoiceForm, request));
     }
     @Operation(summary = "print invoice by id")
+    @ApiResponse(responseCode = "201", description = "invoice PDF CREATED",
+            content = { @Content(mediaType = "application/json",examples = {@ExampleObject(value = INVOICE_MESSAGE_PDF_CREATED)}) })
     @PostMapping("/{id}/print")
     public ResponseEntity<MessageInfo> createPrintInvoiceById(@Parameter(description = "insert invoice id", example = "1") @PathVariable String id, @RequestBody @Valid InvoicePdfPrintForm invoiceForm, HttpServletRequest request) throws IOException {
         invoiceService.printInvoiceById(Long.valueOf(id), invoiceForm, request);
-        return ResponseEntity.ok(new MessageInfo("the invoice pdf was create successfully", 201, request.getRequestURI()));
+        return ResponseEntity.status(201).body(new MessageInfo("the invoice pdf was create successfully", 201, request.getRequestURI()));
     }
 }
