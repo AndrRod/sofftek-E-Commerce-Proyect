@@ -1,23 +1,14 @@
 package com.LicuadoraProyectoEcommerce.serviceImpl.manager;
 
 import com.LicuadoraProyectoEcommerce.config.MessageHandler;
-import com.LicuadoraProyectoEcommerce.dto.manager.BaseProductDtoComplete;
-import com.LicuadoraProyectoEcommerce.dto.manager.CustomizationAllowedCompleteDto;
 import com.LicuadoraProyectoEcommerce.dto.manager.CustomizationAllowedDto;
-import com.LicuadoraProyectoEcommerce.dto.manager.ManagerDto;
 import com.LicuadoraProyectoEcommerce.exception.BadRequestException;
 import com.LicuadoraProyectoEcommerce.exception.NotFoundException;
 import com.LicuadoraProyectoEcommerce.mapper.manager.CustomizationAllowedMapper;
-import com.LicuadoraProyectoEcommerce.mapper.manager.ManagerMapper;
 import com.LicuadoraProyectoEcommerce.model.manager.CustomizationAllowed;
 import com.LicuadoraProyectoEcommerce.model.manager.EnabledArea;
-import com.LicuadoraProyectoEcommerce.model.manager.Manager;
-import com.LicuadoraProyectoEcommerce.model.seller.Seller;
 import com.LicuadoraProyectoEcommerce.model.seller.SellerProduct;
-import com.LicuadoraProyectoEcommerce.model.userAuth.User;
 import com.LicuadoraProyectoEcommerce.repository.manager.CustomizationAllowedRepository;
-import com.LicuadoraProyectoEcommerce.repository.manager.ManagerRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
