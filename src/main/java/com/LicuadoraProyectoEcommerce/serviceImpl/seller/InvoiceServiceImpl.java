@@ -62,7 +62,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         userAuthService.isSellerProductSellerCreator(request, purchase.getShoppingCart().getItems().get(0).getSellerProduct());
         Invoice invoice = invoiceMapper.createFromForm(purchase, invoiceForm);
         InvoiceDto invoiceDto = invoiceMapper.getDtoFromEntity(invoiceRepository.save(invoice));
-        createInvoicePdf(invoiceDto, invoiceForm.getSelectDiskToSave());
+        if(invoiceForm.getSelectDiskToSave()!=null)createInvoicePdf(invoiceDto, invoiceForm.getSelectDiskToSave());
         return invoiceDto;
     }
     @Override
@@ -76,7 +76,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         userAuthService.isSellerProductSellerCreator(request, invoice.getPurchase().getShoppingCart().getItems().get(0).getSellerProduct());
         Invoice invoiceUpdate = invoiceMapper.updateFromForm(invoice, invoiceForm);
         InvoiceDto invoiceDto = invoiceMapper.getDtoFromEntity(invoiceUpdate);
-        createInvoicePdf(invoiceDto, invoiceForm.getSelectDiskToSave());
+        if(invoiceForm.getSelectDiskToSave()!=null)createInvoicePdf(invoiceDto, invoiceForm.getSelectDiskToSave());
         return invoiceDto;
     }
     void validPurchaseConditions(Purchase purchase){
