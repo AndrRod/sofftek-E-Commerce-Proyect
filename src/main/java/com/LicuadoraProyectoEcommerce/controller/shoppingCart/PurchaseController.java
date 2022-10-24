@@ -21,7 +21,7 @@ import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELETE;
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.PURCHASE_MESSAGE_UPDATE_STATE;
-@CrossOrigin(origins = "https://sofftek-e-commerce.herokuapp.com/"
+@CrossOrigin(origins = "*"
         , methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE}
         ,allowCredentials = "true")
 @Tag(name = "Shopping Cart Purchase")

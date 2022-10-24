@@ -19,7 +19,7 @@ import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.CUSTOMIZATION_MESSAGE_RESET_PARAMTERS;
 
-@CrossOrigin(origins = "https://sofftek-e-commerce.herokuapp.com/"
+@CrossOrigin(origins = "*"
         , methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE}
         ,allowCredentials = "true")
 @Tag(name = "Seller product - Customization")
