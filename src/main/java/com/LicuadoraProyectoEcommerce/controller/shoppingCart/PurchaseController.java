@@ -21,7 +21,9 @@ import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELETE;
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.PURCHASE_MESSAGE_UPDATE_STATE;
-
+@CrossOrigin(origins = "*"
+        , methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE}
+        ,allowCredentials = "true")
 @Tag(name = "Shopping Cart Purchase")
 @RestController
 @RequestMapping("/purchase")

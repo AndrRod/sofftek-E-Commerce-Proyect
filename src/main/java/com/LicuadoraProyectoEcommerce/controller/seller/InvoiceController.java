@@ -1,6 +1,4 @@
 package com.LicuadoraProyectoEcommerce.controller.seller;
-
-import com.LicuadoraProyectoEcommerce.config.MessageHandler;
 import com.LicuadoraProyectoEcommerce.dto.seller.InvoiceDto;
 import com.LicuadoraProyectoEcommerce.form.InvoiceForm;
 import com.LicuadoraProyectoEcommerce.form.InvoicePdfPrintForm;
@@ -18,14 +16,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.INVOICE_MESSAGE_PDF_CREATED;
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELETE;
-
+@CrossOrigin(origins = "*"
+        , methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE}
+        ,allowCredentials = "true")
 @Tag(name = "Seller invoice")
 @RestController
 @RequestMapping("/seller/invoice")

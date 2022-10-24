@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELETE;
-
+@CrossOrigin(origins = "*"
+        , methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE}
+        ,allowCredentials = "true")
 @Tag(name = "Manager product - customization")
 @RestController
 @RequestMapping("/manager/customization")
