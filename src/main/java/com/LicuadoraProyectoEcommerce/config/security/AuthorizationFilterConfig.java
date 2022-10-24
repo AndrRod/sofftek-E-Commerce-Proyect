@@ -37,7 +37,7 @@ public class AuthorizationFilterConfig extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         List<String> pathsFilterList = List.of("/auth", "/cart", "/purchase", "/seller/store", "/swagger-ui/", "/api/docs");
-        String requestPath = request.getRequestURI();
+        String requestPath = request.getServletPath();
         System.out.println(requestPath);
         if(pathsFilterList.stream().anyMatch(p-> requestPath.startsWith(p))){
             filterChain.doFilter(request, response);
