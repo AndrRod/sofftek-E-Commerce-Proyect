@@ -23,9 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.*;
-@CrossOrigin(origins = "*"
-        , methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE}
-        ,allowCredentials = "true")
+
 @Tag(name = "Manager product")
 @RestController
 @RequestMapping("/manager/product")
