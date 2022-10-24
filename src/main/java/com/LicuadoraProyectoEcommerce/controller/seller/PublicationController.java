@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.MESSAGE_DELETE;
-@CrossOrigin(origins = "*"
+@CrossOrigin(origins = "https://sofftek-e-commerce.herokuapp.com/"
         , methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE}
         ,allowCredentials = "true")
 @Tag(name = "Seller product - Publication")

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import static com.LicuadoraProyectoEcommerce.config.MessagesSwagger.*;
-@CrossOrigin(origins = "*"
+@CrossOrigin(origins = "https://sofftek-e-commerce.herokuapp.com/"
         , methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE}
         ,allowCredentials = "true")
 @Tag(name = "Auth User")
