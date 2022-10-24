@@ -5,13 +5,18 @@ E- COMMERCE 🚀
 ## Desarrollado por 🖥️  [AndresRodriguez](https://www.linkedin.com/in/andres-rodriguez-60a166208/) - [GitHub](https://github.com/AndrRod) - [PortFolio](https://andresporfolio.herokuapp.com/)
 
 
+## DEMO SWAGGER - HEROKU ->   [SWAGGER -HEROKU ](https://sofftek-e-commerce.herokuapp.com/swagger-ui/index.html#/) 🚀
+
+El presente profyecto fue documentado a través de postman y swagger, y finalmente subido a la nube a través de la página HEROKU.
+- Link en disponible seguidamente ->  [SWAGGER -HEROKU ](https://sofftek-e-commerce.herokuapp.com/swagger-ui/index.html#/)
 
 
-#### **Contexto general**
+
+### **Contexto general**
 Nos han solicitado diseñar y desarrollar una plataforma de E-Commerce para la
 venta de productos de indumentaria semi-personalizados.
 
-#### **Relevamiento**
+### **Relevamiento**
 
 Los gestores de la plataforma cargan los productos base que pueden ser personalizados y comercializados,
 como, por ejemplo, remeras, gorras, fundas para smartphones, zapatillas, entre otros. Para cada producto
@@ -35,7 +40,7 @@ compra, para que, posteriormente, el comprador los pague por alguno de los medio
 Cada vendedor define los Medios de Pago de acepta. Una vez aceptado el pago, se debe generar una
 Factura Electrónica a partir de un Servicio Externo.
 
-#### **Pendientes**
+### **Pendientes**
 - Verificar funcionamiento del todo el proyecto.-
 - Mejorar comportamiento cuando se elimina un Usuario (quen no se elimine el manager que tiene creado productos o solo los productos, 
 ni tampoco sellers que tienen pendiente la factura de compras realizadas)
